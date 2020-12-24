@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.InpatientWardMapper">
+    <resultMap id="wardResult" type="InpatientWard">
+        <result property="wardId" column="iward_id"/>
+        <result property="wardBedNum" column="iward_bed_num"/>
+        <result property="wardStatus" column="iward_status"/>
+        <association property="wardType" column="iward_tyep" javaType="InpatientWardType">
+            <result property="iwtId" column="iwt_id"/>
+            <result property="iwtType" column="iwt_type"/>
+            <result property="iwtPrice" column="iwt_price"/>
+        </association>
+        <association property="dept" column="d_id" javaType="Dept">
+            <result property="deptId" column="dept_id"/>
+            <result property="deptName" column="dept_name"/>
+        </association>
+    </resultMap>
+
+
+    <select id="findAllWard" resultMap="wardResult">
+        SELECT *
+        FROM inpatient_ward a,inpatient_ward_type b,dept c
+        WHERE a.iward_type = b.iwt_id and a.d_id = c.dept_id
+    </select>
+
+
+</mapper>

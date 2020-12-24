@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.StaffMapper">
+    <resultMap id="staffResultMap" type="Staff">
+        <result property="sid" column="s_id"/>
+        <result property="sname" column="s_name"/>
+        <result property="spw" column="s_pw"/>
+        <result property="rid" column="r_id"/>
+        <association property="dept" column="dept_id" javaType="Dept">
+            <result property="deptId" column="dept_id"/>
+            <result property="deptName" column="dept_name"/>
+        </association>
+    </resultMap>
+
+    <sql id="staffColumns">
+        s_id,s_name,s_pw,r_id,dept_id
+    </sql>
+
+
+    <select id="findBySid" parameterType="java.lang.String" resultMap="staffResultMap">
+        SELECT *
+        from staff,dept
+        where s_id = #{sid} and staff.dept_id = dept.dept_id
+    </select>
+
+</mapper>

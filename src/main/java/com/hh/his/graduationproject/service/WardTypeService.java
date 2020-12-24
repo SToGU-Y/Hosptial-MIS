@@ -1,0 +1,21 @@
+package com.hh.his.graduationproject.service;
+
+import com.github.pagehelper.PageInfo;
+import com.hh.his.graduationproject.model.dto.WardTypeDTO;
+import com.hh.his.graduationproject.model.entity.InpatientWardType;
+
+import java.util.List;
+
+public interface WardTypeService {
+
+    PageInfo<InpatientWardType> findAllWardTypeByPage(Integer pageNum);
+
+    List<InpatientWardType> findAllWardType();
+
+    Boolean addWardType(WardTypeDTO wardTypeDTO);
+
+    Boolean updateWardType(InpatientWardType wardType);
+
+    Boolean delWardType(Integer iwtId);
+
+}

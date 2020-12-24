@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.NationMapper">
+    <resultMap id="NationResultMap" type="Nation">
+        <result property="no" column="n_no"/>
+        <result property="nationName" column="n_name"/>
+    </resultMap>
+    <sql id="NationColumns">
+        n_no,n_name
+    </sql>
+
+    <select id="findAllNation" resultMap="NationResultMap">
+        SELECT <include refid="NationColumns"/>
+        FROM nation
+    </select>
+</mapper>

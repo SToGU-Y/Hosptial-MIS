@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.PatientMapper">
+    <resultMap id="patientResultMap" type="Patient">
+        <result property="pid" column="p_id"/>
+        <result property="pname" column="p_name"/>
+        <result property="sex" column="p_sex"/>
+        <result property="nationality" column="p_nationality"/>
+        <result property="born" column="p_born"/>
+        <result property="age" column="p_age"/>
+        <result property="birth" column="p_birth"/>
+        <result property="tel" column="p_tel"/>
+        <result property="regAddr" column="p_reg_addr"/>
+        <result property="currAddr" column="p_curr_addr"/>
+        <result property="province" column="p_province"/>
+        <result property="city" column="p_city"/>
+        <result property="contact" column="p_contact"/>
+        <result property="conRel" column="p_con_rel"/>
+        <result property="conTel" column="p_con_tel"/>
+        <result property="married" column="p_married"/>
+        <result property="nation" column="nation" />
+    </resultMap>
+
+    <sql id="patientColumns">
+        p_id,p_name,p_sex,p_age,p_birth,p_nationality,nation,p_born,p_tel,p_reg_addr,p_curr_addr,p_province,p_city,p_contact,p_con_rel,p_con_tel,p_married
+    </sql>
+
+
+    <select id="findPatients" resultMap="patientResultMap">
+        SELECT *
+        FROM patient
+    </select>
+
+    <select id="findPatientsByConditions" resultMap="patientResultMap">
+        SELECT *
+        FROM patient
+        <where>
+            <if test="conditionDTO.pid!=null and conditionDTO.pid!=''">
+                <bind name="pid" value="'%'+conditionDTO.pid+'%'"/>
+                and p_id like #{pid}
+            </if>
+            <if test="conditionDTO.pname!=null and conditionDTO.pname!=''">
+                <bind name="pname" value="'%'+conditionDTO.pname+'%'"/>
+                and p_name like #{pname}
+            </if>
+        </where>
+    </select>
+</mapper>

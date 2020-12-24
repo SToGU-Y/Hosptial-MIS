@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.PatientTypeMapper">
+    <resultMap id="PatientTypeResultMap" type="PatientType">
+        <result property="ptId" column="pt_id"/>
+        <result property="ptName" column="pt_name"/>
+    </resultMap>
+    <sql id="PatientTypeColumns">
+        pt_id,pt_name
+    </sql>
+
+    <select id="findAllPatientType" resultMap="PatientTypeResultMap">
+        SELECT <include refid="PatientTypeColumns"/>
+        FROM patient_type
+    </select>
+</mapper>

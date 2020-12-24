@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.InpatientInformationMapper">
+
+    <resultMap id="InpatientInformationResultMap" type="InpatientInformation">
+        <result property="id" column="ii_id"/>
+        <result property="admissionNumber" column="ii_ad_number"/>
+        <result property="sid" column="s_id"/>
+        <result property="diagnosis01" column="ii_diagnosis_01"/>
+        <result property="diagnosis02" column="ii_diagnosis_02"/>
+        <result property="admittedDoc" column="ii_admitted_doc"/>
+        <result property="attendingDoc" column="ii_attending_doc"/>
+        <result property="visitingDoc" column="ii_visiting_doc"/>
+        <result property="iwardId" column="iward_id"/>
+        <result property="bid" column="b_id"/>
+        <result property="dateOfAdmission" column="ii_date_admission"/>
+        <result property="dateOfDischarge" column="ii_discharge_date"/>
+        <result property="status" column="ii_status"/>
+        <result property="day" column="ii_day"/>
+        <result property="medicalNumber" column="ii_medical_insurance_number"/>
+        <association property="dept" column="dept_id" javaType="Dept">
+            <result property="deptId" column="dept_id"/>
+            <result property="deptName" column="dept_name"/>
+        </association>
+        <association property="patient" column="p_id" javaType="Patient">
+            <result property="pid" column="p_id"/>
+            <result property="pname" column="p_name"/>
+            <result property="sex" column="p_sex"/>
+            <result property="nationality" column="p_nationality"/>
+            <result property="born" column="p_born"/>
+            <result property="age" column="p_age"/>
+            <result property="birth" column="p_birth"/>
+            <result property="tel" column="p_tel"/>
+            <result property="regAddr" column="p_reg_addr"/>
+            <result property="currAddr" column="p_curr_addr"/>
+            <result property="province" column="p_province"/>
+            <result property="city" column="p_city"/>
+            <result property="contact" column="p_contact"/>
+            <result property="conRel" column="p_con_rel"/>
+            <result property="conTel" column="p_con_tel"/>
+            <result property="married" column="p_married"/>
+            <result property="nation" column="nation"/>
+        </association>
+        <association property="patientType" column="pt_id" javaType="PatientType">
+            <result property="ptId" column="pt_id"/>
+            <result property="ptName" column="pt_name"/>
+        </association>
+    </resultMap>
+
+
+    <select id="findAllAdmission" resultMap="InpatientInformationResultMap">
+        SELECT *
+        FROM dept a,inpatient_information b,patient c,patient_type d
+        WHERE c.p_id = b.p_id and  a.dept_id = b.dept_id and b.pt_id = d.pt_id
+    </select>
+
+
+
+</mapper>

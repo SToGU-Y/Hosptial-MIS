@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="cb64e8c9-c76c-488f-8dd9-117c4f4b00f9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../cxf-spring/cxf-spring.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../netty-demo/netty.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../netty-demo/src/netty.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../rmi/java_code.iml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1jgyEm9Nzyr71TZ0cx9bsgXtiRt" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.hh.his.graduationproject" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Program Files\IdeaProjects\HIS_GraduationProject\src\main\resources\static\js" />
+      <recent name="E:\Program Files\IdeaProjects\HIS_GraduationProject\src\main\resources\static\css" />
+      <recent name="E:\Program Files\IdeaProjects\HIS_GraduationProject\src\main\resources\templates" />
+      <recent name="E:\Program Files\IdeaProjects\HIS_GraduationProject\src\main\resources\com\dao" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.HISApplication">
+    <configuration name="HISApplicationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="HIS_GraduationProject" />
+      <option name="PACKAGE_NAME" value="com.hh.his.graduationproject" />
+      <option name="MAIN_CLASS_NAME" value="com.hh.his.graduationproject.HISApplicationTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HISApplicationTest.contextLoads" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="HIS_GraduationProject" />
+      <option name="PACKAGE_NAME" value="com.hh.his.graduationproject" />
+      <option name="MAIN_CLASS_NAME" value="com.hh.his.graduationproject.HISApplicationTest" />
+      <option name="METHOD_NAME" value="contextLoads" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MyTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="HIS_GraduationProject" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="MyTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MyTest.StaffTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="HIS_GraduationProject" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="MyTest" />
+      <option name="METHOD_NAME" value="StaffTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StaffTest.Test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="HIS_GraduationProject" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="StaffTest" />
+      <option name="METHOD_NAME" value="Test" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HISApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="HIS_GraduationProject" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.hh.his.graduationproject.HISApplication" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="UPDATE_ACTION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.StaffTest.Test" />
+      <item itemvalue="JUnit.MyTest.StaffTest" />
+      <item itemvalue="JUnit.MyTest" />
+      <item itemvalue="JUnit.HISApplicationTest" />
+      <item itemvalue="JUnit.HISApplicationTest.contextLoads" />
+      <item itemvalue="Spring Boot.HISApplication" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.HISApplicationTest.contextLoads" />
+        <item itemvalue="JUnit.HISApplicationTest" />
+        <item itemvalue="JUnit.MyTest.StaffTest" />
+        <item itemvalue="JUnit.MyTest" />
+        <item itemvalue="JUnit.StaffTest.Test" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="cb64e8c9-c76c-488f-8dd9-117c4f4b00f9" name="Default Changelist" comment="" />
+      <created>1604239919787</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1604239919787</updated>
+      <workItem from="1604239921819" duration="947000" />
+      <workItem from="1604302302242" duration="2903000" />
+      <workItem from="1604405594631" duration="1325000" />
+      <workItem from="1605087920575" duration="24688000" />
+      <workItem from="1605192933051" duration="16434000" />
+      <workItem from="1605358277120" duration="8624000" />
+      <workItem from="1606475419972" duration="1612000" />
+      <workItem from="1606574666919" duration="2634000" />
+      <workItem from="1606647457674" duration="14011000" />
+      <workItem from="1606715504218" duration="9308000" />
+      <workItem from="1606815664924" duration="2080000" />
+      <workItem from="1606825502061" duration="7616000" />
+      <workItem from="1606897959313" duration="12575000" />
+      <workItem from="1607517493078" duration="8779000" />
+      <workItem from="1607574271001" duration="9232000" />
+      <workItem from="1607660645379" duration="17108000" />
+      <workItem from="1607925058758" duration="2588000" />
+      <workItem from="1608467921917" duration="6871000" />
+      <workItem from="1608551057370" duration="9351000" />
+      <workItem from="1608638396251" duration="15041000" />
+      <workItem from="1608772450107" duration="2119000" />
+      <workItem from="1608791643313" duration="1917000" />
+      <workItem from="1608793649746" duration="342000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="673" y="206" width="1174" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1606829179158">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="673" y="206" width="1174" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1606829179158" />
+    <state x="923" y="337" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1607927642047">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="923" y="337" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1607927642047" />
+    <state x="1096" y="333" key="#com.intellij.ide.util.MemberChooser" timestamp="1608728206380">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1096" y="333" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1608728206380" />
+    <state x="819" y="202" key="#com.intellij.ide.util.frameworkSupport.AddFrameworkSupportDialog" timestamp="1605180878959">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="819" y="202" key="#com.intellij.ide.util.frameworkSupport.AddFrameworkSupportDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605180878959" />
+    <state x="748" y="440" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1605273455521">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="748" y="440" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605273455521" />
+    <state x="731" y="419" width="509" height="274" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1606916733745">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="731" y="419" width="509" height="274" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1920.1040@0.0.1920.1040" timestamp="1606916733745" />
+    <state x="1061" y="309" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1606716763084">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1061" y="309" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1606716763084" />
+    <state width="1440" height="243" key="GridCell.Tab.0.bottom" timestamp="1608793633304">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1440" height="243" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1608793633304" />
+    <state width="1440" height="243" key="GridCell.Tab.0.center" timestamp="1608793633304">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1440" height="243" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1608793633304" />
+    <state width="1440" height="243" key="GridCell.Tab.0.left" timestamp="1608793633304">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1440" height="243" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1608793633304" />
+    <state width="1440" height="243" key="GridCell.Tab.0.right" timestamp="1608793633304">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1440" height="243" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1608793633304" />
+    <state width="1440" height="243" key="GridCell.Tab.1.bottom" timestamp="1608793633304">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1440" height="243" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1608793633304" />
+    <state width="1440" height="243" key="GridCell.Tab.1.center" timestamp="1608793633304">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1440" height="243" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1608793633304" />
+    <state width="1440" height="243" key="GridCell.Tab.1.left" timestamp="1608793633304">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1440" height="243" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1608793633304" />
+    <state width="1440" height="243" key="GridCell.Tab.1.right" timestamp="1608793633304">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1440" height="243" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1608793633304" />
+    <state width="1877" height="319" key="GridCell.Tab.2.bottom" timestamp="1605194759316">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="319" key="GridCell.Tab.2.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1605194759316" />
+    <state width="1877" height="319" key="GridCell.Tab.2.center" timestamp="1605194759316">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="319" key="GridCell.Tab.2.center/0.0.1920.1040@0.0.1920.1040" timestamp="1605194759316" />
+    <state width="1877" height="319" key="GridCell.Tab.2.left" timestamp="1605194759316">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="319" key="GridCell.Tab.2.left/0.0.1920.1040@0.0.1920.1040" timestamp="1605194759316" />
+    <state width="1877" height="319" key="GridCell.Tab.2.right" timestamp="1605194759316">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="319" key="GridCell.Tab.2.right/0.0.1920.1040@0.0.1920.1040" timestamp="1605194759316" />
+    <state width="220" height="477" key="HiddenNamespacesPopup" timestamp="1605190267767">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="220" height="477" key="HiddenNamespacesPopup/0.0.1920.1040@0.0.1920.1040" timestamp="1605190267767" />
+    <state x="781" y="194" key="Maven.ArtifactSearchDialog" timestamp="1605103308836">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="781" y="194" key="Maven.ArtifactSearchDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605103308836" />
+    <state x="891" y="340" key="Registry" timestamp="1605105138619">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="891" y="340" key="Registry/0.0.1920.1040@0.0.1920.1040" timestamp="1605105138619" />
+    <state x="700" y="169" key="SettingsEditor" timestamp="1606825690488">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="700" y="169" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1606825690488" />
+    <state x="540" y="174" key="com.intellij.database.dbimport.ImportDialog" timestamp="1605337470679">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="540" y="174" key="com.intellij.database.dbimport.ImportDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605337470679" />
+    <state x="849" y="185" width="672" height="676" key="search.everywhere.popup" timestamp="1608732118173">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="849" y="185" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1608732118173" />
+  </component>
+  <component name="XDebuggerManager">
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo typeName="MyTest" fieldName="staffService" />
+        <PinnedItemInfo typeName="MyTest" fieldName="dataSource" />
+      </pinned-members>
+    </pin-to-top-manager>
+  </component>
+</project>

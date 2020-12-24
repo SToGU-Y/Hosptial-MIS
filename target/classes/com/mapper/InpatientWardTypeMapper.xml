@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.InpatientWardTypeMapper">
+    <resultMap id="WardTypeResult" type="InpatientWardType">
+        <result property="iwtId" column="iwt_id"/>
+        <result property="iwtType" column="iwt_type"/>
+        <result property="iwtPrice" column="iwt_price"/>
+    </resultMap>
+
+    <select id="findAllWardType" resultMap="WardTypeResult">
+        SELECT *
+        FROM inpatient_ward_type
+    </select>
+
+    <insert id="insertWardType">
+        INSERT inpatient_ward_type(iwt_type,iwt_price)
+        VALUES (#{iwtType},#{iwtPrice})
+    </insert>
+
+    <update id="updateWardType">
+        UPDATE inpatient_ward_type
+        SET iwt_type = #{wardType.iwtType},iwt_price=#{wardType.iwtPrice}
+        WHERE iwt_id = #{wardType.iwtId}
+    </update>
+
+    <delete id="delWardType">
+        DELETE FROM inpatient_ward_type where iwt_id=#{iwtId}
+    </delete>
+
+</mapper>
