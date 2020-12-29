@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hh.his.graduationproject.dao.InpatientWardMapper">
     <resultMap id="wardResult" type="InpatientWard">
+        <result property="id" column="id"/>
         <result property="wardId" column="iward_id"/>
         <result property="wardBedNum" column="iward_bed_num"/>
         <result property="wardStatus" column="iward_status"/>
@@ -17,11 +18,47 @@
     </resultMap>
 
 
-    <select id="findAllWard" resultMap="wardResult">
+    <select id="findWardByCondition" resultType="int">
+        SELECT count(*)
+        FROM inpatient_ward a
+        WHERE a.iward_id = #{wardId} and a.d_id = #{deptId}
+    </select>
+
+    <select id="findWardsByCondition" resultMap="wardResult">
         SELECT *
         FROM inpatient_ward a,inpatient_ward_type b,dept c
         WHERE a.iward_type = b.iwt_id and a.d_id = c.dept_id
+        <if test="wardConditionVO.deptIdSelective !=null and  wardConditionVO.deptIdSelective !='' ">
+            and a.d_id = #{wardConditionVO.deptIdSelective}
+        </if>
+        <if test="wardConditionVO.wardStatus != null">
+            and a.iward_status = #{wardConditionVO.wardStatus}
+        </if>
+        <if test="wardConditionVO.wardId !=null and  wardConditionVO.wardId !='' ">
+            and a.iward_id = #{wardConditionVO.wardId}
+        </if>
+
     </select>
 
+    <select id="findNullWardByCondition" resultType="int">
+        select count(*)
+        from inpatient_ward
+        where id = #{id} and iward_bed_num = 0
+    </select>
+
+    <insert id="insertWard">
+        INSERT inpatient_ward(d_id,iward_id,iward_bed_num,iward_status,iward_type)
+        VALUES (#{wardAddDTO.deptId},#{wardAddDTO.wardId},#{wardAddDTO.wardBedNum},#{wardAddDTO.wardStatus},#{wardAddDTO.wardType})
+    </insert>
+
+    <delete id="delWard">
+        DELETE FROM inpatient_ward where id = #{id}
+    </delete>
+
+    <update id="updateWard">
+        UPDATE inpatient_ward
+        SET iward_type = #{wardUpdateVO.iwtId},iward_id=#{wardUpdateVO.wardId},d_id=#{wardUpdateVO.deptId}
+        WHERE id = #{wardUpdateVO.id}
+    </update>
 
 </mapper>

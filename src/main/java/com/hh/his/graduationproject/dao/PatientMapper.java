@@ -1,6 +1,6 @@
 package com.hh.his.graduationproject.dao;
 
-import com.hh.his.graduationproject.model.dto.PatientConditionDTO;
+import com.hh.his.graduationproject.model.vo.PatientConditionVO;
 import com.hh.his.graduationproject.model.entity.Patient;
 import org.apache.ibatis.annotations.Param;
 
@@ -20,5 +20,5 @@ public interface PatientMapper {
      * @param conditionDTO
      * @return
      */
-    List<Patient> findPatientsByConditions(@Param("conditionDTO") PatientConditionDTO conditionDTO);
+    List<Patient> findPatientsByConditions(@Param("conditionDTO") PatientConditionVO conditionDTO);
 }

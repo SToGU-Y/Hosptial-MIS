@@ -1,26 +1,163 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hh.his.graduationproject.dao.StaffMapper">
-    <resultMap id="staffResultMap" type="Staff">
-        <result property="sid" column="s_id"/>
-        <result property="sname" column="s_name"/>
-        <result property="spw" column="s_pw"/>
-        <result property="rid" column="r_id"/>
-        <association property="dept" column="dept_id" javaType="Dept">
+    <resultMap id="BaseResultMap" type="Staff">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="staff_name" property="staffName"/>
+        <result column="staff_addr" property="staffAddr"/>
+        <result column="identity" property="identity"/>
+        <result column="staff_tel" property="staffTel"/>
+        <result column="staff_nation" property="staffNation"/>
+        <result column="staff_married" property="staffMarried"/>
+    </resultMap>
+    <resultMap id="StaffWithDept" type="Staff" extends="BaseResultMap">
+        <association property="dept" column="dept_id">
             <result property="deptId" column="dept_id"/>
             <result property="deptName" column="dept_name"/>
         </association>
     </resultMap>
+    <resultMap id="StaffWithRoles" type="Staff" extends="BaseResultMap">
+        <collection property="roles" ofType="Role">
+            <id column="role_id" property="roleId"/>
+            <result column="role_name" property="roleName"/>
+        </collection>
+    </resultMap>
 
-    <sql id="staffColumns">
-        s_id,s_name,s_pw,r_id,dept_id
-    </sql>
+    <sql id="Base_Column_List">
+    id, username, staff_name, password, staff_addr, identity , staff_tel, staff_sex, staff_nation, staff_married
+  </sql>
 
-
-    <select id="findBySid" parameterType="java.lang.String" resultMap="staffResultMap">
+    <select id="findByUsername" parameterType="java.lang.String" resultMap="StaffWithDept">
         SELECT *
         from staff,dept
-        where s_id = #{sid} and staff.dept_id = dept.dept_id
+        where staff.username = #{username} and staff.dept_id = dept.dept_id
     </select>
+
+    <select id="getAllStaffsExceptCurrentStaffs" resultMap="BaseResultMap">
+        select * from staff where id !=#{id};
+    </select>
+
+    <select id="loadUserByUsername" resultMap="BaseResultMap">
+        select * from staff where username = #{username}
+    </select>
+
+    <select id="getAllStaffs" resultMap="StaffWithRoles">
+        select *
+        from staff left join staff_role sr on
+        staff.id = sr.staff_id left join role r on sr.role_id = r.id
+        <if test="keywords!=null">
+            and staff.staff_name like concat('%',#{keywords},'%')
+        </if>
+        order by staff.id
+    </select>
+
+    <select id="getStaffsRolesById" resultType="Role">
+    select r.* from role r,staff_role sr where sr.role_id = r.id and sr.staff_id = #{id}
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select <include refid="Base_Column_List"/>
+        from staff
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from staff
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="Staff">
+    insert into staff (username, staff_name,
+     password, staff_addr, identity ,
+      staff_tel, staff_sex, staff_nation,
+      staff_married)
+    values (#{username}, #{staffName},
+      #{password}, #{staffAddr}, #{identity},
+      #{staffTel}, #{staffSex}, #{staffNation},
+      #{staffMarried})
+  </insert>
+
+    <insert id="insertSelective" parameterType="staff">
+        insert into staff
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                username,
+            </if>
+            <if test="staffName != null">
+                staff_name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="staffAddr != null">
+                staff_addr,
+            </if>
+            <if test="identity != null">
+                identity,
+            </if>
+            <if test="staffTel != null">
+                staff_tel,
+            </if>
+            <if test="staffSex != null">
+                staff_sex,
+            </if>
+            <if test="staffNation != null">
+                staff_nation,
+            </if>
+            <if test="staffMarried != null">
+                staff_married,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                #{username},
+            </if>
+            <if test="staffName != null">
+                #{staffName},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="staffAddr != null">
+                #{staffAddr},
+            </if>
+            <if test="identity != null">
+                #{identity },
+            </if>
+            <if test="staffTel != null">
+                #{staffTel},
+            </if>
+            <if test="staffSex != null">
+                #{staffSex},
+            </if>
+            <if test="staffNation != null">
+                #{staffNation},
+            </if>
+            <if test="staffMarried != null">
+                #{staffMarried},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePasswd">
+        update staff set password = #{encodePass} where id=#{id};
+    </update>
+
+    <update id="updateByPrimaryKey">
+    update staff
+    set username = #{username},
+      staff_ame = #{staffName},
+      password = #{password},
+      dept_id  = #{deptId}
+      staff_addr = #{staffAddr},
+      identity = #{identity },
+      staff_tel = #{staffTel},
+      staff_sex = #{staffSex},
+      staff_nation = #{staffNation},
+      staff_married = #{staffMarried}
+    where id = #{id}
+  </update>
 
 </mapper>

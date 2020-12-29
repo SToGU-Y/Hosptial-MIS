@@ -1,15 +1,15 @@
-package com.hh.his.graduationproject.model.dto;
+package com.hh.his.graduationproject.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WardConditionDTO {
+public class WardTypeVO {
 
-    private String deptSelective;
+    private String iwtType;
+    private String iwtPrice;
 
 }

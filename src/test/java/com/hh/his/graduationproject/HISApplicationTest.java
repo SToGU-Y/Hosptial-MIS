@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import sun.dc.pr.PRError;
 
@@ -38,8 +39,10 @@ public class HISApplicationTest {
     public void contextLoads() throws SQLException {
       //  System.out.println(patientService.findPatients().toString());
       //  System.out.println(mapper.findAllAdmission().toString());
-       // List<InpatientInformationVO> allAdmission = service.findAllAdmission();
+       // List<InpatientInformationAddVO> allAdmission = service.findAllAdmission();
       //  System.out.println(allAdmission.toString());
+
+      //  System.out.println(new BCryptPasswordEncoder().encode("123456"));
     }
 
 }

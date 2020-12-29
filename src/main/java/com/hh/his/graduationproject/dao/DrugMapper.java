@@ -1,4 +1,4 @@
 package com.hh.his.graduationproject.dao;
 
-public interface MedicalMapper {
+public interface DrugMapper {
 }

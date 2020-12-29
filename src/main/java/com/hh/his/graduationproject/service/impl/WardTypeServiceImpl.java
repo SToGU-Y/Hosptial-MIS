@@ -3,7 +3,7 @@ package com.hh.his.graduationproject.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hh.his.graduationproject.dao.InpatientWardTypeMapper;
-import com.hh.his.graduationproject.model.dto.WardTypeDTO;
+import com.hh.his.graduationproject.model.vo.WardTypeVO;
 import com.hh.his.graduationproject.model.entity.InpatientWardType;
 import com.hh.his.graduationproject.service.WardTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +33,11 @@ public class WardTypeServiceImpl implements WardTypeService {
     }
 
     @Override
-    public Boolean addWardType(WardTypeDTO wardTypeDTO) {
-        BigDecimal bigDecimal = new BigDecimal(wardTypeDTO.getIwtPrice());
-        try {
-            typeMapper.insertWardType(wardTypeDTO.getIwtType(),bigDecimal);
+    public Boolean addWardType(WardTypeVO wardTypeVO) {
+        BigDecimal bigDecimal = new BigDecimal(wardTypeVO.getIwtPrice());
+        if (typeMapper.insertWardType(wardTypeVO.getIwtType(),bigDecimal)>0) {
             return true;
-        }catch (Exception e){
-            e.printStackTrace();
+        }else {
             return false;
         }
     }

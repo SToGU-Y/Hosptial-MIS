@@ -1,4 +1,4 @@
-package com.hh.his.graduationproject.model.dto;
+package com.hh.his.graduationproject.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,15 +12,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginDTO {
+public class LoginVO {
 
     /**
      * 登录账号（员工工号）
      */
-    private String sid;
+    private String username;
 
     /**
      * 登录密码（员工密码）
      */
-    private String spw;
+    private String password;
 }

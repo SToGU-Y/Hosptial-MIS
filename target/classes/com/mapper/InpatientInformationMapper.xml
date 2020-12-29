@@ -52,6 +52,7 @@
         SELECT *
         FROM dept a,inpatient_information b,patient c,patient_type d
         WHERE c.p_id = b.p_id and  a.dept_id = b.dept_id and b.pt_id = d.pt_id
+
     </select>
 
 

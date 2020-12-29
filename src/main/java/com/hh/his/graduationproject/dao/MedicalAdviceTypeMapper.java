@@ -1,4 +1,4 @@
 package com.hh.his.graduationproject.dao;
 
-public interface MedicalAdviceTyperMapper {
+public interface MedicalAdviceTypeMapper {
 }

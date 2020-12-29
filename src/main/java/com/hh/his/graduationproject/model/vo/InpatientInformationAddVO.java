@@ -1,4 +1,4 @@
-package com.hh.his.graduationproject.model.dto;
+package com.hh.his.graduationproject.model.vo;
 
 import com.hh.his.graduationproject.model.entity.Patient;
 import lombok.AllArgsConstructor;
@@ -11,10 +11,11 @@ import java.sql.Timestamp;
 /**
  * 映射前端传来的JSON
  */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class InpatientInformationDTO extends Patient {
+public class InpatientInformationAddVO extends Patient {
 
     /**
      * 诊断1

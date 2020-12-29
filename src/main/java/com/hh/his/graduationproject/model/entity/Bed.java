@@ -19,20 +19,16 @@ public class Bed {
     /**
      * 床号
      */
-    private String bid;
+    private Integer bid;
 
     /**
-     * 病房号
+     * 病房号主键
      */
-    private InpatientWard iwardId;
+    private InpatientWard ward;
 
     /**
      * 病床状态
      */
-    private Integer status;
+    private Integer bedStatus;
 
-    /**
-     * 病床价格(元/晚)
-     */
-    private BigDecimal price;
 }

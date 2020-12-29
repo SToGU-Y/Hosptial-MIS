@@ -1,6 +1,6 @@
 package com.hh.his.graduationproject.service;
 
-import com.hh.his.graduationproject.model.dto.PatientConditionDTO;
+import com.hh.his.graduationproject.model.vo.PatientConditionVO;
 import com.hh.his.graduationproject.model.vo.PatientVO;
 
 import java.util.List;
@@ -18,5 +18,5 @@ public interface PatientService {
      * @param conditionDTO
      * @return
      */
-    List<PatientVO> findPatientsByConditions(PatientConditionDTO conditionDTO);
+    List<PatientVO> findPatientsByConditions(PatientConditionVO conditionDTO);
 }

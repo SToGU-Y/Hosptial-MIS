@@ -9,6 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InpatientWard {
 
+    /**
+     * 主键
+     */
+    private Integer id;
+
     private Dept dept;
     private Integer wardId;
     private Integer wardBedNum;

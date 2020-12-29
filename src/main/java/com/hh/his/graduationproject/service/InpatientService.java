@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface InpatientService {
 
+
     List<InpatientInformationVO> findAllAdmission();
+
 }

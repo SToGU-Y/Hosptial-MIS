@@ -1,6 +1,6 @@
 package com.hh.his.graduationproject.controller;
 
-import com.hh.his.graduationproject.model.dto.PatientConditionDTO;
+import com.hh.his.graduationproject.model.vo.PatientConditionVO;
 import com.hh.his.graduationproject.model.vo.PatientVO;
 import com.hh.his.graduationproject.service.PatientService;
 import com.hh.his.graduationproject.utils.result.Result;
@@ -30,7 +30,7 @@ public class PatientController {
     }
 
     @RequestMapping(value = "/getPatientByCondition",method = RequestMethod.GET)
-    public Result getPatientByCondition(PatientConditionDTO conditionDTO){
+    public Result getPatientByCondition(PatientConditionVO conditionDTO){
         System.out.println(conditionDTO.toString());
         List<PatientVO> patients = patientService.findPatientsByConditions(conditionDTO);
         return Result.OK(patients);

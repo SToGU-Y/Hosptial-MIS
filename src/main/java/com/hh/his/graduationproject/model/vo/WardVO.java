@@ -11,14 +11,15 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class WardVO {
 
-
+    private Integer id;
+    private String deptId;
     private String deptName;
     private Integer wardId;
     private String wardStatus;
     private String wardBedNum;
+    private Integer iwtId;
     private String iwtType;
     private BigDecimal iwtPrice;
-
 
 }
 

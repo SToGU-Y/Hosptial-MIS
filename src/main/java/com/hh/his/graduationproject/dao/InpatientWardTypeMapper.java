@@ -10,7 +10,7 @@ public interface InpatientWardTypeMapper {
 
     List<InpatientWardType> findAllWardType();
 
-    void insertWardType(@Param("iwtType") String iwtType,@Param("iwtPrice") BigDecimal iwtPrice);
+    int insertWardType(@Param("iwtType") String iwtType,@Param("iwtPrice") BigDecimal iwtPrice);
 
     void updateWardType(@Param("wardType")InpatientWardType wardType);
 

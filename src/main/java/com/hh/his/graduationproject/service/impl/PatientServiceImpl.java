@@ -1,7 +1,7 @@
 package com.hh.his.graduationproject.service.impl;
 
 import com.hh.his.graduationproject.dao.PatientMapper;
-import com.hh.his.graduationproject.model.dto.PatientConditionDTO;
+import com.hh.his.graduationproject.model.vo.PatientConditionVO;
 import com.hh.his.graduationproject.model.entity.Patient;
 import com.hh.his.graduationproject.model.vo.PatientVO;
 import com.hh.his.graduationproject.service.PatientService;
@@ -43,7 +43,7 @@ public class PatientServiceImpl implements PatientService {
      * @return
      */
     @Override
-    public List<PatientVO> findPatientsByConditions(PatientConditionDTO conditionDTO) {
+    public List<PatientVO> findPatientsByConditions(PatientConditionVO conditionDTO) {
         List<Patient> patients = patientMapper.findPatientsByConditions(conditionDTO);
         List<PatientVO> patientVos = new ArrayList<PatientVO>();
         for(Patient patient : patients){

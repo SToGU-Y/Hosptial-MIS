@@ -1,9 +1,8 @@
-package com.hh.his.graduationproject.model.dto;
+package com.hh.his.graduationproject.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 映射前端传来的JSON
@@ -11,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class InpatientInformationConditionDTO extends PatientConditionDTO{
+public class InpatientInformationConditionVO extends PatientConditionVO {
 
     /**
      * 科室
@@ -22,4 +21,5 @@ public class InpatientInformationConditionDTO extends PatientConditionDTO{
      * 住院号
      */
     private String[] admissionNumber;
+
 }

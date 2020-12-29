@@ -1,4 +1,4 @@
-package com.hh.his.graduationproject.model.dto;
+package com.hh.his.graduationproject.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,10 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WardDTO {
+public class WardConditionVO {
 
     private String deptIdSelective;
+
     private Integer wardId;
-    private Integer iwtId;
+
+    private Integer wardStatus;
 
 }

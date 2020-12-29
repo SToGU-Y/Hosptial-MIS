@@ -3,6 +3,7 @@ package com.hh.his.graduationproject.controller;
 import com.github.pagehelper.PageInfo;
 import com.hh.his.graduationproject.model.entity.*;
 import com.hh.his.graduationproject.model.vo.InpatientInformationVO;
+import com.hh.his.graduationproject.model.vo.WardConditionVO;
 import com.hh.his.graduationproject.model.vo.WardVO;
 import com.hh.his.graduationproject.service.*;
 import com.hh.his.graduationproject.utils.result.Result;
@@ -82,12 +83,19 @@ public class CommonController {
         return Result.OK(allWardType);
     }
 
-    @RequestMapping(value = "/getWardByPage",method = RequestMethod.GET)
+   /* @RequestMapping(value = "/getWardByPage",method = RequestMethod.GET)
     public Result getWardByPage(@RequestParam(required = false,defaultValue = "1",value = "pageNum")Integer pageNum){
         PageInfo<WardVO> allWard = wardService.findAllWardByPage(pageNum);
         return Result.OK(allWard);
-    }
+    }*/
 
+    @RequestMapping(value = "/getWardByCondition",method = RequestMethod.GET)
+    public Result getWardByCondition(@RequestParam(required = false,defaultValue = "1",value = "pageNum") Integer pageNum
+            ,WardConditionVO wardConditionVO){
+       // System.out.println(wardConditionVO);
+        PageInfo<WardVO> wardByCondition = wardService.findWardByCondition(pageNum, wardConditionVO);
+        return Result.OK(wardByCondition);
+    }
 
 
 }

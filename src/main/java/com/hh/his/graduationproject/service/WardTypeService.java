@@ -1,7 +1,7 @@
 package com.hh.his.graduationproject.service;
 
 import com.github.pagehelper.PageInfo;
-import com.hh.his.graduationproject.model.dto.WardTypeDTO;
+import com.hh.his.graduationproject.model.vo.WardTypeVO;
 import com.hh.his.graduationproject.model.entity.InpatientWardType;
 
 import java.util.List;
@@ -12,7 +12,7 @@ public interface WardTypeService {
 
     List<InpatientWardType> findAllWardType();
 
-    Boolean addWardType(WardTypeDTO wardTypeDTO);
+    Boolean addWardType(WardTypeVO wardTypeVO);
 
     Boolean updateWardType(InpatientWardType wardType);
 
