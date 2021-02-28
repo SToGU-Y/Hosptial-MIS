@@ -13,7 +13,7 @@ import javax.annotation.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-12-29T11:53:36+0800",
+    date = "2021-02-23T21:54:37+0800",
     comments = "version: 1.3.0.Final, compiler: javac, environment: Java 1.8.0_161 (Oracle Corporation)"
 )
 public class WardConverterImpl implements WardConverter {
@@ -31,7 +31,7 @@ public class WardConverterImpl implements WardConverter {
         wardVO.setIwtType( wardWardTypeIwtType( ward ) );
         wardVO.setIwtPrice( wardWardTypeIwtPrice( ward ) );
         wardVO.setIwtId( wardWardTypeIwtId( ward ) );
-        wardVO.setId( ward.getId() );
+        wardVO.setWid( ward.getWid() );
         wardVO.setWardId( ward.getWardId() );
         if ( ward.getWardStatus() != null ) {
             wardVO.setWardStatus( String.valueOf( ward.getWardStatus() ) );

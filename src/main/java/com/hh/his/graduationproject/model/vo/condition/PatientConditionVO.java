@@ -1,9 +1,12 @@
-package com.hh.his.graduationproject.model.vo;
+package com.hh.his.graduationproject.model.vo.condition;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 病患查询条件
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

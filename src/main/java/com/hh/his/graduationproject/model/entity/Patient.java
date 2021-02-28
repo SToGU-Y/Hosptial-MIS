@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class Patient {
 
+
     /**
      * 身份证号
      */
@@ -36,11 +37,6 @@ public class Patient {
      * 民族
      */
     private String nation;
-
-    /**
-     * 年龄
-     */
-    private Integer age;
 
     /**
      * 出生年月日

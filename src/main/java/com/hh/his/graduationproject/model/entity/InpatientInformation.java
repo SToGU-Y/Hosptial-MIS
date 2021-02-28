@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -35,7 +36,7 @@ public class InpatientInformation {
     /**
      * 病人性质
      */
-    private PatientType patientType;
+    private String ptName;
 
     /**
      * 诊断1
@@ -50,7 +51,7 @@ public class InpatientInformation {
     /**
      * 入住科室
      */
-    private Dept dept;
+    private String deptName;
 
     /**
      * 收治医生
@@ -70,22 +71,24 @@ public class InpatientInformation {
     /**
      * 病房
      */
-    private Integer iwardId;
+    private InpatientWard ward;
 
     /**
      * 病床
      */
-    private String bid;
+    private Bed bed;
 
     /**
      * 入院日期
      */
-    private Timestamp dateOfAdmission;
+    private Date dateOfAdmission;
 
     /**
      * 出院日期
      */
-    private Timestamp dateOfDischarge;
+    private Date dateOfDischarge;
+
+    private Integer age;
 
     /**
      * 状态

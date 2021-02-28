@@ -12,7 +12,7 @@ public class InpatientWard {
     /**
      * 主键
      */
-    private Integer id;
+    private Integer wid;
 
     private Dept dept;
     private Integer wardId;

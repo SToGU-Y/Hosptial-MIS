@@ -1,9 +1,11 @@
 package com.hh.his.graduationproject.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.hh.his.graduationproject.config.SystemLogController;
 import com.hh.his.graduationproject.model.entity.*;
+import com.hh.his.graduationproject.model.vo.DeptSelectVO;
 import com.hh.his.graduationproject.model.vo.InpatientInformationVO;
-import com.hh.his.graduationproject.model.vo.WardConditionVO;
+import com.hh.his.graduationproject.model.vo.condition.WardConditionVO;
 import com.hh.his.graduationproject.model.vo.WardVO;
 import com.hh.his.graduationproject.service.*;
 import com.hh.his.graduationproject.utils.result.Result;
@@ -38,23 +40,29 @@ public class CommonController {
     private InpatientService inpatientService;
 
     @Autowired
-    private WardService wardService;
-
-    @Autowired
-    private WardTypeService wardTypeService;
+    private CostItemTypeService costItemTypeService;
 
 
+    @SystemLogController(description = "获取科室")
     @RequestMapping(value = "/getDept",method = RequestMethod.GET)
     public Result getDept(){
-        List<Dept> allDept = deptService.findAllDept();
+        List<DeptSelectVO> allDept = deptService.findAllDept();
         return Result.OK(allDept);
     }
 
+    @SystemLogController(description = "获取付款类型")
+    @RequestMapping(value = "/getPayment",method = RequestMethod.GET)
+    public Result getPayment(){
+        List<PaymentType> paymentType = paymentTypeService.findAllPaymentType();
+        return Result.OK(paymentType);
+    }
+
+    @SystemLogController(description = "获取综合通用信息")
     @RequestMapping(value = "/getCommon",method = RequestMethod.GET)
     public Result getCommon(){
         Map<String,Object> result = new HashMap<>();
         List<Nation> allNation = nationService.findAllNation();
-        List<Dept> allDept = deptService.findAllDept();
+        List<DeptSelectVO> allDept = deptService.findAllDept();
         List<PatientType> allPatientType = patientTypeService.findAllPatientType();
         List<PaymentType> allPaymentType = paymentTypeService.findAllPaymentType();
         result.put("nationList",allNation);
@@ -64,37 +72,25 @@ public class CommonController {
         return Result.OK(result);
     }
 
+    @SystemLogController(description = "获取民族信息")
+    @RequestMapping(value = "/getNationList",method = RequestMethod.GET)
+    public Result getNationList(){
+        List<Nation> allNation = nationService.findAllNation();
+        return Result.OK(allNation);
+    }
 
+    @SystemLogController(description = "获取全部住院信息")
     @RequestMapping(value = "/getInpatient",method = RequestMethod.GET)
     public Result getInpatient(){
         List<InpatientInformationVO> allAdmission = inpatientService.findAllAdmission();
         return Result.OK(allAdmission);
     }
 
-    @RequestMapping(value = "/getType",method = RequestMethod.GET)
-    public Result getType(){
-        List<InpatientWardType> allWardType = wardTypeService.findAllWardType();
-        return Result.OK(allWardType);
-    }
-
-    @RequestMapping(value = "/getTypeByPage",method = RequestMethod.GET)
-    public Result getTypeByPage(@RequestParam(required = false,defaultValue = "1",value = "pageNum") Integer pageNum){
-        PageInfo<InpatientWardType> allWardType = wardTypeService.findAllWardTypeByPage(pageNum);
-        return Result.OK(allWardType);
-    }
-
-   /* @RequestMapping(value = "/getWardByPage",method = RequestMethod.GET)
-    public Result getWardByPage(@RequestParam(required = false,defaultValue = "1",value = "pageNum")Integer pageNum){
-        PageInfo<WardVO> allWard = wardService.findAllWardByPage(pageNum);
-        return Result.OK(allWard);
-    }*/
-
-    @RequestMapping(value = "/getWardByCondition",method = RequestMethod.GET)
-    public Result getWardByCondition(@RequestParam(required = false,defaultValue = "1",value = "pageNum") Integer pageNum
-            ,WardConditionVO wardConditionVO){
-       // System.out.println(wardConditionVO);
-        PageInfo<WardVO> wardByCondition = wardService.findWardByCondition(pageNum, wardConditionVO);
-        return Result.OK(wardByCondition);
+    @SystemLogController(description = "获取费用项类型")
+    @RequestMapping(value = "/getCostItemType",method = RequestMethod.GET)
+    public Result getCostItemType(){
+        List<CostItemType> all = costItemTypeService.getAll();
+        return Result.OK(all);
     }
 
 

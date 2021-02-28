@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -24,12 +25,12 @@ public class Deposit {
     /**
      * 支付状态
      */
-    private String status;
+    private Integer status;
 
     /**
      * 支付方式
      */
-    private Integer paymentNo;
+    private String paymentType;
 
     /**
      * 押金是否退还
@@ -45,4 +46,8 @@ public class Deposit {
      * 住院主键
      */
     private Integer id;
+
+    private Date datePay;
+
+    private Date dateRefund;
 }

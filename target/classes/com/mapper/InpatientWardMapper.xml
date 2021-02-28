@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hh.his.graduationproject.dao.InpatientWardMapper">
     <resultMap id="wardResult" type="InpatientWard">
-        <result property="id" column="id"/>
+        <result property="wid" column="wid"/>
         <result property="wardId" column="iward_id"/>
         <result property="wardBedNum" column="iward_bed_num"/>
         <result property="wardStatus" column="iward_status"/>
-        <association property="wardType" column="iward_tyep" javaType="InpatientWardType">
+        <association property="wardType" column="iward_type" javaType="InpatientWardType">
             <result property="iwtId" column="iwt_id"/>
             <result property="iwtType" column="iwt_type"/>
             <result property="iwtPrice" column="iwt_price"/>
@@ -17,6 +17,12 @@
         </association>
     </resultMap>
 
+    <select id="findWardByDept" resultMap="wardResult">
+        SELECT *
+        FROM inpatient_ward a,inpatient_ward_type b,dept c
+        WHERE a.iward_type = b.iwt_id and a.d_id = c.dept_id
+        and c.dept_id = #{deptId}
+    </select>
 
     <select id="findWardByCondition" resultType="int">
         SELECT count(*)
@@ -43,7 +49,13 @@
     <select id="findNullWardByCondition" resultType="int">
         select count(*)
         from inpatient_ward
-        where id = #{id} and iward_bed_num = 0
+        where wid = #{wid} and iward_bed_num = 0
+    </select>
+
+    <select id="findWardById" resultMap="wardResult">
+        SELECT *
+        FROM inpatient_ward a
+        WHERE a.wid = #{wid}
     </select>
 
     <insert id="insertWard">
@@ -52,13 +64,43 @@
     </insert>
 
     <delete id="delWard">
-        DELETE FROM inpatient_ward where id = #{id}
+        DELETE FROM inpatient_ward where wid = #{wid}
     </delete>
 
     <update id="updateWard">
         UPDATE inpatient_ward
-        SET iward_type = #{wardUpdateVO.iwtId},iward_id=#{wardUpdateVO.wardId},d_id=#{wardUpdateVO.deptId}
-        WHERE id = #{wardUpdateVO.id}
+        SET iward_type = #{wardUpdateVO.iwtId},
+        iward_id=#{wardUpdateVO.wardId},
+        d_id=#{wardUpdateVO.deptId}
+        WHERE wid = #{wardUpdateVO.wid}
+    </update>
+    
+    <update id="updateWardWithDTO">
+        UPDATE inpatient_ward
+        <trim prefix="set" suffixOverrides=",">
+            <if test="dto.wardId != null and dto.wardId!='' ">
+                iward_id = #{dto.wardId},
+            </if>
+            <if test="dto.deptId !=null and dto.deptId!= '' ">
+                 d_id = #{dto.deptId},
+            </if>
+            <if test="dto.wardBedNumber != null">
+                iward_bed_num = #{dto.wardBedNumber},
+            </if>
+            <if test="dto.wardStatus != null">
+                iward_status = #{dto.wardStatus},
+            </if>
+            <if test="dto.wardType != null and dto.wardType != ''">
+                iward_type = #{dto.wardType},
+            </if>
+        </trim>
+        WHERE wid = #{dto.wid}
+    </update>
+
+    <update id="updateWardDeptId">
+        update inpatient_ward
+        set d_id = #{new}
+        where d_id = #{old}
     </update>
 
 </mapper>

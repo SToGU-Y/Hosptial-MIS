@@ -1,6 +1,9 @@
 package com.hh.his.graduationproject.service;
 
-import com.hh.his.graduationproject.model.vo.PatientConditionVO;
+import com.github.pagehelper.PageInfo;
+import com.hh.his.graduationproject.model.dto.PatientUpdateDTO;
+import com.hh.his.graduationproject.model.entity.Patient;
+import com.hh.his.graduationproject.model.vo.condition.PatientConditionVO;
 import com.hh.his.graduationproject.model.vo.PatientVO;
 
 import java.util.List;
@@ -18,5 +21,11 @@ public interface PatientService {
      * @param conditionDTO
      * @return
      */
-    List<PatientVO> findPatientsByConditions(PatientConditionVO conditionDTO);
+    PageInfo<PatientVO> findPatientsByConditions(Integer pageNum, PatientConditionVO conditionDTO);
+
+    Patient findPatientByPid(String pid);
+
+    int updatePatient(PatientUpdateDTO patient);
+
+    int deletePatientByPid(List<PatientVO> list) throws Exception;
 }

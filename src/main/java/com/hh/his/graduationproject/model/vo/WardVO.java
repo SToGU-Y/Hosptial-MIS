@@ -6,12 +6,15 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+/**
+ * 病房信息视图
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class WardVO {
 
-    private Integer id;
+    private Integer wid;
     private String deptId;
     private String deptName;
     private Integer wardId;

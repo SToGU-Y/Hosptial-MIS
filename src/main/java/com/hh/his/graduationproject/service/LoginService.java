@@ -7,9 +7,9 @@ public interface LoginService {
 
     /**
      * 账号登录
-     * @param loginVO
+     * @param
      * @return
      */
-    Staff login(LoginVO loginVO);
+    Boolean checkLogin(String username, String password) throws Exception;
 
 }

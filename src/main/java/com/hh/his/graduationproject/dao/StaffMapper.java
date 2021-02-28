@@ -2,9 +2,9 @@ package com.hh.his.graduationproject.dao;
 
 import com.hh.his.graduationproject.model.entity.Role;
 import com.hh.his.graduationproject.model.entity.Staff;
+import com.hh.his.graduationproject.model.vo.condition.StaffConditionVO;
+import com.hh.his.graduationproject.model.vo.StaffUpdateVO;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.security.core.parameters.P;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -18,26 +18,31 @@ public interface StaffMapper {
      */
     Staff findByUsername(@Param("username") String username);
 
-    int deleteByPrimaryKey(@Param("id") Integer id);
+    int deleteByPrimaryKey(@Param("username") String username);
+
+    int deleteByDeptName(@Param("deptName") String deptName);
 
     int insert(@Param("record")Staff record);
 
     int insertSelective(@Param("record")Staff record);
 
-    Staff selectByPrimaryKey(@Param("id") Integer id);
+    Staff selectByPrimaryKey(@Param("username") String username);
 
     int updateByPrimaryKeySelective(@Param("record") Staff record);
 
-    int updateByPrimaryKey(@Param("record") Staff record);
+    int updateByPrimaryKey(@Param("record") StaffUpdateVO record);
 
     Staff loadUserByUsername(@Param("username") String username);
 
-    List<Role> getStaffsRolesById(@Param("id") Integer id);
+    List<Role> getStaffsRolesByUsername(@Param("username") String username);
 
-    List<Staff> getAllStaffs(@Param("keywords")String keywords);
+    List<Staff> getStaffsWithAllByCondition(@Param("condition")StaffConditionVO conditionVO);
 
-    List<Staff> getAllStaffsExceptCurrentStaffs(@Param("id") Integer id);
+    void updateDeptName(@Param("deptName")String deptName,@Param("oldDeptName")String oldDeptName);
 
-    Integer updatePasswd(@Param("id") Integer id, @Param("encodePass") String encodePass);
+    List<Staff> getAllStaffsExceptCurrentStaffs(@Param("username") String username);
 
+    Integer updatePassword(@Param("username") String username, @Param("password") String password);
+
+    Staff checkLogin(@Param("username") String username);
 }

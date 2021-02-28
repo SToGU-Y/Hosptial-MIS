@@ -2,21 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hh.his.graduationproject.dao.StaffMapper">
     <resultMap id="BaseResultMap" type="Staff">
-        <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
+        <result column="staff_sex" property="staffSex"/>
+        <result column="dept_name" property="deptName"/>
         <result column="staff_name" property="staffName"/>
         <result column="staff_addr" property="staffAddr"/>
-        <result column="identity" property="identity"/>
+        <result column="id_number" property="idNumber"/>
         <result column="staff_tel" property="staffTel"/>
         <result column="staff_nation" property="staffNation"/>
         <result column="staff_married" property="staffMarried"/>
+        <result column="staff_birth" property="staffBirth"/>
+        <result column="entry_time" property="entryTime"/>
     </resultMap>
-    <resultMap id="StaffWithDept" type="Staff" extends="BaseResultMap">
-        <association property="dept" column="dept_id">
-            <result property="deptId" column="dept_id"/>
-            <result property="deptName" column="dept_name"/>
-        </association>
+    <resultMap id="LoginResultWithRole" type="Staff">
+        <result column="username" property="username"/>
+        <result column="staff_name" property="staffName"/>
+        <result column="password" property="password"/>
+        <collection property="roles" ofType="Role">
+            <id column="role_id" property="roleId"/>
+            <result column="role_name" property="roleName"/>
+        </collection>
+    </resultMap>
+    <resultMap id="LoginResult" type="Staff">
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
     </resultMap>
     <resultMap id="StaffWithRoles" type="Staff" extends="BaseResultMap">
         <collection property="roles" ofType="Role">
@@ -26,138 +36,185 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, username, staff_name, password, staff_addr, identity , staff_tel, staff_sex, staff_nation, staff_married
+    username, staff_name, password, staff_addr, id_number , staff_tel, staff_sex, staff_nation, staff_married
   </sql>
 
-    <select id="findByUsername" parameterType="java.lang.String" resultMap="StaffWithDept">
+    <select id="checkLogin" resultMap="LoginResult">
+        select username,password
+        from staff
+        where username = #{username}
+    </select>
+
+    <select id="findByUsername" resultMap="BaseResultMap">
         SELECT *
-        from staff,dept
-        where staff.username = #{username} and staff.dept_id = dept.dept_id
+        from staff
+        where staff.username = #{username}
+    </select>
+
+    <select id="getStaffsWithAll" resultMap="StaffWithRoles">
+        select *
+        from staff left join staff_role sr on
+        staff.username = sr.username left join role r on sr.role_id = r.role_id
+        order by staff.username
+    </select>
+
+    <select id="getStaffsWithAllByCondition" resultMap="StaffWithRoles">
+        select *
+        from staff left join staff_role sr on
+        staff.username = sr.username left join role r on sr.role_id = r.role_id
+        <where>
+            <if test="condition.deptName != null and condition.deptName !=''">
+                staff.dept_name = #{condition.deptName}
+            </if>
+            <if test="condition.username !=null and condition.username !=''">
+                <bind name="username" value="'%'+condition.username+'%'"/>
+                and  staff.username like #{username}
+            </if>
+            <if test="condition.staffName !=null and condition.staffName != ''">
+                <bind name="staffName" value="'%'+condition.staffName+'%'"/>
+                and   staff.staff_name like #{staffName}
+            </if>
+            <if test="condition.idNumber != null and condition.idNumber !=''">
+                <bind name="idNumber" value="'%'+condition.idNumber+'%'"/>
+                and  staff.id_number like #{idNumber}
+            </if>
+        </where>
     </select>
 
     <select id="getAllStaffsExceptCurrentStaffs" resultMap="BaseResultMap">
-        select * from staff where id !=#{id};
+        select * from staff where username != #{username};
     </select>
 
-    <select id="loadUserByUsername" resultMap="BaseResultMap">
-        select * from staff where username = #{username}
+    <select id="loadUserByUsername" resultMap="LoginResultWithRole">
+        select *
+        from staff left join staff_role sr on staff.username = sr.username
+        left join role r on sr.role_id = r.role_id
+        where staff.username = #{username}
+        order by staff.username
     </select>
 
-    <select id="getAllStaffs" resultMap="StaffWithRoles">
+    <select id="getStaffsRolesByUsername" resultType="Role">
+    select r.*
+    from role r,staff_role sr
+    where sr.role_id = r.role_id and sr.username = #{username}
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="StaffWithRoles">
         select *
         from staff left join staff_role sr on
-        staff.id = sr.staff_id left join role r on sr.role_id = r.id
-        <if test="keywords!=null">
-            and staff.staff_name like concat('%',#{keywords},'%')
-        </if>
-        order by staff.id
+        staff.username = sr.username left join role r on sr.role_id = r.role_id
+        where staff.username = #{username}
     </select>
 
-    <select id="getStaffsRolesById" resultType="Role">
-    select r.* from role r,staff_role sr where sr.role_id = r.id and sr.staff_id = #{id}
-    </select>
-
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select <include refid="Base_Column_List"/>
-        from staff
-        where id = #{id,jdbcType=INTEGER}
-    </select>
-
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <delete id="deleteByPrimaryKey">
         delete from staff
-        where id = #{id,jdbcType=INTEGER}
+        where username = #{username}
     </delete>
 
-    <insert id="insert" parameterType="Staff">
+    <delete id="deleteByDeptName">
+        delete from staff
+        where dept_name = #{deptName}
+    </delete>
+
+    <insert id="insert">
     insert into staff (username, staff_name,
-     password, staff_addr, identity ,
+     password, dept_name,staff_addr, staff_birth,id_number,
       staff_tel, staff_sex, staff_nation,
-      staff_married)
-    values (#{username}, #{staffName},
-      #{password}, #{staffAddr}, #{identity},
-      #{staffTel}, #{staffSex}, #{staffNation},
-      #{staffMarried})
+      staff_married,entry_time)
+    values (#{record.username}, #{record.staffName},
+      #{record.password}, #{record.deptName},#{record.staffAddr},
+      #{record.staffBirth},#{record.idNumber},
+      #{record.staffTel}, #{record.staffSex}, #{record.staffNation},
+      #{record.staffMarried},#{record.entryTime})
   </insert>
 
-    <insert id="insertSelective" parameterType="staff">
+    <insert id="insertSelective">
         insert into staff
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="username != null">
+            <if test="record.username != null">
                 username,
             </if>
-            <if test="staffName != null">
+            <if test="record.staffName != null">
                 staff_name,
             </if>
-            <if test="password != null">
+            <if test="record.password != null">
                 password,
             </if>
-            <if test="staffAddr != null">
+            <if test="record.deptName !=null">
+                dept_id,
+            </if>
+            <if test="record.staffAddr != null">
                 staff_addr,
             </if>
-            <if test="identity != null">
-                identity,
+            <if test="record.idNumber != null">
+                id_number,
             </if>
-            <if test="staffTel != null">
+            <if test="record.staffTel != null">
                 staff_tel,
             </if>
-            <if test="staffSex != null">
+            <if test="record.staffSex != null">
                 staff_sex,
             </if>
-            <if test="staffNation != null">
+            <if test="record.staffNation != null">
                 staff_nation,
             </if>
-            <if test="staffMarried != null">
+            <if test="record.staffMarried != null">
                 staff_married,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="username != null">
-                #{username},
+            <if test="record.username != null">
+                #{record.username},
             </if>
-            <if test="staffName != null">
-                #{staffName},
+            <if test="record.staffName != null">
+                #{record.staffName},
             </if>
-            <if test="password != null">
-                #{password},
+            <if test="record.password != null">
+                #{record.password},
             </if>
-            <if test="staffAddr != null">
-                #{staffAddr},
+            <if test="record.deptName != null">
+                #{record.deptName},
             </if>
-            <if test="identity != null">
-                #{identity },
+            <if test="record.staffAddr != null">
+                #{record.staffAddr},
             </if>
-            <if test="staffTel != null">
-                #{staffTel},
+            <if test="record.idNumber != null">
+                #{record.idNumber },
             </if>
-            <if test="staffSex != null">
-                #{staffSex},
+            <if test="record.staffTel != null">
+                #{record.staffTel},
             </if>
-            <if test="staffNation != null">
+            <if test="record.staffSex != null">
+                #{record.staffSex},
+            </if>
+            <if test="record.staffNation != null">
                 #{staffNation},
             </if>
-            <if test="staffMarried != null">
-                #{staffMarried},
+            <if test="record.staffMarried != null">
+                #{record.staffMarried},
             </if>
         </trim>
     </insert>
 
-    <update id="updatePasswd">
-        update staff set password = #{encodePass} where id=#{id};
+    <update id="updatePassword">
+        update staff set password = #{password} where username=#{username};
+    </update>
+
+    <update id="updateDeptName">
+        update staff set dept_name = #{deptName} where dept_name=#{oldDeptName};
     </update>
 
     <update id="updateByPrimaryKey">
     update staff
-    set username = #{username},
-      staff_ame = #{staffName},
-      password = #{password},
-      dept_id  = #{deptId}
-      staff_addr = #{staffAddr},
-      identity = #{identity },
-      staff_tel = #{staffTel},
-      staff_sex = #{staffSex},
-      staff_nation = #{staffNation},
-      staff_married = #{staffMarried}
-    where id = #{id}
+    set staff_name = #{record.staffName},
+      dept_name  = #{record.deptName},
+      staff_addr = #{record.staffAddr},
+      id_number = #{record.idNumber},
+      staff_tel = #{record.staffTel},
+      staff_sex = #{record.staffSex},
+      staff_nation = #{record.staffNation},
+      staff_married = #{record.staffMarried}
+    where username = #{record.username};
   </update>
 
 </mapper>

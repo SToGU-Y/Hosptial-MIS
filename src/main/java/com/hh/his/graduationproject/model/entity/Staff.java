@@ -3,68 +3,27 @@ package com.hh.his.graduationproject.model.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Staff implements UserDetails {
-
-    private Integer id;
-
+public class Staff{
 
     private String username;
     private String staffName;
     private String password;
-    private Dept dept;
+    private String deptName;
     private String staffAddr;
-    private String identity;
+    private String idNumber;
     private String staffTel;
-    private char staffSex;
+    private String staffSex;
     private String staffNation;
     private String staffMarried;
+    private Date staffBirth;
+    private Date entryTime;
     private List<Role> roles;
-
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-        }
-        return authorities;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 
 }

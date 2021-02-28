@@ -1,8 +1,9 @@
 package com.hh.his.graduationproject.dao;
 
 import com.hh.his.graduationproject.model.dto.WardAddDTO;
+import com.hh.his.graduationproject.model.dto.WardUpdateDTO;
 import com.hh.his.graduationproject.model.entity.InpatientWard;
-import com.hh.his.graduationproject.model.vo.WardConditionVO;
+import com.hh.his.graduationproject.model.vo.condition.WardConditionVO;
 import com.hh.his.graduationproject.model.vo.WardUpdateVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,7 +13,6 @@ public interface InpatientWardMapper {
 
     /**
      * 查询病房
-     * @param id
      * @return
      */
     int findWardByCondition(@Param("wardId")Integer wardId,@Param("deptId")String deptId);
@@ -35,7 +35,7 @@ public interface InpatientWardMapper {
      * 删除病房
      * @param id
      */
-    void delWard(@Param("id")Integer id);
+    void delWard(@Param("wid")Integer id);
 
     /**
      * 更新病房信息
@@ -48,5 +48,14 @@ public interface InpatientWardMapper {
      * @param id
      * @return
      */
-    int findNullWardByCondition(@Param("id")Integer id);
+    int findNullWardByCondition(@Param("wid")Integer id);
+
+
+    int updateWardWithDTO(@Param("dto")WardUpdateDTO dto);
+
+    List<InpatientWard> findWardByDept(@Param("deptId")String deptId);
+
+    InpatientWard findWardById(@Param("wid") Integer id);
+
+    int updateWardDeptId(@Param("new")String deptNew,@Param("old")String deptOld);
 }

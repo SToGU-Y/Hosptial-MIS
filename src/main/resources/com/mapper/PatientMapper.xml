@@ -7,7 +7,6 @@
         <result property="sex" column="p_sex"/>
         <result property="nationality" column="p_nationality"/>
         <result property="born" column="p_born"/>
-        <result property="age" column="p_age"/>
         <result property="birth" column="p_birth"/>
         <result property="tel" column="p_tel"/>
         <result property="regAddr" column="p_reg_addr"/>
@@ -22,9 +21,14 @@
     </resultMap>
 
     <sql id="patientColumns">
-        p_id,p_name,p_sex,p_age,p_birth,p_nationality,nation,p_born,p_tel,p_reg_addr,p_curr_addr,p_province,p_city,p_contact,p_con_rel,p_con_tel,p_married
+        p_id,p_name,p_sex,p_birth,p_nationality,nation,p_born,p_tel,p_reg_addr,p_curr_addr,p_province,p_city,p_contact,p_con_rel,p_con_tel,p_married
     </sql>
 
+    <select id="findPatientByPid" resultMap="patientResultMap">
+        select *
+        from patient
+        where p_id = #{pid}
+    </select>
 
     <select id="findPatients" resultMap="patientResultMap">
         SELECT *
@@ -45,4 +49,43 @@
             </if>
         </where>
     </select>
+
+    <insert id="insertPatient">
+        insert into patient(p_id,p_name,p_sex,p_birth,p_nationality,nation,
+        p_born,p_tel,p_reg_addr,p_curr_addr,p_province,p_city,p_contact,p_con_rel,
+        p_con_tel,p_married)
+        values (#{patient.pid},#{patient.pname},#{patient.sex},#{patient.birth},
+        #{patient.nationality},#{patient.nation},#{patient.born},#{patient.tel},
+        #{patient.regAddr},#{patient.currAddr},#{patient.province},#{patient.city},
+        #{patient.contact},#{patient.conRel},#{patient.conTel},#{patient.married})
+    </insert>
+
+    <update id="updatePatient">
+        update patient
+        set
+        p_name =#{patient.pname},p_sex = #{patient.sex},p_birth = #{patient.birth},
+        p_nationality = #{patient.nationality},nation = #{patient.nation},
+        p_born = #{patient.born},p_tel=#{patient.tel},p_reg_addr = #{patient.regAddr},
+        p_curr_addr = #{patient.currAddr},p_province = #{patient.province},p_city = #{patient.city},
+        p_contact=#{patient.contact},p_con_rel =#{patient.conRel},
+        p_con_tel=#{patient.conTel},p_married = #{patient.married}
+        where p_id = #{patient.pid}
+    </update>
+
+    <update id="updatePatientWithPid">
+        update patient
+        set
+        p_id = #{patient.pid},p_name =#{patient.pname},p_sex = #{patient.sex},p_birth = #{patient.birth},
+        p_nationality = #{patient.nationality},nation = #{patient.nation},
+        p_born = #{patient.born},p_tel=#{patient.tel},p_reg_addr = #{patient.regAddr},
+        p_curr_addr = #{patient.currAddr},p_province = #{patient.province},p_city = #{patient.city},
+        p_contact=#{patient.contact},p_con_rel =#{patient.conRel},
+        p_con_tel=#{patient.conTel},p_married = #{patient.married}
+        where p_id = #{patient.oldpid}
+    </update>
+
+    <delete id="deletePatientByPid">
+        delete from patient where p_id = #{pid}
+    </delete>
+
 </mapper>

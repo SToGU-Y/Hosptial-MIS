@@ -9,12 +9,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MedicalAppliance {
 
-    private Integer mId;
+    private Integer id;
 
-    private String mNo;
-    private String mName;
-    private Integer mStatus;
-    private Integer mtId;
-    private String mDetails;
+    private String manufacturer;
+    private String no;
+    private String name;
+    private Integer status;
+    private String type;
+    private String details;
+    private String remarks;
 
 }

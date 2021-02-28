@@ -9,33 +9,30 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * 登录功能业务
+ * 用户校验
  */
 @Service
 public class LoginServiceImpl implements LoginService {
-
 
     @Autowired
     private StaffMapper staffMapper;
 
     /**
      * 登录业务
-     * @param loginVO
+     * @param
      * @return
      */
-    public Staff login(LoginVO loginVO) {
-        System.out.println("loginVO="+loginVO);
-        Staff staff = staffMapper.findByUsername(loginVO.getUsername());
+    public Boolean checkLogin(String username,String password) throws Exception{
+        System.out.println("----checkLogin-----");
+        System.out.println("username="+username+",password="+password);
+        Staff staff = staffMapper.checkLogin(username);
         if (staff == null){
-            return null;
-        }else {
-            if (staff.getPassword().equals(
-                    new BCryptPasswordEncoder().encode(loginVO.getPassword()
-                    ))) {
-                return staff;
-            } else {
-                return null;
-            }
+            return false;
         }
+        boolean flag = new BCryptPasswordEncoder().matches(password,staff.getPassword());
+        if (!flag){
+           return false;
+        }
+        return true;
     }
 }

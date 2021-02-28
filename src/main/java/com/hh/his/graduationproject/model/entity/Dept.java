@@ -19,4 +19,9 @@ public class Dept {
      */
     private String deptName;
 
+    private Integer staffNumber;
+
+    private String describe;
+
+    private String director;
 }

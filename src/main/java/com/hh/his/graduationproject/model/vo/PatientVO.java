@@ -39,10 +39,6 @@ public class PatientVO {
      */
     private String nation;
 
-    /**
-     * 病人年龄
-     */
-    private Integer age;
 
     /**
      * 病人出生年月日

@@ -2,26 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hh.his.graduationproject.dao.InpatientInformationMapper">
 
-    <resultMap id="InpatientInformationResultMap" type="InpatientInformation">
+    <resultMap id="baseResult" type="InpatientInformation">
         <result property="id" column="ii_id"/>
         <result property="admissionNumber" column="ii_ad_number"/>
         <result property="sid" column="s_id"/>
+        <result property="age" column="age"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="ptName" column="pt_name"/>
         <result property="diagnosis01" column="ii_diagnosis_01"/>
         <result property="diagnosis02" column="ii_diagnosis_02"/>
         <result property="admittedDoc" column="ii_admitted_doc"/>
         <result property="attendingDoc" column="ii_attending_doc"/>
         <result property="visitingDoc" column="ii_visiting_doc"/>
-        <result property="iwardId" column="iward_id"/>
-        <result property="bid" column="b_id"/>
         <result property="dateOfAdmission" column="ii_date_admission"/>
         <result property="dateOfDischarge" column="ii_discharge_date"/>
         <result property="status" column="ii_status"/>
         <result property="day" column="ii_day"/>
         <result property="medicalNumber" column="ii_medical_insurance_number"/>
-        <association property="dept" column="dept_id" javaType="Dept">
-            <result property="deptId" column="dept_id"/>
-            <result property="deptName" column="dept_name"/>
+        <association property="ward" column="ward_id">
+            <result property="wid" column="wid"/>
+            <result property="wardId" column="iward_id"/>
+            <association property="wardType" column="iward_type" javaType="InpatientWardType">
+                <result property="iwtId" column="iwt_id"/>
+                <result property="iwtType" column="iwt_type"/>
+                <result property="iwtPrice" column="iwt_price"/>
+            </association>
         </association>
+        <association property="bed" column="bed_id">
+            <result property="id" column="id"/>
+            <result property="bid" column="b_id"/>
+            <result property="bedStatus" column="b_status"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="InpatientInformationResultMap" type="InpatientInformation" extends="baseResult">
         <association property="patient" column="p_id" javaType="Patient">
             <result property="pid" column="p_id"/>
             <result property="pname" column="p_name"/>
@@ -41,20 +55,520 @@
             <result property="married" column="p_married"/>
             <result property="nation" column="nation"/>
         </association>
-        <association property="patientType" column="pt_id" javaType="PatientType">
-            <result property="ptId" column="pt_id"/>
-            <result property="ptName" column="pt_name"/>
-        </association>
     </resultMap>
 
+    <select id="selectWithCost" resultType="com.hh.his.graduationproject.model.vo.InformationWithCost">
+        SELECT b.ii_id as id, b.ii_medical_insurance_number as medicalNumber, b.ii_ad_number as admissionNumber, c.p_name as pname,
+        b.pt_name as ptName, b.dept_name as deptName, iw.iward_id as iwardId, bed.b_id as bid,
+        b.p_id as pid, c.p_sex as sex, b.age as age, c.p_birth as birth, c.p_reg_addr as regAddr,
+        c.p_tel as tel, b.ii_date_admission as dateOfAdmission,b.ii_status as status
+        FROM inpatient_information b left join bed on bed.id = b.bed_id
+        left join inpatient_ward iw on iw.wid = b.ward_id,patient c
+        WHERE c.p_id = b.p_id
+        <if test="conditionVO.deptName !=null and conditionVO.deptName != ''">
+            and b.dept_name = #{conditionVO.deptName}
+        </if>
+        <if test="conditionVO.pid !=null and conditionVO.pid != ''">
+            <bind name="pid" value="'%'+conditionVO.pid+'%'"/>
+            and b.p_id like #{pid}
+        </if>
+        <if test="conditionVO.pname !=null and conditionVO.pname != ''">
+            <bind name="pname" value="'%'+conditionVO.pname+'%'"/>
+            and c.p_name like #{pname}
+        </if>
+        <if test="conditionVO.admissionNumber!=null and conditionVO.admissionNumber!=''">
+            <bind name="admissionNumber" value="'%'+conditionVO.admissionNumber+'%'"/>
+            and b.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="conditionVO.status != null">
+            and b.ii_status = #{conditionVO.status}
+        </if>
+    </select>
+
+    <select id="selectAdmissionByDept" resultMap="InpatientInformationResultMap">
+        select *
+        from inpatient_information b,patient c
+        where c.p_id = b.p_id and b.ii_status = 0 and b.bed_id is null and b.ward_id is null
+        and b.dept_name = #{condition.deptName}
+        <if test="condition.pid != null and condition.pid !='' ">
+            <bind name="pid" value="'%'+condition.pid+'%'"/>
+            and c.p_id like #{pid}
+        </if>
+        <if test="condition.pname !=null and condition.pname!='' ">
+            <bind name="pname" value="'%'+condition.pname+'%'"/>
+            and c.p_name like #{pname}
+        </if>
+        <if test="condition.admissionNumber !=null and condition.admissionNumber !=''">
+            <bind name="admissionNumber" value="'%'+condition.admissionNumber+'%'"/>
+            and b.ii_ad_number like #{admissionNumber}
+        </if>
+    </select>
+
+    <select id="selectAdmissionByDept2" resultMap="InpatientInformationResultMap">
+        select *
+        from inpatient_information b,patient c,inpatient_ward iw,bed
+        where c.p_id = b.p_id and iw.wid = b.ward_id and bed.id = b.bed_id
+        and b.ii_status = 0 and b.ward_id is not null
+        and b.dept_name = #{condition.deptName}
+        <if test="condition.pid != null and condition.pid !='' ">
+            <bind name="pid" value="'%'+condition.pid+'%'"/>
+            and c.p_id like #{pid}
+        </if>
+        <if test="condition.pname !=null and condition.pname!='' ">
+            <bind name="pname" value="'%'+condition.pname+'%'"/>
+            and c.p_name like #{pname}
+        </if>
+        <if test="condition.admissionNumber !=null and condition.admissionNumber !=''">
+            <bind name="admissionNumber" value="'%'+condition.admissionNumber+'%'"/>
+            and b.ii_ad_number like #{admissionNumber}
+        </if>
+    </select>
+
+    <select id="selectAdmissionById" resultMap="InpatientInformationResultMap">
+        SELECT *
+        FROM inpatient_information b left join bed on bed.id = b.bed_id
+        left join inpatient_ward iw on iw.wid = b.ward_id,patient c
+        WHERE c.p_id = b.p_id and b.ii_id = #{id}
+    </select>
 
     <select id="findAllAdmission" resultMap="InpatientInformationResultMap">
         SELECT *
-        FROM dept a,inpatient_information b,patient c,patient_type d
-        WHERE c.p_id = b.p_id and  a.dept_id = b.dept_id and b.pt_id = d.pt_id
-
+        FROM inpatient_information b left join bed on bed.id = b.bed_id
+        left join inpatient_ward iw on iw.wid = b.ward_id ,patient c
+        WHERE c.p_id = b.p_id and  b.ii_status = 0
     </select>
 
+    <select id="selectAdmissionByConditions" resultMap="InpatientInformationResultMap">
+        SELECT *
+        FROM inpatient_information b left join bed on bed.id = b.bed_id
+        left join inpatient_ward iw on iw.wid = b.ward_id,patient c
+        WHERE c.p_id = b.p_id and b.ii_status = 0
+        <if test="conditionVO.deptName !=null and conditionVO.deptName != ''">
+            and b.dept_name = #{conditionVO.deptName}
+        </if>
+        <if test="conditionVO.pid !=null and conditionVO.pid != ''">
+            <bind name="pid" value="'%'+conditionVO.pid+'%'"/>
+            and b.p_id like #{pid}
+        </if>
+        <if test="conditionVO.pname !=null and conditionVO.pname != ''">
+            <bind name="pname" value="'%'+conditionVO.pname+'%'"/>
+            and c.p_name like #{pname}
+        </if>
+        <if test="conditionVO.admissionNumber!=null and conditionVO.admissionNumber!=''">
+            <bind name="admissionNumber" value="'%'+conditionVO.admissionNumber+'%'"/>
+            and b.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="conditionVO.admissionOfDateStart !='' and conditionVO.admissionOfDateStart != null and conditionVO.admissionOfDateEnd !='' and conditionVO.admissionOfDateEnd !=null ">
+            and b.ii_date_admission between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
+        </if>
+    </select>
+
+    <select id="selectAdmissionByConditions2" resultMap="InpatientInformationResultMap">
+        SELECT *
+        FROM inpatient_information b left join bed on bed.id = b.bed_id
+        left join inpatient_ward iw on iw.wid = b.ward_id,patient c,medical_record mr
+        WHERE c.p_id = b.p_id and  mr.ii_id = b.ii_id
+        <if test="conditionVO.deptName !=null and conditionVO.deptName != ''">
+            and b.dept_name = #{conditionVO.deptName}
+        </if>
+        <if test="conditionVO.pid !=null and conditionVO.pid != ''">
+            <bind name="pid" value="'%'+conditionVO.pid+'%'"/>
+            and b.p_id like #{pid}
+        </if>
+        <if test="conditionVO.pname !=null and conditionVO.pname != ''">
+            <bind name="pname" value="'%'+conditionVO.pname+'%'"/>
+            and c.p_name like #{pname}
+        </if>
+        <if test="conditionVO.admissionNumber!=null and conditionVO.admissionNumber!=''">
+            <bind name="admissionNumber" value="'%'+conditionVO.admissionNumber+'%'"/>
+            and b.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="conditionVO.admissionOfDateStart !='' and conditionVO.admissionOfDateStart != null and conditionVO.admissionOfDateEnd !='' and conditionVO.admissionOfDateEnd !=null ">
+            and b.ii_date_admission between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
+        </if>
+    </select>
+
+    <select id="selectAdmissionByConditions3" resultMap="InpatientInformationResultMap">
+        SELECT *
+        FROM inpatient_information b left join bed on bed.id = b.bed_id
+        left join inpatient_ward iw on iw.wid = b.ward_id left join medical_record mr on mr.ii_id = b.ii_id,patient c
+        WHERE c.p_id = b.p_id and b.ii_status = 0 and mr.id is null and b.bed_id is not null and b.ward_id is not null
+        <if test="conditionVO.deptName !=null and conditionVO.deptName != ''">
+            and b.dept_name = #{conditionVO.deptName}
+        </if>
+        <if test="conditionVO.pid !=null and conditionVO.pid != ''">
+            <bind name="pid" value="'%'+conditionVO.pid+'%'"/>
+            and b.p_id like #{pid}
+        </if>
+        <if test="conditionVO.pname !=null and conditionVO.pname != ''">
+            <bind name="pname" value="'%'+conditionVO.pname+'%'"/>
+            and c.p_name like #{pname}
+        </if>
+        <if test="conditionVO.admissionNumber!=null and conditionVO.admissionNumber!=''">
+            <bind name="admissionNumber" value="'%'+conditionVO.admissionNumber+'%'"/>
+            and b.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="conditionVO.admissionOfDateStart !='' and conditionVO.admissionOfDateStart != null and conditionVO.admissionOfDateEnd !='' and conditionVO.admissionOfDateEnd !=null ">
+            and b.ii_date_admission between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
+        </if>
+    </select>
+
+    <select id="selectAdmissionByConditions4" resultMap="InpatientInformationResultMap">
+        SELECT *
+        FROM inpatient_information b left join bed on bed.id = b.bed_id
+        left join inpatient_ward iw on iw.wid = b.ward_id,patient c
+        WHERE c.p_id = b.p_id and b.ii_status = 0 and b.bed_id is not null and b.ward_id is not null
+        <if test="conditionVO.deptName !=null and conditionVO.deptName != ''">
+            and b.dept_name = #{conditionVO.deptName}
+        </if>
+        <if test="conditionVO.pid !=null and conditionVO.pid != ''">
+            <bind name="pid" value="'%'+conditionVO.pid+'%'"/>
+            and b.p_id like #{pid}
+        </if>
+        <if test="conditionVO.pname !=null and conditionVO.pname != ''">
+            <bind name="pname" value="'%'+conditionVO.pname+'%'"/>
+            and c.p_name like #{pname}
+        </if>
+        <if test="conditionVO.admissionNumber!=null and conditionVO.admissionNumber!=''">
+            <bind name="admissionNumber" value="'%'+conditionVO.admissionNumber+'%'"/>
+            and b.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="conditionVO.admissionOfDateStart !='' and conditionVO.admissionOfDateStart != null and conditionVO.admissionOfDateEnd !='' and conditionVO.admissionOfDateEnd !=null ">
+            and b.ii_date_admission between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
+        </if>
+    </select>
+
+    <select id="selectByAdmissionNumber" resultType="com.hh.his.graduationproject.model.vo.LeaveVO">
+        select ii_ad_number as admissionNumber, ii_id as admissionId, patient.p_name as name, pt_name as ptName from inpatient_information,patient where patient.p_id = inpatient_information.p_id and ii_status = 1 and ii_ad_number=#{admissionNumber};
+    </select>
+
+    <select id="selectByAdmissionNumber2" resultType="com.hh.his.graduationproject.model.vo.LeaveVO">
+        select ii_ad_number as admissionNumber, ii_id as admissionId, patient.p_name as name, pt_name as ptName from inpatient_information,patient where patient.p_id = inpatient_information.p_id and ii_status = 0 and ii_ad_number=#{admissionNumber};
+    </select>
+
+    <select id="selectCanLeave" resultMap="InpatientInformationResultMap">
+        SELECT *
+        FROM inpatient_information b left join bed on bed.id = b.bed_id
+        left join inpatient_ward iw on iw.wid = b.ward_id,patient c
+        WHERE c.p_id = b.p_id and b.ii_status = 1
+        <if test="conditionVO.deptName !=null and conditionVO.deptName != ''">
+            and b.dept_name = #{conditionVO.deptName}
+        </if>
+        <if test="conditionVO.pid !=null and conditionVO.pid != ''">
+            <bind name="pid" value="'%'+conditionVO.pid+'%'"/>
+            and b.p_id like #{pid}
+        </if>
+        <if test="conditionVO.pname !=null and conditionVO.pname != ''">
+            <bind name="pname" value="'%'+conditionVO.pname+'%'"/>
+            and c.p_name like #{pname}
+        </if>
+        <if test="conditionVO.admissionNumber!=null and conditionVO.admissionNumber!=''">
+            <bind name="admissionNumber" value="'%'+conditionVO.admissionNumber+'%'"/>
+            and b.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="conditionVO.admissionOfDateStart !='' and conditionVO.admissionOfDateStart != null and conditionVO.admissionOfDateEnd !='' and conditionVO.admissionOfDateEnd !=null ">
+            and b.ii_date_admission between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
+        </if>
+    </select>
+
+    <select id="selectWithDeposit" resultType="com.hh.his.graduationproject.model.vo.DepositQueryVO">
+        SELECT deposit.des_id as desId,b.ii_medical_insurance_number as medicalNumber,
+        b.ii_ad_number as admissionNumber,b.ii_id as admissionId,
+        c.p_name as pname,b.p_id as pid,
+        deposit.des_deposit as deposit,deposit.s_id as operator,
+        deposit.des_status as depositStatus,deposit.payment_type as paymentType,
+        c.p_sex as sex,b.pt_name as ptName,b.dept_name as deptName,
+        iw.iward_id as iwardId,bed.b_id as bid,
+        b.ii_date_admission as dateOfAdmission,deposit.date_pay as datePay
+        FROM inpatient_information b left join bed on bed.id = b.bed_id
+        left join inpatient_ward iw on iw.wid = b.ward_id,patient c,deposit
+        WHERE c.p_id = b.p_id and deposit.ii_id = b.ii_id
+        <if test="conditionVO.deptName !=null and conditionVO.deptName != ''">
+            and b.dept_name = #{conditionVO.deptName}
+        </if>
+        <if test="conditionVO.pid !=null and conditionVO.pid != ''">
+            <bind name="pid" value="'%'+conditionVO.pid+'%'"/>
+            and b.p_id like #{pid}
+        </if>
+        <if test="conditionVO.pname !=null and conditionVO.pname != ''">
+            <bind name="pname" value="'%'+conditionVO.pname+'%'"/>
+            and c.p_name like #{pname}
+        </if>
+        <if test="conditionVO.admissionNumber!=null and conditionVO.admissionNumber!=''">
+            <bind name="admissionNumber" value="'%'+conditionVO.admissionNumber+'%'"/>
+            and b.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="conditionVO.payDateStart !='' and conditionVO.payDateStart != null and conditionVO.payDateEnd !='' and conditionVO.payDateEnd !=null ">
+            and deposit.date_pay between #{conditionVO.payDateStart} and  #{conditionVO.payDateEnd}
+        </if>
+    </select>
+
+    <select id="selectWithDeposit2" resultType="com.hh.his.graduationproject.model.vo.DepositQueryVO">
+        SELECT deposit.des_id as desId,b.ii_medical_insurance_number as medicalNumber,
+        b.ii_ad_number as admissionNumber,b.ii_id as admissionId,
+        c.p_name as pname,b.p_id as pid,deposit.s_id as operator,
+        deposit.des_deposit as deposit,
+        deposit.des_status as depositStatus,
+        c.p_sex as sex,b.pt_name as ptName,b.dept_name as deptName,
+        iw.iward_id as iwardId,bed.b_id as bid,deposit.payment_type as paymentType,
+        b.ii_date_admission as dateOfAdmission,deposit.date_pay as datePay
+        FROM inpatient_information b left join bed on bed.id = b.bed_id
+        left join inpatient_ward iw on iw.wid = b.ward_id,patient c,deposit
+        WHERE c.p_id = b.p_id and b.ii_status = 0 and deposit.ii_id = b.ii_id
+        and deposit.des_status = 1 and deposit.des_is_refund = 0
+        <if test="conditionVO.deptName !=null and conditionVO.deptName != ''">
+            and b.dept_name = #{conditionVO.deptName}
+        </if>
+        <if test="conditionVO.pid !=null and conditionVO.pid != ''">
+            <bind name="pid" value="'%'+conditionVO.pid+'%'"/>
+            and b.p_id like #{pid}
+        </if>
+        <if test="conditionVO.pname !=null and conditionVO.pname != ''">
+            <bind name="pname" value="'%'+conditionVO.pname+'%'"/>
+            and c.p_name like #{pname}
+        </if>
+        <if test="conditionVO.admissionNumber!=null and conditionVO.admissionNumber!=''">
+            <bind name="admissionNumber" value="'%'+conditionVO.admissionNumber+'%'"/>
+            and b.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="conditionVO.payDateStart !='' and conditionVO.payDateStart != null and conditionVO.payDateEnd !='' and conditionVO.payDateEnd !=null ">
+            and deposit.date_pay between #{conditionVO.payDateStart} and  #{conditionVO.payDateEnd}
+        </if>
+    </select>
+
+    <select id="selectWithDeposit3" resultType="com.hh.his.graduationproject.model.vo.DepositQueryVO">
+        SELECT deposit.des_id as desId,b.ii_medical_insurance_number as medicalNumber,
+        b.ii_ad_number as admissionNumber,b.ii_id as admissionId,
+        c.p_name as pname,b.p_id as pid,deposit.s_id as operator,
+        deposit.des_deposit as deposit,
+        deposit.des_status as depositStatus,
+        c.p_sex as sex,b.pt_name as ptName,b.dept_name as deptName,
+        iw.iward_id as iwardId,bed.b_id as bid,deposit.payment_type as paymentType,
+        b.ii_date_admission as dateOfAdmission,deposit.date_pay as datePay
+        FROM inpatient_information b left join bed on bed.id = b.bed_id
+        left join inpatient_ward iw on iw.wid = b.ward_id,patient c,deposit
+        WHERE c.p_id = b.p_id and b.ii_status = 0 and deposit.ii_id = b.ii_id
+        and deposit.des_status = 0 and deposit.des_is_refund = 0
+        <if test="conditionVO.deptName !=null and conditionVO.deptName != ''">
+            and b.dept_name = #{conditionVO.deptName}
+        </if>
+        <if test="conditionVO.pid !=null and conditionVO.pid != ''">
+            <bind name="pid" value="'%'+conditionVO.pid+'%'"/>
+            and b.p_id like #{pid}
+        </if>
+        <if test="conditionVO.pname !=null and conditionVO.pname != ''">
+            <bind name="pname" value="'%'+conditionVO.pname+'%'"/>
+            and c.p_name like #{pname}
+        </if>
+        <if test="conditionVO.admissionNumber!=null and conditionVO.admissionNumber!=''">
+            <bind name="admissionNumber" value="'%'+conditionVO.admissionNumber+'%'"/>
+            and b.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="conditionVO.admissionOfDateStart !='' and conditionVO.admissionOfDateStart != null and conditionVO.admissionOfDateEnd !='' and conditionVO.admissionOfDateEnd !=null ">
+            and b.ii_date_admission between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
+        </if>
+    </select>
+
+    <select id="selectAdmissionByPid" resultMap="baseResult">
+        SELECT *
+        FROM inpatient_information b
+        WHERE b.p_id = #{pid}
+    </select>
+
+    <select id="selectAdmissionByDateAndAdNumber" resultMap="baseResult">
+        SELECT *
+        FROM inpatient_information
+        WHERE ii_date_admission = #{dateOfAdmission} and ii_ad_number = #{admissionNumber}
+    </select>
+
+    <select id="findBedByCondition" resultType="com.hh.his.graduationproject.model.vo.BedVO">
+        SELECT b.wid as wid,a.id as id,d.dept_name as deptName,b.iward_id as wardId,
+        c.iwt_type,a.b_id as bid,a.b_status as bedStatus,e.ii_ad_number as admissionNumber,
+        patient.p_name as pname
+        FROM bed a left join (select * from inpatient_information where ii_status = 0) e on e.bed_id = a.id
+        left join patient on e.p_id = patient.p_id,
+        inpatient_ward b,inpatient_ward_type c,dept d
+        WHERE a.ward_id = b.wid and b.iward_type = c.iwt_id
+        and b.d_id = d.dept_id
+        <if test="condition.bedStatus != null ">
+            and a.b_status = #{condition.bedStatus}
+        </if>
+        <if test="condition.iwtId != null and condition.iwtId != ''">
+            and c.iwt_id = #{condition.iwtId}
+        </if>
+        <if test="condition.bid !='' and condition.bid !=null ">
+            and a.b_id = #{condition.bid}
+        </if>
+        <if test="condition.deptId !=null and condition.deptId !=''">
+            and b.d_id = #{condition.deptId}
+        </if>
+        <if test="condition.name !=null and condition.name !=''">
+            <bind name="pname" value="'%'+condition.name+'%'"/>
+            and patient.p_name like #{pname}
+        </if>
+    </select>
+
+    <select id="findBedByCondition2" resultMap="InpatientInformationResultMap">
+        SELECT *
+        FROM bed a left join inpatient_information e on e.bed_id = a.id left join patient on e.p_id = patient.p_id,inpatient_ward b,inpatient_ward_type c,dept d
+        WHERE a.ward_id = b.wid and b.iward_type = c.iwt_id
+        and b.d_id = d.dept_id and a.b_status = 1
+        <if test="condition.iwtId != null and condition.iwtId != ''">
+            and c.iwt_id = #{condition.iwtId}
+        </if>
+        <if test="condition.bid !='' and condition.bid !=null ">
+            and a.b_id = #{condition.bid}
+        </if>
+        <if test="condition.deptId !=null and condition.deptId !=''">
+            and b.d_id = #{condition.deptId}
+        </if>
+        <if test="condition.name !=null and condition.name !=''">
+            <bind name="pname" value="'%'+condition.name+'%'"/>
+            and patient.p_name like #{pname}
+        </if>
+    </select>
+
+    <insert id="insertInpatient">
+        insert into inpatient_information(
+        s_id,ii_ad_number,p_id,pt_name,ii_diagnosis_01,age,
+        ii_diagnosis_02,dept_name,ii_admitted_doc,ii_attending_doc,
+        ii_visiting_doc,ii_date_admission,
+        ii_medical_insurance_number,ii_status)
+        values
+        (#{addDTO.sid},#{addDTO.admissionNumber},#{addDTO.pid},
+        #{addDTO.ptName},#{addDTO.diagnosis01},#{addDTO.age},#{addDTO.diagnosis02},
+        #{addDTO.deptName},#{addDTO.admittedDoc},#{addDTO.attendingDoc},
+        #{addDTO.visitingDoc},#{addDTO.dateOfAdmission},
+        #{addDTO.medicalNumber},#{addDTO.status})
+    </insert>
+
+    <update id="updateAdmission">
+        update inpatient_information
+        set age = #{record.age},p_id = #{record.pid},pt_name = #{record.ptName},
+        ii_diagnosis_01 = #{record.diagnosis01},ii_diagnosis_02 = #{record.diagnosis02},
+        dept_name = #{record.deptName},ii_admitted_doc =#{record.admittedDoc},
+        ii_attending_doc = #{record.attendingDoc},ii_visiting_doc = #{record.visitingDoc},
+        ii_medical_insurance_number = #{record.medicalNumber}
+        where  ii_id = #{record.id}
+    </update>
+
+    <update id="updateBedAndWard">
+        update inpatient_information
+        set bed_id = #{record.id},ward_id = #{record.wid}
+        where  ii_id = #{record.inpatientId}
+    </update>
+
+    <update id="updatePid">
+        update inpatient_information
+        set p_id = #{record.newPid}
+        where  p_id = #{record.pid}
+    </update>
+
+    <update id="updateDept">
+        update inpatient_information
+        set dept_name = #{dept1}
+        where dept_name = #{dept}
+    </update>
+
+    <update id="executeLeave">
+        update inpatient_information
+        set ii_status = 1,
+        ii_discharge_date = #{dateOfDischarge},
+        ii_day = #{day}
+        where ii_id = #{admissionId}
+    </update>
+
+    <update id="leaveSuccess">
+        update inpatient_information
+        set s_id = #{operator},
+        ii_status =2
+        where ii_id = #{admissionId}
+    </update>
+
+    <delete id="deleteById">
+        delete from inpatient_information where ii_id = #{admissionId}
+    </delete>
+
+    <select id="selectLeaveAdmission" resultMap="InpatientInformationResultMap">
+        SELECT *
+        FROM inpatient_information b left join bed on bed.id = b.bed_id
+        left join inpatient_ward iw on iw.wid = b.ward_id,patient c
+        WHERE c.p_id = b.p_id and b.ii_status = 2
+        <if test="conditionVO.deptName !=null and conditionVO.deptName != ''">
+            and b.dept_name = #{conditionVO.deptName}
+        </if>
+        <if test="conditionVO.pid !=null and conditionVO.pid != ''">
+            <bind name="pid" value="'%'+conditionVO.pid+'%'"/>
+            and b.p_id like #{pid}
+        </if>
+        <if test="conditionVO.pname !=null and conditionVO.pname != ''">
+            <bind name="pname" value="'%'+conditionVO.pname+'%'"/>
+            and c.p_name like #{pname}
+        </if>
+        <if test="conditionVO.admissionNumber!=null and conditionVO.admissionNumber!=''">
+            <bind name="admissionNumber" value="'%'+conditionVO.admissionNumber+'%'"/>
+            and b.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="conditionVO.admissionOfDateStart !='' and conditionVO.admissionOfDateStart != null and conditionVO.admissionOfDateEnd !='' and conditionVO.admissionOfDateEnd !=null ">
+            and b.ii_discharge_admission between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
+        </if>
+    </select>
+
+    <select id="queryInpatient" resultType="com.hh.his.graduationproject.model.vo.QueryInpatientVO">
+        SELECT b.ii_id as id, b.ii_medical_insurance_number as medicalNumber, b.ii_ad_number as admissionNumber, c.p_name as pname,
+        b.pt_name as ptName, b.dept_name as deptName, iw.iward_id as iwardId, bed.b_id as bid,
+        b.p_id as pid, c.p_sex as sex, b.age as age, c.p_birth as birth, c.p_reg_addr as regAddr,
+        c.p_tel as tel, b.ii_date_admission as dateOfAdmission, b.ii_discharge_date as dateOfDischarge,
+        b.ii_status as status, b.ii_day as day, b.ii_diagnosis_01 as diagnosis01, b.ii_diagnosis_02 as diagnosis02,
+        b.ii_admitted_doc as admittedDoc, b.ii_attending_doc as attendingDoc, b.ii_visiting_doc as visitingDoc
+        FROM inpatient_information b left join bed on bed.id = b.bed_id
+        left join inpatient_ward iw on iw.wid = b.ward_id,patient c
+        WHERE c.p_id = b.p_id
+        <if test="condition.pid !=null and condition.pid !=''">
+             and  b.p_id = #{condition.pid}
+        </if>
+        <if test="condition.admissionNumber != null and condition.admissionNumber !=''">
+            and b.ii_ad_number = #{condition.admissionNumber}
+        </if>
+    </select>
+
+    <select id="queryRecord" resultType="com.hh.his.graduationproject.model.vo.QueryInpatientVO">
+        SELECT b.ii_id as id, b.ii_medical_insurance_number as medicalNumber, b.ii_ad_number as admissionNumber, c.p_name as pname,
+        b.pt_name as ptName, b.dept_name as deptName, iw.iward_id as iwardId, bed.b_id as bid,
+        b.p_id as pid, c.p_sex as sex, b.age as age, c.p_birth as birth, c.p_reg_addr as regAddr,
+        c.p_tel as tel, b.ii_date_admission as dateOfAdmission, b.ii_discharge_date as dateOfDischarge,
+        b.ii_status as status, b.ii_day as day, b.ii_diagnosis_01 as diagnosis01, b.ii_diagnosis_02 as diagnosis02,
+        b.ii_admitted_doc as admittedDoc, b.ii_attending_doc as attendingDoc, b.ii_visiting_doc as visitingDoc
+        FROM inpatient_information b left join bed on bed.id = b.bed_id
+        left join inpatient_ward iw on iw.wid = b.ward_id,patient c,medical_record mr
+        WHERE c.p_id = b.p_id and  mr.ii_id = b.ii_id
+        <if test="condition.pid !=null and condition.pid != ''">
+            and b.p_id = #{condition.pid}
+        </if>
+        <if test="condition.admissionNumber!=null and condition.admissionNumber!=''">
+            and b.ii_ad_number = #{condition.admissionNumber}
+        </if>
+    </select>
+
+    <select id="analysisInpatient" resultType="com.hh.his.graduationproject.model.vo.InpatientAnalysis">
+        select count(*) as people,dept_name as deptName
+        from inpatient_information
+        where ii_status =0
+        <if test="DateStart != null and DateStart !='' and DateEnd !=null and DateEnd !='' ">
+            and ii_date_admission between #{DateStart} and #{DateEnd}
+        </if>
+        group by dept_name
+    </select>
+
+    <select id="analysisLeave" resultType="com.hh.his.graduationproject.model.vo.InpatientAnalysis">
+        select count(*) as people,dept_name as deptName
+        from inpatient_information
+        where ii_status =2
+        <if test="leaveDateStart != null and leaveDateStart !='' and leaveDateEnd !=null and leaveDateEnd !=''">
+            and ii_discharge_date between #{leaveDateStart} and #{leaveDateEnd}
+        </if>
+        group by dept_name
+    </select>
 
 
 </mapper>

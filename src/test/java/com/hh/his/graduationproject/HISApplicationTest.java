@@ -1,24 +1,18 @@
 package com.hh.his.graduationproject;
 
 import com.hh.his.graduationproject.dao.InpatientInformationMapper;
-import com.hh.his.graduationproject.dao.PatientMapper;
-import com.hh.his.graduationproject.model.entity.Staff;
-import com.hh.his.graduationproject.model.vo.InpatientInformationVO;
+import com.hh.his.graduationproject.dao.MenuMapper;
 import com.hh.his.graduationproject.service.InpatientService;
 import com.hh.his.graduationproject.service.PatientService;
 import com.hh.his.graduationproject.service.StaffService;
+import com.hh.his.graduationproject.utils.RedisUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
-import sun.dc.pr.PRError;
-
-import javax.sql.DataSource;
 
 import java.sql.SQLException;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -28,12 +22,19 @@ public class HISApplicationTest {
     private StaffService staffService;
 
     @Autowired
-    DataSource dataSource;
-    @Autowired
     private PatientService patientService;
+
     @Autowired
     private InpatientService service;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
+    @Autowired
+    private MenuMapper menuMapper;
+
+    @Autowired
+    private InpatientInformationMapper informationMapper;
 
     @Test
     public void contextLoads() throws SQLException {
@@ -43,6 +44,14 @@ public class HISApplicationTest {
       //  System.out.println(allAdmission.toString());
 
       //  System.out.println(new BCryptPasswordEncoder().encode("123456"));
+      //  System.out.println(redisUtil.hget("token","token_08924"));
+
+      //  System.out.println(KeyUtil.createID());
+      /*  BedConditionVO conditionVO = new BedConditionVO();
+        List<InpatientInformation> bedByCondition = informationMapper.findBedByCondition(conditionVO);
+        List<BedVO> bedVOS = BedConverter.INSTANCE.toVOList(bedByCondition);
+        System.out.println(bedVOS);*/
+     //   System.out.println(menuMapper.getMenusByUsername("08924"));
     }
 
 }

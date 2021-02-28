@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+/**
+ * 病房类型视图
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

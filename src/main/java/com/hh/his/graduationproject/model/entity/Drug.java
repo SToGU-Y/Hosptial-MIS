@@ -5,18 +5,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Drug {
 
-    private Integer medId;
+    private Integer drugId;
 
-    private String medNo;
-    private String medName;
-    private Integer medNum;
-    private String medDetail;
-    private BigDecimal medPrice;
+    private String drugNo;
+    private String drugName;
+    private Integer drugNum;
+    private String drugDetail;
+    private BigDecimal drugPrice;
+    private String drugSpecifications;
+    private String drugUnit;
+    private String doseUnit;
+    private String drugType;
 
 }

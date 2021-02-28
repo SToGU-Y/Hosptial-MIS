@@ -1,12 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hh.his.graduationproject.dao.DeptMapper">
-    <resultMap id="DeptResultMap" type="Dept">
+    <resultMap id="baseResult" type="Dept">
         <result property="deptId" column="dept_id"/>
         <result property="deptName" column="dept_name"/>
     </resultMap>
+    <resultMap id="DeptResult" type="Dept" extends="baseResult">
+        <result property="staffNumber" column="staff_number"/>
+        <result property="describe" column="describe"/>
+        <result property="director" column="director"/>
+    </resultMap>
 
-    <select id="findAllDept" resultMap="DeptResultMap">
-        SELECT * from dept
+    <select id="findAllDept" resultMap="baseResult">
+        SELECT dept_id,dept_name from dept
     </select>
+
+    <select id="findDeptByCondition" parameterType="com.hh.his.graduationproject.model.vo.condition.DeptConditionVO" resultMap="DeptResult">
+        SELECT * from dept
+        <where>
+            <if test="condition.deptId !=null and condition.deptId !=''">
+                <bind name="deptId" value="'%'+condition.deptId+'%'"/>
+                dept_id like #{deptId}
+            </if>
+            <if test="condition.deptName !=null and condition.deptName !=''">
+                <bind name="deptName" value="'%'+condition.deptName+'%'"/>
+               and dept_name like #{deptName}
+            </if>
+            <if test="condition.director !=null and condition.director !=''">
+                <bind name="directorName" value="'%'+condition.director+'%'"/>
+               and director like #{directorName}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByDeptId" resultMap="baseResult">
+        select dept_id,dept_name from dept where dept_id = #{deptId}
+    </select>
+
+    <insert id="insertDept">
+        insert into dept(dept_id,dept_name,staff_number,`describe`,director)
+        values (#{dept.deptId},#{dept.deptName},#{dept.staffNumber},#{dept.describe},#{dept.director})
+    </insert>
+
+    <update id="decreaseStaffNumberByDeptName">
+        update dept
+        set staff_number = staff_number-1
+        where dept_name = #{deptName};
+    </update>
+
+    <update id="increaseStaffNumberByDeptName">
+        update dept
+        set staff_number = staff_number+1
+        where dept_name = #{deptName};
+    </update>
+
+    <update id="updateByDeptId">
+    update dept
+    set dept_id = #{dept.newDeptId},
+      dept_name  = #{dept.deptName},
+      `describe` = #{dept.describe},
+      director = #{dept.director}
+    where dept_id = #{dept.deptId};
+  </update>
+
+    <delete id="deleteByDeptId">
+        delete from dept where dept_id = #{deptId}
+    </delete>
+
+
 </mapper>

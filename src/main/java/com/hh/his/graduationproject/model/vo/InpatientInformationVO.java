@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 public class InpatientInformationVO {
 
 
+    private Integer id;
     /**
      * 医保登记号
      */
@@ -64,7 +65,7 @@ public class InpatientInformationVO {
     /**
      * 病房
      */
-    private Integer iwardId;
+    private String iwardId;
 
     /**
      * 病床
