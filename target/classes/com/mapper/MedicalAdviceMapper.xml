@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.MedicalAdviceMapper">
+    <resultMap id="base" type="MedicalAdvice">
+        <result property="madvId" column="madv_id"/>
+        <result property="madvStartDate" column="madv_start_date"/>
+        <result property="madvStartTime" column="madv_start_time"/>
+        <result property="madvOperation" column="madv_operation"/>
+        <result property="madvOperationNo" column="madv_operation_no"/>
+        <result property="madvOperationType" column="madv_operation_type"/>
+        <result property="madvEndDate" column="madv_end_date"/>
+        <result property="madvEndTime" column="madv_end_time"/>
+        <result property="madvDoctor" column="madv_doctor"/>
+        <result property="madvFrequency" column="madv_frequency"/>
+        <result column="madv_specifications" property="madvSpecifications"/>
+        <result property="madvDose" column="madv_dose"/>
+        <result property="madvUnit" column="madv_unit"/>
+        <result property="entrustment" column="entrustment"/>
+        <result property="madvPrice" column="madv_price"/>
+        <result property="status" column="status"/>
+        <result property="madvNurse" column="madv_nurse"/>
+        <result property="madvExecuteNurse" column="madv_execute_nurse"/>
+        <result property="madvEndDoctor" column="madv_end_doctor"/>
+        <result property="madvType" column="madv_type"/>
+        <result property="remarks" column="remarks"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="madvSentTime" column="madv_sent_time"/>
+    </resultMap>
+    <resultMap id="withInformation" type="MedicalAdvice" extends="base">
+        <association property="amission" column="admission_id" javaType="InpatientInformation">
+            <result property="id" column="ii_id"/>
+            <result property="admissionNumber" column="ii_ad_number"/>
+            <result property="sid" column="s_id"/>
+            <result property="age" column="age"/>
+            <result property="deptName" column="dept_name"/>
+            <result property="ptName" column="ptName"/>
+            <result property="diagnosis01" column="ii_diagnosis_01"/>
+            <result property="diagnosis02" column="ii_diagnosis_02"/>
+            <result property="admittedDoc" column="ii_admitted_doc"/>
+            <result property="attendingDoc" column="ii_attending_doc"/>
+            <result property="visitingDoc" column="ii_visiting_doc"/>
+            <result property="dateOfAdmission" column="ii_date_admission"/>
+            <result property="dateOfDischarge" column="ii_discharge_date"/>
+            <result property="status" column="ii_status"/>
+            <result property="day" column="ii_day"/>
+            <result property="medicalNumber" column="ii_medical_insurance_number"/>
+            <association property="ward" column="ward_id">
+                <result property="wid" column="wid"/>
+                <result property="wardId" column="iward_id"/>
+                <association property="wardType" column="iward_type" javaType="InpatientWardType">
+                    <result property="iwtId" column="iwt_id"/>
+                    <result property="iwtType" column="iwt_type"/>
+                    <result property="iwtPrice" column="iwt_price"/>
+                </association>
+            </association>
+            <association property="bed" column="bed_id">
+                <result property="id" column="id"/>
+                <result property="bid" column="b_id"/>
+            </association>
+            <association property="patient" column="p_id" javaType="Patient">
+                <result property="pid" column="p_id"/>
+                <result property="pname" column="p_name"/>
+                <result property="sex" column="p_sex"/>
+                <result property="birth" column="p_birth"/>
+            </association>
+        </association>
+    </resultMap>
+
+    <select id="selectDrugApply" resultType="com.hh.his.graduationproject.model.vo.MedicalAdviceQueryVO">
+        select ma.madv_id as madvId, ii.ii_id as admissionId, ii.dept_name as deptName2 ,ma.dept_name as deptName, ii.ii_ad_number as admissionNumber,
+        p.p_name as name, iw.iward_id as wardId, b.b_id as bid, ma.madv_start_date as madvStartDate, ma.madv_start_time as madvStartTime,
+        ma.madv_operation_no as madvOperationNo, ma.madv_operation as madvOperation, ma.madv_operation_type as madvOperationType,
+        ma.madv_end_date as madvEndDate, ma.madv_end_time as madvEndTime, ma.madv_doctor as madvDoctor, ma.madv_unit as madvUnit,
+        ma.madv_dose as madvDose, ma.madv_frequency as madvFrequency, ma.madv_usage as madvUsage, ma.madv_specifications as madvSpecifications,
+        ma.entrustment, ma.madv_price as madvPrice, ma.status as status, ma.madv_nurse as madvNurse, ma.madv_execute_nurse as madvExecuteNurse,
+        ma.madv_end_doctor as madvEndDoctor, ma.madv_type as madvType, ma.remarks, ma.madv_sent_time as madvSentTime
+        from medical_advice ma,inpatient_information ii,inpatient_ward iw,bed b,patient p
+        where ma.admission_id = ii.ii_id and ii.p_id = p.p_id and ii.ward_id = iw.wid
+        and ii.bed_id = b.id and ma.status = 2 and ii.ii_status = 0 and (madv_operation_type = "中药" or madv_operation_type = "西药") and madv_type="长期医嘱"
+    </select>
+
+    <select id="selectAll" resultType="com.hh.his.graduationproject.model.vo.MedicalAdviceQueryVO">
+        select ma.madv_id as madvId, ii.ii_id as admissionId, ii.dept_name as deptName2 ,ma.dept_name as deptName, ii.ii_ad_number as admissionNumber,
+        p.p_name as name, iw.iward_id as wardId, b.b_id as bid, ma.madv_start_date as madvStartDate, ma.madv_start_time as madvStartTime,
+        ma.madv_operation_no as madvOperationNo, ma.madv_operation as madvOperation, ma.madv_operation_type as madvOperationType,
+        ma.madv_end_date as madvEndDate, ma.madv_end_time as madvEndTime, ma.madv_doctor as madvDoctor, ma.madv_unit as madvUnit,
+        ma.madv_dose as madvDose, ma.madv_frequency as madvFrequency, ma.madv_usage as madvUsage, ma.madv_specifications as madvSpecifications,
+        ma.entrustment, ma.madv_price as madvPrice, ma.status as status, ma.madv_nurse as madvNurse, ma.madv_execute_nurse as madvExecuteNurse,
+        ma.madv_end_doctor as madvEndDoctor, ma.madv_type as madvType, ma.remarks, ma.madv_sent_time as madvSentTime
+        from medical_advice ma,inpatient_information ii,inpatient_ward iw,bed b,patient p
+        where ma.admission_id = ii.ii_id and ii.p_id = p.p_id and ii.ward_id = iw.wid
+        and ii.bed_id = b.id and ma.status = 1 and ii.ii_status = 0
+        <if test="condition.deptName !=null and condition.deptName !=''">
+            and ma.dept_name = #{condition.deptName}
+        </if>
+        <if test="condition.admissionNumber !=null and condition.admissionNumber !=''">
+            <bind name="admissionNumber" value="'%'+condition.admissionNumber+'%'"/>
+            and ii.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="condition.name !=null and condition.name !=''">
+            <bind name="name" value="'%'+condition.name+'%'"/>
+            and p.p_name like #{name}
+        </if>
+        <if test="condition.username !=null and condition.username !=''">
+            <bind name="username" value="'%'+condition.username+'%'"/>
+            and ma.madv_doctor like #{username}
+        </if>
+        <if test="condition.madvSentTimeFrom !='' and condition.madvSentTimeFrom != null and condition.madvSentTimeTo !='' and condition.madvSentTimeTo !=null ">
+            and ma.madv_sent_time between #{condition.madvSentTimeFrom} and  #{condition.madvSentTimeTo}
+        </if>
+        <if test="condition.madvType !=null and condition.madvType !=''">
+            and ma.madv_type = #{condition.madvType}
+        </if>
+    </select>
+
+    <select id="selectAllPass" resultType="com.hh.his.graduationproject.model.vo.MedicalAdviceQueryVO">
+        select ma.madv_id as madvId, ii.ii_id as admissionId, ii.dept_name as deptName2 ,ma.dept_name as deptName, ii.ii_ad_number as admissionNumber,
+        p.p_name as name, iw.iward_id as wardId, b.b_id as bid, ma.madv_start_date as madvStartDate, ma.madv_start_time as madvStartTime,
+        ma.madv_operation_no as madvOperationNo, ma.madv_operation as madvOperation, ma.madv_operation_type as madvOperationType,
+        ma.madv_end_date as madvEndDate, ma.madv_end_time as madvEndTime, ma.madv_doctor as madvDoctor, ma.madv_unit as madvUnit,
+        ma.madv_dose as madvDose, ma.madv_frequency as madvFrequency, ma.madv_usage as madvUsage, ma.madv_specifications as madvSpecifications,
+        ma.entrustment, ma.madv_price as madvPrice, ma.status as status, ma.madv_nurse as madvNurse, ma.madv_execute_nurse as madvExecuteNurse,
+        ma.madv_end_doctor as madvEndDoctor, ma.madv_type as madvType, ma.remarks, ma.madv_sent_time as madvSentTime
+        from medical_advice ma,inpatient_information ii,inpatient_ward iw,bed b,patient p
+        where ma.admission_id = ii.ii_id and ii.p_id = p.p_id and ii.ward_id = iw.wid
+        and ii.bed_id = b.id and (ma.status = 2 or ma.status= 3) and ii.ii_status = 0
+        <if test="condition.deptName !=null and condition.deptName !=''">
+            and ma.dept_name = #{condition.deptName}
+        </if>
+        <if test="condition.admissionNumber !=null and condition.admissionNumber !=''">
+            <bind name="admissionNumber" value="'%'+condition.admissionNumber+'%'"/>
+            and ii.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="condition.name !=null and condition.name !=''">
+            <bind name="name" value="'%'+condition.name+'%'"/>
+            and p.p_name like #{name}
+        </if>
+        <if test="condition.status !=null">
+            and ma.status = #{condition.status}
+        </if>
+        <if test="condition.madvSentTimeFrom !='' and condition.madvSentTimeFrom != null and condition.madvSentTimeTo !='' and condition.madvSentTimeTo !=null ">
+            and ma.madv_sent_time between #{condition.madvSentTimeFrom} and  #{condition.madvSentTimeTo}
+        </if>
+        <if test="condition.madvType !=null and condition.madvType !=''">
+            and ma.madv_type = #{condition.madvType}
+        </if>
+    </select>
+
+    <select id="selectByUsername" resultType="com.hh.his.graduationproject.model.vo.MedicalAdviceQueryVO">
+        select ma.madv_id as madvId, ii.ii_id as admissionId, ii.dept_name as deptName2 ,ma.dept_name as deptName, ii.ii_ad_number as admissionNumber,
+        p.p_name as name, iw.iward_id as wardId, b.b_id as bid, ma.madv_start_date as madvStartDate, ma.madv_start_time as madvStartTime,
+        ma.madv_operation_no as madvOperationNo, ma.madv_operation as madvOperation, ma.madv_operation_type as madvOperationType,
+        ma.madv_end_date as madvEndDate, ma.madv_end_time as madvEndTime, ma.madv_doctor as madvDoctor, ma.madv_unit as madvUnit,
+        ma.madv_dose as madvDose, ma.madv_frequency as madvFrequency, ma.madv_usage as madvUsage, ma.madv_specifications as madvSpecifications,
+        ma.entrustment, ma.madv_price as madvPrice, ma.status as status, ma.madv_nurse as madvNurse, ma.madv_execute_nurse as madvExecuteNurse,
+        ma.madv_end_doctor as madvEndDoctor, ma.madv_type as madvType, ma.remarks, ma.madv_sent_time as madvSentTime
+        from medical_advice ma,inpatient_information ii,inpatient_ward iw,bed b,patient p
+        where ma.admission_id = ii.ii_id and ii.p_id = p.p_id and ii.ward_id = iw.wid and ii.bed_id = b.id and ma.madv_doctor = #{condition.username}
+        <if test="condition.status !=null">
+            and ma.status = #{condition.status}
+        </if>
+        <if test="condition.admissionNumber !=null and condition.admissionNumber !=''">
+            <bind name="admissionNumber" value="'%'+condition.admissionNumber+'%'"/>
+            and ii.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="condition.name !=null and condition.name !=''">
+            <bind name="name" value="'%'+condition.name+'%'"/>
+            and p.p_name like #{name}
+        </if>
+        <if test="condition.madvType !=null and condition.madvType !=''">
+            and ma.madv_type = #{condition.madvType}
+        </if>
+    </select>
+
+    <select id="selectByAdmissionId" resultType="com.hh.his.graduationproject.model.vo.MedicalAdviceQueryVO">
+        select ma.madv_id as madvId, ii.ii_id as admissionId, ii.dept_name as deptName2 ,ma.dept_name as deptName, ii.ii_ad_number as admissionNumber,
+        p.p_name as name, iw.iward_id as wardId, b.b_id as bid, ma.madv_start_date as madvStartDate, ma.madv_start_time as madvStartTime,
+        ma.madv_operation_no as madvOperationNo, ma.madv_operation as madvOperation, ma.madv_operation_type as madvOperationType,
+        ma.madv_end_date as madvEndDate, ma.madv_end_time as madvEndTime, ma.madv_doctor as madvDoctor, ma.madv_unit as madvUnit,
+        ma.madv_dose as madvDose, ma.madv_frequency as madvFrequency, ma.madv_usage as madvUsage, ma.madv_specifications as madvSpecifications,
+        ma.entrustment, ma.madv_price as madvPrice, ma.status as status, ma.madv_nurse as madvNurse, ma.madv_execute_nurse as madvExecuteNurse,
+        ma.madv_end_doctor as madvEndDoctor, ma.madv_type as madvType, ma.remarks, ma.madv_sent_time as madvSentTime
+        from medical_advice ma,inpatient_information ii,inpatient_ward iw,bed b,patient p
+        where ma.admission_id = ii.ii_id and ii.p_id = p.p_id and ii.ward_id = iw.wid and ii.bed_id = b.id and ii.ii_id = #{admissionId}
+    </select>
+
+    <insert id="insertBatch">
+        insert into medical_advice(madv_start_date,madv_start_time,madv_operation_no,madv_operation_type,
+            madv_operation,madv_doctor,madv_specifications,madv_dose,madv_unit,madv_frequency,madv_usage,entrustment,
+            madv_price,status,dept_name,madv_type,admission_id,madv_sent_time)
+            values
+            <foreach collection="list" item="advice" separator=",">
+            (
+                #{advice.madvStartDate},#{advice.madvStartTime},#{advice.madvOperationNo},#{advice.madvOperationType},
+                #{advice.madvOperation},#{advice.madvDoctor},#{advice.madvSpecifications},#{advice.madvDose},#{advice.madvUnit},
+                #{advice.madvFrequency},#{advice.madvUsage},#{advice.entrustment},#{advice.madvPrice},#{status},#{advice.deptName},
+                #{advice.madvType},#{advice.admissionId},#{advice.madvSentTime}
+            )
+            </foreach>
+    </insert>
+
+    <update id="updateStatus">
+       update medical_advice
+        set
+        status = #{status}
+        <if test="advice.madvSentTime !=null">
+            ,madv_sent_time = #{advice.madvSentTime}
+        </if>
+        <if test="advice.madvNurse !=null and advice.madvNurse!=''">
+            ,madv_nurse = #{advice.madvNurse}
+        </if>
+        <if test="advice.remarks !=null">
+            ,remarks = #{advice.remarks}
+        </if>
+        <if test="advice.madvExecuteNurse !=null and advice.madvExecuteNurse!=''">
+            ,madv_execute_nurse = #{advice.madvExecuteNurse}
+        </if>
+        <if test="advice.madvEndDate != null">
+            ,madv_end_date = #{advice.madvEndDate}
+        </if>
+        <if test="advice.madvEndTime != null">
+            ,madv_end_time = #{advice.madvEndTime}
+        </if>
+        <if test="advice.madvEndDoctor !=null and advice.madvEndDoctor !='' ">
+            ,madv_end_doctor = #{advice.madvEndDoctor}
+        </if>
+        where madv_id = #{advice.madvId}
+    </update>
+
+    <update id="stop">
+        update medical_advice
+        set
+        status = 4
+        ,madv_end_date = #{advice.madvEndDate}
+        ,madv_end_time = #{advice.madvEndTime}
+        ,madv_end_doctor = #{advice.madvEndDoctor}
+        where admission_id = #{advice.admissionId}
+    </update>
+
+    <update id="updateAdvice">
+        update medical_advice
+        set madv_operation_no = #{advice.madvOperationNo},
+        madv_operation = #{advice.madvOperation},
+        madv_operation_type = #{advice.madvOperationType},
+        madv_specifications = #{advice.madvSpecifications},
+        madv_unit = #{advice.madvUnit},
+        madv_dose = #{advice.madvDose},
+        madv_price = #{advice.madvPrice},
+        madv_start_date = #{advice.madvStartDate},
+        madv_start_time = #{advice.madvStartTime},
+        madv_usage = #{advice.madvUsage},
+        madv_frequency = #{advice.madvFrequency},
+        entrustment = #{advice.entrustment}
+        where madv_id = #{advice.madvId}
+    </update>
+
+    <update id="updateDept">
+        update medical_advice
+        set dept_name = #{dept1}
+        where dept_name = #{dept}
+    </update>
+
+    <delete id="deleteAdvice">
+        delete from medical_advice where madv_id = #{advice.madvId}
+    </delete>
+
+    <update id="reset">
+        update medical_advice
+        set status = 2
+        where madv_type='长期医嘱' and status = 3;
+    </update>
+
+    <delete id="deleteByAdmissionId">
+        delete from medical_advice where admission_id = #{admissionId}
+    </delete>
+
+</mapper>

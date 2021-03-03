@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.DepositMapper">
+    <resultMap id="baseResult" type="Deposit">
+        <result property="desId" column="des_id"/>
+        <result property="deposit" column="des_deposit"/>
+        <result property="status" column="des_status"/>
+        <result property="paymentType" column="payment_type"/>
+        <result property="desIsRefund" column="des_is_refund"/>
+        <result property="sid" column="s_id"/>
+        <result property="id" column="ii_id"/>
+        <result property="datePay" column="date_pay"/>
+        <result property="dateRefund" column="date_refund"/>
+    </resultMap>
+
+    <select id="selectDepositById" resultMap="baseResult">
+        select * from deposit where ii_id = #{id} order by date_pay desc
+    </select>
+
+    <select id="selectRefund" resultMap="baseResult">
+        select * from deposit where des_is_refund = 1
+        <if test="deposit.desId !=null and deposit.desId !=''">
+            <bind name="desId" value="'%'+deposit.desId+'%'"/>
+            and des_id like #{desId}
+        </if>
+        <if test="deposit.operator !=null and deposit.operator !=''">
+            <bind name="operator" value="'%'+deposit.operator+'%'"/>
+            and s_id like #{operator}
+        </if>
+        <if test="deposit.refundDateStart !=null and deposit.refundDateStart != '' and deposit.refundDateEnd !=null and deposit.refundDateEnd !=''">
+            and date_refund between #{deposit.refundDateStart} and #{deposit.refundDateEnd}
+        </if>
+    </select>
+
+    <insert id="insertDeposit">
+        insert into deposit(des_id,des_deposit,des_status,payment_type,des_is_refund,s_id,ii_id,date_pay)
+        values (#{deposit.desId},#{deposit.deposit},#{deposit.status},
+        #{deposit.paymentType},#{deposit.desIsRefund},#{deposit.sid},#{deposit.id},#{deposit.datePay})
+    </insert>
+    
+    <update id="refund">
+        update deposit
+        set des_is_refund = 1,
+        s_id = #{deposit.sid},
+        date_refund = #{deposit.dateRefund}
+        where des_id = #{deposit.desId}
+    </update>
+
+    <update id="pay">
+        update deposit
+        set des_status = 1,
+        date_pay = #{deposit.datePay},
+        s_id = #{deposit.sid},
+        payment_type = #{deposit.paymentType}
+        where des_id = #{deposit.desId}
+    </update>
+
+    <delete id="deleteByDesId">
+        delete from deposit where des_id = #{desId}
+    </delete>
+
+    <delete id="deleteByAdmissionId">
+        delete from deposit where ii_id = #{admissionId}
+    </delete>
+
+    <select id="depositQuery" resultType="com.hh.his.graduationproject.model.vo.DepositQueryVO">
+        SELECT deposit.des_id as desId,b.ii_medical_insurance_number as medicalNumber,
+        b.ii_ad_number as admissionNumber,b.ii_id as admissionId,
+        c.p_name as pname,b.p_id as pid,deposit.s_id as operator,
+        deposit.des_deposit as deposit,
+        deposit.des_status as depositStatus,
+        c.p_sex as sex,b.pt_name as ptName,b.dept_name as deptName,
+        iw.iward_id as iwardId,bed.b_id as bid,deposit.payment_type as paymentType,
+        b.ii_date_admission as dateOfAdmission,deposit.date_pay as datePay
+        FROM inpatient_information b left join bed on bed.id = b.bed_id
+        left join inpatient_ward iw on iw.wid = b.ward_id,patient c,deposit
+        WHERE c.p_id = b.p_id and deposit.ii_id = b.ii_id
+        <if test="condition.pid !=null and condition.pid != ''">
+            and b.p_id = #{condition.pid}
+        </if>
+        <if test="condition.admissionNumber!=null and condition.admissionNumber!=''">
+            and b.ii_ad_number = #{condition.admissionNumber}
+        </if>
+    </select>
+
+    <select id="getReportDeposit" resultType="com.hh.his.graduationproject.model.vo.ReportVO">
+        select
+        payment_type as type, SUM(des_deposit) as sum
+        from deposit
+        where des_status = 1 and des_is_refund = 0
+        <if test="condition.operator !=null and condition.operator !=''">
+            and s_id = #{condition.operator}
+        </if>
+        <if test="condition.dateStart !=null and condition.dateStart !='' and condition.dateEnd !=null and condition.dateEnd !=''">
+            and date_pay between #{condition.dateStart} and #{condition.dateEnd}
+        </if>
+        group by payment_type
+    </select>
+
+
+</mapper>

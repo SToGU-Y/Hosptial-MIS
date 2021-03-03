@@ -61,7 +61,7 @@
         SELECT b.ii_id as id, b.ii_medical_insurance_number as medicalNumber, b.ii_ad_number as admissionNumber, c.p_name as pname,
         b.pt_name as ptName, b.dept_name as deptName, iw.iward_id as iwardId, bed.b_id as bid,
         b.p_id as pid, c.p_sex as sex, b.age as age, c.p_birth as birth, c.p_reg_addr as regAddr,
-        c.p_tel as tel, b.ii_date_admission as dateOfAdmission,b.ii_status as status
+        c.p_tel as tel, b.ii_date_admission as dateOfAdmission,b.ii_status as status, b.ii_discharge_date as dateOfDischarge
         FROM inpatient_information b left join bed on bed.id = b.bed_id
         left join inpatient_ward iw on iw.wid = b.ward_id,patient c
         WHERE c.p_id = b.p_id
@@ -85,6 +85,12 @@
         </if>
     </select>
 
+    <select id="AutomaticEntryOfBedFee" resultMap="baseResult">
+        select *
+        from inpatient_information b,inpatient_ward iw,inpatient_ward_type iwt
+        where b.ward_id = iw.wid and iw.iward_type = iwt.iwt_id and b.ii_status = 0 and b.bed_id is not null and b.ward_id is not null
+    </select>
+    
     <select id="selectAdmissionByDept" resultMap="InpatientInformationResultMap">
         select *
         from inpatient_information b,patient c
@@ -279,7 +285,7 @@
         deposit.des_status as depositStatus,deposit.payment_type as paymentType,
         c.p_sex as sex,b.pt_name as ptName,b.dept_name as deptName,
         iw.iward_id as iwardId,bed.b_id as bid,
-        b.ii_date_admission as dateOfAdmission,deposit.date_pay as datePay
+        b.ii_date_admission as dateOfAdmission,deposit.date_pay as datePay, b.age as age
         FROM inpatient_information b left join bed on bed.id = b.bed_id
         left join inpatient_ward iw on iw.wid = b.ward_id,patient c,deposit
         WHERE c.p_id = b.p_id and deposit.ii_id = b.ii_id
@@ -311,7 +317,7 @@
         deposit.des_status as depositStatus,
         c.p_sex as sex,b.pt_name as ptName,b.dept_name as deptName,
         iw.iward_id as iwardId,bed.b_id as bid,deposit.payment_type as paymentType,
-        b.ii_date_admission as dateOfAdmission,deposit.date_pay as datePay
+        b.ii_date_admission as dateOfAdmission,deposit.date_pay as datePay, b.age as age
         FROM inpatient_information b left join bed on bed.id = b.bed_id
         left join inpatient_ward iw on iw.wid = b.ward_id,patient c,deposit
         WHERE c.p_id = b.p_id and b.ii_status = 0 and deposit.ii_id = b.ii_id
@@ -344,7 +350,7 @@
         deposit.des_status as depositStatus,
         c.p_sex as sex,b.pt_name as ptName,b.dept_name as deptName,
         iw.iward_id as iwardId,bed.b_id as bid,deposit.payment_type as paymentType,
-        b.ii_date_admission as dateOfAdmission,deposit.date_pay as datePay
+        b.ii_date_admission as dateOfAdmission,deposit.date_pay as datePay, b.age as age
         FROM inpatient_information b left join bed on bed.id = b.bed_id
         left join inpatient_ward iw on iw.wid = b.ward_id,patient c,deposit
         WHERE c.p_id = b.p_id and b.ii_status = 0 and deposit.ii_id = b.ii_id
@@ -551,7 +557,7 @@
     </select>
 
     <select id="analysisInpatient" resultType="com.hh.his.graduationproject.model.vo.InpatientAnalysis">
-        select count(*) as people,dept_name as deptName
+        select count(ii_id) as people,dept_name as deptName
         from inpatient_information
         where ii_status =0
         <if test="DateStart != null and DateStart !='' and DateEnd !=null and DateEnd !='' ">
@@ -561,7 +567,7 @@
     </select>
 
     <select id="analysisLeave" resultType="com.hh.his.graduationproject.model.vo.InpatientAnalysis">
-        select count(*) as people,dept_name as deptName
+        select count(ii_id) as people,dept_name as deptName
         from inpatient_information
         where ii_status =2
         <if test="leaveDateStart != null and leaveDateStart !='' and leaveDateEnd !=null and leaveDateEnd !=''">

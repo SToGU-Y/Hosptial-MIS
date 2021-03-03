@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.MedicalApplianceMapper">
+    <resultMap id="base" type="MedicalAppliance">
+        <result column="m_id" property="id"/>
+        <result column="m_no" property="no"/>
+        <result column="m_name" property="name"/>
+        <result column="m_status" property="status"/>
+        <result column="m_type" property="type"/>
+        <result column="manufacturer" property="manufacturer"/>
+        <result column="m_details" property="details"/>
+        <result column="remarks" property="remarks"/>
+    </resultMap>
+
+
+    <select id="select" resultMap="base">
+        select  * from medical_appliance
+        <where>
+            <if test="record.type !=null and record.type !=''">
+                m_type = #{record.type}
+            </if>
+            <if test="record.name != null and record.name !=''">
+                <bind name="name" value="'%'+record.name+'%'"/>
+                and m_name like #{name}
+            </if>
+            <if test="record.no != null and record.no !=''">
+                <bind name="no" value="'%'+record.no+'%'"/>
+                and m_no like #{no}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert">
+        insert into medical_appliance(m_no,m_name,m_status,m_type,m_details,manufacturer)
+        values (#{record.no},#{record.name},#{record.status},#{record.type},#{record.details},#{record.manufacturer})
+    </insert>
+
+    <delete id="deleteById">
+        delete from medical_appliance where m_id = #{id}
+    </delete>
+
+    <update id="update">
+        update medical_appliance
+        set m_no = #{record.no},
+        m_name = #{record.name},
+        m_type = #{record.type},
+        m_details = #{record.details},
+        manufacturer = #{record.manufacturer}
+        where m_id = #{record.id}
+    </update>
+
+    <update id="updateStatusById">
+        update medical_appliance
+        set m_status = #{status},
+        remarks = #{remarks}
+        where m_id = #{id}
+    </update>
+
+</mapper>

@@ -61,6 +61,8 @@ public interface InpatientInformationMapper {
      */
     List<InpatientInformation> selectAdmissionByConditions3(@Param("conditionVO") InpatientInformationConditionVO conditionVO);
 
+    List<InpatientInformation> AutomaticEntryOfBedFee();
+
     /**
      * 用于医嘱添加
      * @param conditionVO

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.CostMapper">
+    <resultMap id="base" type="Cost">
+        <result column="cost_id" property="costId"/>
+        <result column="cost_no" property="costNo"/>
+        <result column="cost_type" property="costType"/>
+        <result column="cost_name" property="costName"/>
+        <result column="cost_date" property="costDate"/>
+        <result column="cost_price" property="costPrice"/>
+        <result column="cost_specifications" property="costSpecifications"/>
+        <result column="cost_num" property="costNum"/>
+        <result column="cost_unit" property="costUnit"/>
+        <result column="cost_dose" property="costDose"/>
+        <result column="cost_sum" property="costSum"/>
+        <result column="admission_id" property="admissionId"/>
+        <result column="operator" property="operator"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="base">
+        select * from cost;
+    </select>
+
+    <select id="selectByAdmissionNumber">
+        select * from cost,inpatient_information ii where cost.admission_id = ii.ii_id and ii.ii_ad_number = #{admissionNumber}
+    </select>
+
+    <select id="selectByAdmissionId" resultMap="base">
+        select * from cost where admission_id = #{admissionId}
+        <if test="date1 !=null and date1 !='' and date2 !=null and date2 !=''">
+            and cost_date between #{date1} and #{date2}
+        </if>
+    </select>
+
+    <select id="countCostByAdmissionId" resultType="java.lang.Integer">
+        select count(*) from cost where admission_id = #{admissionId}
+    </select>
+
+    <insert id="insert">
+        insert into cost(cost_no,cost_type,cost_name,cost_date,
+        cost_price,cost_specifications,cost_num,cost_unit,
+        cost_sum,admission_id,operator,cost_dose)
+        values (#{cost.costNo},#{cost.costType},#{cost.costName},#{cost.costDate},
+        #{cost.costPrice},#{cost.costSpecifications},#{cost.costNum},#{cost.costUnit},
+        #{cost.costSum},#{cost.admissionId},#{cost.operator},#{cost.costDose})
+    </insert>
+
+    <insert id="insertBatch">
+        insert into cost(cost_no,cost_type,cost_name,cost_date,
+        cost_price,cost_specifications,cost_num,cost_unit,
+        cost_sum,admission_id,operator,cost_dose)
+        values
+        <foreach collection="list" item="cost" separator=",">
+            (
+            #{cost.costNo},#{cost.costType},#{cost.costName},#{cost.costDate},
+            #{cost.costPrice},#{cost.costSpecifications},#{cost.costNum},#{cost.costUnit},
+            #{cost.costSum},#{cost.admissionId},#{cost.operator},#{cost.costDose}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="delete">
+        delete from cost where cost_id = #{costId}
+    </delete>
+
+    <delete id="deleteByAdmissionId">
+        delete from cost where admission_id = #{admissionId}
+    </delete>
+
+    <select id="costQuery" resultType="com.hh.his.graduationproject.model.vo.QueryCostVO">
+        SELECT b.ii_id as id, b.ii_medical_insurance_number as medicalNumber, b.ii_ad_number as admissionNumber, c.p_name as pname,
+        b.pt_name as ptName, b.dept_name as deptName, iw.iward_id as iwardId, bed.b_id as bid,
+        b.p_id as pid, c.p_sex as sex, b.age as age, c.p_birth as birth, c.p_reg_addr as regAddr,
+        c.p_tel as tel, b.ii_date_admission as dateOfAdmission, b.ii_discharge_date as dateOfDischarge,
+        b.ii_status as status, b.ii_day as day
+        FROM inpatient_information b left join bed on bed.id = b.bed_id
+        left join inpatient_ward iw on iw.wid = b.ward_id,patient c
+        WHERE c.p_id = b.p_id
+        <if test="condition.admissionNumber !=null and condition.admissionNumber != ''">
+            and b.ii_ad_number = #{condition.admissionNumber}
+        </if>
+        <if test="condition.pid !=null and condition.pid != ''">
+            and b.p_id = #{condition.pid}
+        </if>
+    </select>
+</mapper>

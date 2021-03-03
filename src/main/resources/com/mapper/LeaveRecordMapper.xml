@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.LeaveRecordMapper">
+
+    <resultMap id="base" type="LeaveRecord">
+        <result property="id" column="leave_record_id"/>
+        <result property="admissionId" column="admission_id"/>
+        <result property="admission" column="admission"/>
+        <result property="admissionDiagnosis" column="admission_diagnosis"/>
+        <result property="diagnosisProcess" column="diagnosis_process"/>
+        <result property="dischargeStatus" column="discharge_status"/>
+        <result property="dischargeDiagnosis" column="discharge_diagnosis"/>
+        <result property="dischargeAdvice" column="discharge_advide"/>
+        <result property="doctor" column="doctor"/>
+        <result property="status" column="status"/>
+        <result property="leaveDate" column="leave_date"/>
+    </resultMap>
+
+
+    <insert id="insert">
+        insert into leave_record(admission_id,admission,admission_diagnosis,diagnosis_process,
+        discharge_status,discharge_diagnosis,discharge_advice,doctor,leave_date)
+        value (#{record.admissionId},#{record.admission},#{record.admissionDiagnosis},#{record.diagnosisProcess},
+        #{record.dischargeStatus},#{record.dischargeDiagnosis},#{record.dischargeAdvice},#{record.doctor},#{record.leaveDate})
+    </insert>
+
+    <select id="selectAll" resultType="com.hh.his.graduationproject.model.vo.LeaveRecordVO">
+        select ii.ii_id as admissionId, ii.p_id as pid, ii.pt_name as ptName , p.p_birth as birth, ii.ii_ad_number as admissionNumber, lr.leave_record_id as id,
+        ii.age as age, ii.dept_name as deptName,p.p_name as name, iw.iward_id as wardId, b.b_id as bid,
+        p.p_sex as sex, ii.ii_date_admission as dateOfAdmission, lr.leave_date as leaveDate, lr.admission as admission,
+        admission_diagnosis as admissionDiagnosis, diagnosis_process as diagnosisProcess, discharge_diagnosis as dischargeDiagnosis,
+        discharge_advice as dischargeAdvice, doctor as doctor, lr.discharge_status as dischargeStatus, ii.ii_status as inpatientStatus
+        from inpatient_information ii,inpatient_ward iw,bed b,patient p,leave_record lr
+        where ii.p_id = p.p_id and ii.ward_id = iw.wid and ii.bed_id = b.id and lr.admission_id = ii.ii_id
+        <if test="condition.doctor !=null and condition.doctor !=''">
+            and lr.doctor = #{condition.doctor}
+        </if>
+        <if test="condition.pid !=null and condition.pid !=''">
+            <bind name="pid" value="'%'+condition.pid+'%'"/>
+            and ii.p_id like #{pid}
+        </if>
+        <if test="condition.pname !=null and condition.pname !=''">
+            <bind name="pname" value="'%'+condition.pname+'%'"/>
+            and p.p_name like #{pname}
+        </if>
+        <if test="condition.admissionNumber !=null and condition.admissionNumber !=''">
+            <bind name="admissionNumber" value="'%'+condition.admissionNumber+'%'"/>
+            and ii.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="condition.status !=null and condition.status !=''">
+            and ii.ii_status = #{condition.status}
+        </if>
+        <if test="condition.leaveDateStart !=null and condition.leaveDateEnd != null and condition.leaveDateStart !='' and condition.leaveDateEnd !=''">
+            and lr.leave_date between #{condition.leaveDateStart} and #{condition.leaveDateEnd}
+        </if>
+    </select>
+
+
+    <select id="selectByDoctor" resultType="com.hh.his.graduationproject.model.vo.LeaveRecordVO">
+        select ii.ii_id as admissionId, ii.p_id as pid , ii.pt_name as ptName , p.p_birth as birth, ii.ii_ad_number as admissionNumber, lr.leave_record_id as id,
+        ii.age as age, ii.dept_name as deptName,p.p_name as name, iw.iward_id as wardId, b.b_id as bid,
+        p.p_sex as sex, ii.ii_date_admission as dateOfAdmission, lr.leave_date as leaveDate, lr.admission as admission,
+        admission_diagnosis as admissionDiagnosis, diagnosis_process as diagnosisProcess, discharge_diagnosis as dischargeDiagnosis,
+        discharge_advice as dischargeAdvice, doctor as doctor, lr.discharge_status as dischargeStatus , ii.ii_status as inpatientStatus
+        from inpatient_information ii,inpatient_ward iw,bed b,patient p,leave_record lr
+        where  ii.p_id = p.p_id and ii.ward_id = iw.wid and ii.bed_id = b.id and lr.admission_id = ii.ii_id
+        <if test="condition.doctor !=null and condition.doctor !=''">
+            and lr.doctor = #{condition.doctor}
+        </if>
+        <if test="condition.pid !=null and condition.pid !=''">
+            <bind name="pid" value="'%'+condition.pid+'%'"/>
+            and ii.p_id like #{pid}
+        </if>
+        <if test="condition.pname !=null and condition.pname !=''">
+            <bind name="pname" value="'%'+condition.pname+'%'"/>
+            and p.p_name like #{pname}
+        </if>
+        <if test="condition.admissionNumber !=null and condition.admissionNumber !=''">
+            <bind name="admissionNumber" value="'%'+condition.admissionNumber+'%'"/>
+            and ii.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="condition.status !=null and condition.status !=''">
+            and ii.ii_status = #{condition.status}
+        </if>
+        <if test="condition.leaveDateStart !=null and condition.leaveDateEnd != null and condition.leaveDateStart !='' and condition.leaveDateEnd !=''">
+            and lr.leave_date between #{condition.leaveDateStart} and #{condition.leaveDateEnd}
+        </if>
+    </select>
+
+    <select id="selectByAdmissionId" resultType="java.lang.Integer">
+        select count(1)
+        from leave_record lr
+        where  lr.admission_id = #{admissionId}
+    </select>
+
+    <update id="update">
+        update leave_record
+        <set>
+            <if test="record.admission != null" >
+                admission = #{record.admission},
+            </if>
+            <if test="record.admissionDiagnosis != null" >
+                admission_diagnosis = #{record.admissionDiagnosis},
+            </if>
+            <if test="record.diagnosisProcess != null" >
+                diagnosis_process = #{record.diagnosisProcess},
+            </if>
+            <if test="record.dischargeDiagnosis != null" >
+                discharge_diagnosis = #{record.dischargeDiagnosis},
+            </if>
+            <if test="record.dischargeAdvice !=null">
+                discharge_advice = #{record.dischargeAdvice},
+            </if>
+            <if test="record.leaveDate !=null">
+                leave_date = #{record.leaveDate}
+            </if>
+        </set>
+        where leave_record_id = #{record.id}
+    </update>
+
+    <delete id="deleteById">
+        delete from leave_record where leave_record_id = #{id}
+    </delete>
+
+    <delete id="deleteByAdmissionId">
+        delete from leave_record where admission_id = #{id}
+    </delete>
+
+</mapper>

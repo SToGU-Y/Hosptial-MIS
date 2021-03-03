@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.AnalysisMapper">
+
+    <select id="findTodayDeposit" resultType="java.math.BigDecimal">
+        select sum(des_deposit)
+        from deposit
+        where des_is_refund = 0 and des_status = 1 and date_pay = #{today}
+    </select>
+
+    <select id="findTodayBill" resultType="java.math.BigDecimal">
+        select sum(pay) from bill where `date` = #{today}
+    </select>
+
+    <select id="findTotalDeposit" resultType="java.math.BigDecimal">
+        select sum(des_deposit) from deposit where des_is_refund = 0 and des_status = 1
+    </select>
+
+    <select id="findTotalBill" resultType="java.math.BigDecimal">
+        select sum(pay) from bill
+    </select>
+
+    <select id="analysisDeposit" resultType="com.hh.his.graduationproject.model.vo.MoneyAnalysis">
+        select sum(des_deposit) as money , dept_name as dept
+        from deposit,inpatient_information ii
+        where  des_is_refund = 0 and des_status = 1 and deposit.ii_id = ii.ii_id
+        <if test="date !=null and date !='' and date1 !=null and date1 !=''">
+            and date_pay between #{date} and #{date1}
+        </if>
+        group by dept_name
+    </select>
+
+    <select id="analysisBill" resultType="com.hh.his.graduationproject.model.vo.MoneyAnalysis">
+        select sum(pay) as money, dept_name as dept
+        from bill,inpatient_information ii
+        where bill.admission_id = ii.ii_id
+        <if test="date !=null and date !='' and date1 !=null and date1 !=''">
+            and  `date` between #{date} and #{date1}
+        </if>
+        group by dept_name
+    </select>
+
+    <select id="findTodayInpatient" resultType="java.lang.Integer">
+        select count(ii_id) from inpatient_information
+        where ii_date_admission = #{today} and ii_status = 0
+    </select>
+
+    <select id="findTotalInpatient" resultType="java.lang.Integer">
+        select count(ii_id) from inpatient_information
+    </select>
+
+    <select id="findTodayLeave" resultType="java.lang.Integer">
+        select count(ii_id) from inpatient_information
+        where ii_discharge_date = #{today} and ii_status = 2
+    </select>
+
+    <select id="findTotalLeave" resultType="java.lang.Integer">
+        select count(ii_id) from inpatient_information
+        where ii_status = 2
+    </select>
+
+    <select id="selectInpatientSex" resultType="com.hh.his.graduationproject.model.vo.SexJSON">
+        select p.p_sex as sex , count(ii_id) as people
+        from inpatient_information,patient p
+        where p.p_id = inpatient_information.p_id and ii_status = 0
+        <if test="date !=null and date !='' and date1 !=null and date1 !=''">
+           and ii_date_admission between #{date} and #{date1}
+        </if>
+        group by p.p_sex
+    </select>
+
+    <select id="selectLeaveSex" resultType="com.hh.his.graduationproject.model.vo.SexJSON">
+        select p.p_sex as sex , count(ii_id) as people
+        from inpatient_information,patient p
+        where p.p_id = inpatient_information.p_id and ii_status = 2
+        <if test="date !=null and date !='' and date1 !=null and date1 !=''">
+            and ii_discharge_date between #{date} and #{date1}
+        </if>
+        group by p.p_sex
+    </select>
+
+    <select id="statisticsMonth" resultType="com.hh.his.graduationproject.model.vo.StatisticsMonth">
+        select sum(e.money) as money, e.month as `month`
+        from (
+        select sum(pay) as money, MONTH(date) as `month`
+        from bill
+        <where>
+            <if test="date !=null and date !=''">
+                DATE_FORMAT(date,'%Y') in (#{date})
+            </if>
+        </where>
+        group by MONTH(date)
+        union
+        select sum(des_deposit) as money, MONTH(date_pay) as `month`
+        from deposit
+        <where>
+            des_status = 1 and des_is_refund = 0
+            <if test="date !=null and date !=''">
+               and  DATE_FORMAT(date_pay,'%Y') in (#{date})
+            </if>
+        </where>
+        group by MONTH(date_pay)
+        ) e
+        group by e.month;
+    </select>
+
+    <select id="MonthlyHospitalization" resultType="java.util.HashMap">
+        select MONTH(ii_date_admission) as '月份',count(ii_id) as '住院人数'
+        from inpatient_information
+        <where>
+            <if test="date!=null and date!=''">
+                DATE_FORMAT(ii_date_admission,'%Y') in (#{date})
+            </if>
+        </where>
+        group by MONTH(ii_date_admission);
+    </select>
+
+    <select id="MonthlyDischarged" resultType="java.util.HashMap">
+        select MONTH(ii_discharge_date) as '月份',count(ii_id) as '出院人数'
+        from inpatient_information
+        <where>
+            ii_status = 2
+            <if test="date!=null and date!=''">
+               and DATE_FORMAT(ii_discharge_date,'%Y') in (#{date})
+            </if>
+        </where>
+        group by MONTH(ii_discharge_date);
+    </select>
+</mapper>

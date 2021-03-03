@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.BedMapper">
+    <resultMap id="baseResult" type="Bed">
+        <result property="id" column="id"/>
+        <result property="bid" column="b_id"/>
+        <result property="bedStatus" column="b_status"/>
+    </resultMap>
+    <resultMap id="bedResult" type="Bed" extends="baseResult">
+        <association property="ward" column="ward_id" javaType="InpatientWard">
+            <result property="wid" column="wid"/>
+            <result property="wardId" column="iward_id"/>
+            <result property="wardBedNum" column="iward_bed_num"/>
+            <result property="wardStatus" column="iward_status"/>
+            <association property="wardType" column="iward_type" javaType="InpatientWardType">
+                <result property="iwtId" column="iwt_id"/>
+                <result property="iwtType" column="iwt_type"/>
+                <result property="iwtPrice" column="iwt_price"/>
+            </association>
+            <association property="dept" column="d_id" javaType="Dept">
+                <result property="deptId" column="dept_id"/>
+                <result property="deptName" column="dept_name"/>
+            </association>
+        </association>
+    </resultMap>
+
+    <select id="selectNullBed" resultMap="bedResult">
+        select *
+        from bed b,inpatient_ward iw,inpatient_ward_type iwt,dept d
+        where b.ward_id = iw.wid and iw.iward_type = iwt.iwt_id and iw.d_id = d.dept_id
+        and b.b_status = 0
+        <if test="condition.deptId !=null and condition.deptId != ''">
+            and d.dept_id = #{condition.deptId}
+        </if>
+        <if test="condition.iwtId !=null and condition.iwtId !=''">
+            and iwt.iwt_id = #{condition.iwtId}
+        </if>
+    </select>
+
+    <select id="selectById" resultMap="bedResult">
+        select *,iw.wid as wid from bed b,inpatient_ward iw
+        where b.ward_id = iw.wid and b.id = #{id}
+    </select>
+
+    <select id="selectNotNullBedNumByWid" resultType="java.lang.Integer">
+        select count(*)
+        from bed b,inpatient_ward iw
+        where b.ward_id = iw.wid
+        and b_status = 1 and iw.wid = #{wid}
+    </select>
+
+    <select id="selectBedByWid" resultMap="baseResult">
+        select * from bed where ward_id = #{wid}
+    </select>
+
+    <select id="selectWardBedNumByWid" resultType="java.lang.Integer">
+        select count(*)
+        from bed b,inpatient_ward iw
+        where b.ward_id = iw.wid and iw.wid = #{wid}
+    </select>
+
+    <update id="updateBed">
+        update bed
+        <trim prefix="set" suffixOverrides=",">
+            <if test="dto.bid !=null and dto.bid != ''">
+                b_id = #{dto.bid},
+            </if>
+            <if test="dto.wid !=null and dto.wid != ''">
+                ward_id = #{dto.wid},
+            </if>
+            <if test="dto.bedStatus !=null">
+                b_status = #{dto.bedStatus}
+            </if>
+        </trim>
+        where id = #{dto.id}
+    </update>
+
+    <insert id="insertBed">
+        insert into bed(b_id,ward_id,b_status)
+        values (#{bed.bid},#{bed.wid},#{bed.bedStatus})
+    </insert>
+
+    <delete id="delBedById">
+        delete from bed where id = #{id}
+    </delete>
+
+    <select id="AnalyzeBedSum">
+        select dept_name,count(*) from bed b ,inpatient_ward iw, dept d where iw.wid = b.ward_id and d.dept_id = iw.d_id group by dept_name;
+    </select>
+
+    <select id="AnalyzeBedNotNull">
+        select dept_name,count(*) from bed b ,inpatient_ward iw, dept d where b.b_status = 1 and iw.wid = b.ward_id and d.dept_id = iw.d_id group by dept_name
+    </select>
+
+
+</mapper>

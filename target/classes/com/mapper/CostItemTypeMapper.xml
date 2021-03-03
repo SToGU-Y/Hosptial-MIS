@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.CostItemTypeMapper">
+    <resultMap id="base" type="CostItemType">
+        <result column="cost_item_type_id" property="costItemTypeId"/>
+        <result column="cost_item_type" property="costItemType"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="base">
+        select * from cost_item_type;
+    </select>
+
+</mapper>

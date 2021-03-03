@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hh.his.graduationproject.dao.MenuMapper" >
+    <resultMap id="BaseResultMap" type="Menu" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="path" property="path" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+        <result column="requireAuth" property="requireAuth"/>
+        <result column="component" property="component"/>
+        <result column="type" property="type"/>
+        <result column="iconCls" property="iconCls"/>
+    </resultMap>
+
+    <resultMap id="Menus2" type="Menu" extends="BaseResultMap">
+        <collection property="children" ofType="Menu">
+            <id column="id2" property="id" jdbcType="INTEGER" />
+            <result column="url2" property="url" jdbcType="VARCHAR" />
+            <result column="path2" property="path" jdbcType="VARCHAR" />
+            <result column="name2" property="name" jdbcType="VARCHAR" />
+            <result column="parentId2" property="parentId" jdbcType="INTEGER" />
+            <result column="requireAuth2" property="requireAuth" jdbcType="BIT" />
+            <result column="component2" property="component"/>
+            <result column="type2" property="type"/>
+            <result column="iconCls2" property="iconCls"/>
+        </collection>
+    </resultMap>
+
+    <select id="getAllMenus" resultMap="Menus2">
+    select distinct m1.*, m2.id as id2, m2.name as name2, m2.parent_id as parentId2, m2.requireAuth as requireAuth2, m2.path as path2, m2.component as component2, m2.type as type2
+    from menu m1,menu m2,staff_role sr,menu_role mr
+    where m1.id = m2.parent_id and sr.role_id = mr.role_id and mr.menu_id=m2.id and m1.type=1 and m2.type=1 order by m1.id,m2.id
+    </select>
+
+    <select id="getAllMenusByPage" resultType="com.hh.his.graduationproject.model.vo.MenuVO">
+        select id as id, url as url, `name` as name , component as component,  parent_id  as parentId, iconCls as iconCls
+        from menu
+        <where>
+            <if test="condition.id != null and condition.id !=''">
+                <bind name="id" value="'%'+condition.id+'%'"/>
+                id like #{id}
+            </if>
+            <if test="condition.name !=null and condition.name !=''">
+                <bind name="name" value="'%'+condition.name+'%'"/>
+                and `name` like #{name}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="getAllMenusWithRole" resultMap="MenuWithRole">
+        select m.*,r.role_id ,r.role_name from menu m,menu_role mr,role r where m.id=mr.menu_id and m.type = 2 and mr.role_id=r.role_id order by m.id
+     </select>
+
+    <select id="getMenusByRoleId" resultMap="Menus2">
+    select distinct m1.*, m2.id as id2, m2.name as name2, m2.parent_id as parentId2, m2.requireAuth as requireAuth2, m2.path as path2, m2.component as component2, m2.type as type2
+    from menu m1,menu m2,menu_role mr
+    where m1.id = m2.parent_id and mr.role_id = #{roleId} and mr.menu_id=m2.id and m1.type=1 and m2.type=1 order by m1.id,m2.id
+    </select>
+
+    <select id="getMenusByUsername" resultMap="Menus2">
+    select distinct m1.*, m2.id as id2, m2.name as name2, m2.parent_id as parentId2, m2.requireAuth as requireAuth2, m2.path as path2, m2.component as component2, m2.type as type2
+    from menu m1,menu m2,staff_role sr,menu_role mr
+    where m1.id = m2.parent_id and sr.username= #{username} and sr.role_id = mr.role_id and mr.menu_id=m2.id and m1.type=1 and m2.type=1 order by m1.id,m2.id
+    </select>
+
+
+    <resultMap id="MenuWithRole" type="Menu" extends="BaseResultMap">
+        <collection property="roles" ofType="Role">
+            <id column="role_id" property="roleId"/>
+            <result column="role_name" property="roleName"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="MenuWithChildren" type="Menu" extends="BaseResultMap">
+        <id column="id1" property="id"/>
+        <result column="name1" property="name"/>
+        <collection property="children" ofType="Menu">
+            <id column="id2" property="id"/>
+            <result column="name2" property="name"/>
+            <collection property="children" ofType="Menu">
+                <id column="id3" property="id"/>
+                <result column="name3" property="name"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="getMidsByRid" resultType="java.lang.Integer">
+        select menu_id from menu_role where rid=#{role_id};
+    </select>
+
+
+    <sql id="Base_Column_List" >
+    id, url, path, name,  requireAuth, parent_id
+  </sql>
+
+    <select id="selectByPrimaryKey" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+        select
+        count(*)
+        from menu
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from menu
+        where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insert">
+        insert into menu (id,url, path,
+          `name`, component, parent_id,iconCls,`type`)
+        values (
+           #{menu.id}, #{menu.url},#{menu.path},
+            #{menu.name},#{menu.component}, #{menu.parentId},#{menu.iconCls},1
+        )
+    </insert>
+
+    <delete id="delete">
+        delete from menu where id = #{id}
+    </delete>
+
+    <insert id="insertSelective" parameterType="Menu" >
+        insert into menu
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="url != null" >
+                url,
+            </if>
+            <if test="path != null" >
+                path,
+            </if>
+            <if test="name != null" >
+                name,
+            </if>
+            <if test="requireauth != null" >
+                requireAuth,
+            </if>
+            <if test="parentId != null" >
+                parent_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="url != null" >
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="path != null" >
+                #{path,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null" >
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="requireauth != null" >
+                #{requireauth,jdbcType=BIT},
+            </if>
+            <if test="parentId != null" >
+                #{parentId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectById" resultType="java.lang.Integer">
+        select count(id) from menu where parent_id = #{id}
+    </select>
+
+    <update id="updateByPrimaryKeySelective">
+        update menu
+        <set>
+            <if test="menu.url != null" >
+                url = #{menu.url},
+            </if>
+            <if test="menu.path != null" >
+                path = #{menu.path},
+            </if>
+            <if test="menu.name != null" >
+                name = #{menu.name},
+            </if>
+            <if test="menu.parentId != null" >
+                parent_id = #{menu.parentId},
+            </if>
+            <if test="menu.iconCls !=null">
+                iconCls = #{menu.iconCls},
+            </if>
+            <if test="menu.component !=null">
+                component = #{menu.component}
+            </if>
+        </set>
+        where id = #{menu.id}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="Menu" >
+        update menu
+        set url = #{url,jdbcType=VARCHAR},
+            path = #{path,jdbcType=VARCHAR},
+            name = #{name,jdbcType=VARCHAR},
+            requireAuth = #{requireAuth,jdbcType=BIT},
+            parent_id = #{parentId,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+</mapper>

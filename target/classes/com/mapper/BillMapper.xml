@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.BillMapper">
+
+    <resultMap id="base" type="Bill">
+        <result column="bill_id" property="billId"/>
+        <result column="admission_id" property="admissionId"/>
+        <result column="operator" property="operator"/>
+        <result column="deposit" property="deposit"/>
+        <result column="sum" property="costSum"/>
+        <result column="pay" property="pay"/>
+        <result column="date" property="date"/>
+        <result column="payment_type" property="paymentType"/>
+    </resultMap>
+
+    <select id="selectAllBill" resultType="com.hh.his.graduationproject.model.vo.BillVO">
+        select b.bill_id as billId, b.admission_id as admissionId, b.operator as operator, b.deposit as deposit,
+        b.pay as pay, b.sum as costSum, b.date as `date`, b.payment_type as paymentType, ii.ii_ad_number as admissionNumber
+        from bill b,inpatient_information ii where b.admission_id = ii.ii_id
+        <if test="condition.admissionNumber !=null  and condition.admissionNumber !=''">
+            <bind name="admissionNumber" value="'%'+condition.admissionNumber+'%'"/>
+            and ii.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="condition.operator !=null and condition.operator !=''">
+            <bind name="operator" value="'%'+condition.operator+'%'"/>
+            and b.operator like #{operator}
+        </if>
+        <if test="condition.payDateStart !=null and condition.payDateStart !='' and condition.payDateEnd !=null and condition.payDateEnd !=''">
+            and `date` between #{condition.payDateStart} and #{condition.payDateEnd}
+        </if>
+    </select>
+
+    <insert id="insert">
+        insert into bill(bill_id,admission_id,deposit,`sum`,pay,`date`,operator,payment_type)
+        value (#{bill.billId},#{bill.admissionId},#{bill.deposit},#{bill.costSum},#{bill.pay},#{bill.date},#{bill.operator},#{bill.paymentType})
+    </insert>
+
+    <delete id="deleteByAdmissionId">
+        delete from bill where admission_id = #{admissionId}
+    </delete>
+
+    <delete id="deleteByBillId">
+        delete from bill where bill_id = #{billId}
+    </delete>
+
+    <select id="getReportBill" resultType="com.hh.his.graduationproject.model.vo.ReportVO">
+        select
+        payment_type as type, SUM(pay) as sum
+        from bill
+        <where>
+            <if test="condition.operator !=null and condition.operator !=''">
+                and operator = #{condition.operator}
+            </if>
+            <if test="condition.dateStart !=null and condition.dateStart !='' and condition.dateEnd !=null and condition.dateEnd !=''">
+                and date between #{condition.dateStart} and #{condition.dateEnd}
+            </if>
+        </where>
+        group by payment_type
+    </select>
+
+</mapper>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.MedicalRecordMapper">
+    <resultMap id="base" type="MedicalRecord">
+        <result column="id" property="id"/>
+        <result column="operator" property="operator"/>
+        <result column="complaint" property="complaint"/>
+        <result column="anamnesis" property="anamnesis"/>
+        <result column="drug_allergy" property="drugAllergy"/>
+        <result column="present_illness" property="historyOfPresentIllness"/>
+        <result column="symptom" property="symptom"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    <resultMap id="MedicalRecord" type="MedicalRecord" extends="base">
+        <association property="admissionId" column="ii_id" javaType="InpatientInformation">
+            <result property="id" column="ii_id"/>
+            <result property="admissionNumber" column="ii_ad_number"/>
+            <result property="sid" column="s_id"/>
+            <result property="age" column="age"/>
+            <result property="diagnosis01" column="ii_diagnosis_01"/>
+            <result property="diagnosis02" column="ii_diagnosis_02"/>
+            <result property="admittedDoc" column="ii_admitted_doc"/>
+            <result property="attendingDoc" column="ii_attending_doc"/>
+            <result property="visitingDoc" column="ii_visiting_doc"/>
+            <result property="dateOfAdmission" column="ii_date_admission"/>
+            <result property="dateOfDischarge" column="ii_discharge_date"/>
+            <result property="status" column="ii_status"/>
+            <result property="day" column="ii_day"/>
+            <result property="medicalNumber" column="ii_medical_insurance_number"/>
+            <association property="ward" column="ward_id">
+                <result property="id" column="id"/>
+                <result property="wardId" column="iward_id"/>
+                <association property="wardType" column="iward_type" javaType="InpatientWardType">
+                    <result property="iwtId" column="iwt_id"/>
+                    <result property="iwtType" column="iwt_type"/>
+                    <result property="iwtPrice" column="iwt_price"/>
+                </association>
+            </association>
+            <association property="bed" column="bed_id">
+                <result property="id" column="id"/>
+                <result property="bid" column="b_id"/>
+                <result property="bedStatus" column="b_status"/>
+            </association>
+            <association property="dept" column="dept_id" javaType="Dept">
+                <result property="deptId" column="dept_id"/>
+                <result property="deptName" column="dept_name"/>
+            </association>
+            <association property="patient" column="p_id" javaType="Patient">
+                <result property="pid" column="p_id"/>
+                <result property="pname" column="p_name"/>
+                <result property="sex" column="p_sex"/>
+                <result property="nationality" column="p_nationality"/>
+                <result property="born" column="p_born"/>
+                <result property="age" column="p_age"/>
+                <result property="birth" column="p_birth"/>
+                <result property="tel" column="p_tel"/>
+                <result property="regAddr" column="p_reg_addr"/>
+                <result property="currAddr" column="p_curr_addr"/>
+                <result property="province" column="p_province"/>
+                <result property="city" column="p_city"/>
+                <result property="contact" column="p_contact"/>
+                <result property="conRel" column="p_con_rel"/>
+                <result property="conTel" column="p_con_tel"/>
+                <result property="married" column="p_married"/>
+                <result property="nation" column="nation"/>
+            </association>
+            <association property="patientType" column="pt_id" javaType="PatientType">
+                <result property="ptId" column="pt_id"/>
+                <result property="ptName" column="pt_name"/>
+            </association>
+        </association>
+    </resultMap>
+
+    <resultMap id="recordVO" type="com.hh.his.graduationproject.model.vo.RecordVO">
+        <result column="id" property="id"/>
+        <result column="ii_id" property="admissionId"/>
+        <result column="complaint" property="complaint"/>
+        <result column="operator" property="operator"/>
+        <result column="anamnesis" property="anamnesis"/>
+        <result column="drug_allergy" property="drugAllergy"/>
+        <result column="present_illness" property="historyOfPresentIllness"/>
+        <result column="symptom" property="symptom"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <select id="selectByAdmissionId" resultMap="recordVO">
+        select * from medical_record where ii_id = #{admissionId};
+    </select>
+
+    <insert id="insert">
+        insert into medical_record(operator,anamnesis,complaint,drug_allergy,present_illness,symptom,create_time,ii_id)
+        values (#{record.operator},#{record.anamnesis},#{record.complaint},#{record.drugAllergy},#{record.historyOfPresentIllness},#{record.symptom},#{record.createTime},#{record.admissionId})
+    </insert>
+
+    <update id="update">
+        update medical_record
+        set operator = #{record.operator},
+        anamnesis = #{record.anamnesis},
+        complaint = #{record.complaint},
+        drug_allergy = #{record.drugAllergy},
+        present_illness = #{record.historyOfPresentIllness},
+        symptom = #{record.symptom}
+        where id = #{record.id}
+    </update>
+
+    <delete id="delete">
+        delete from medical_record where ii_id = #{id}
+    </delete>
+
+</mapper>

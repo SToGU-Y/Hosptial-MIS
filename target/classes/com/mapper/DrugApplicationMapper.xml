@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.DrugApplicationMapper">
+    <resultMap id="base" type="DrugApplication">
+        <result property="drugApplicationId" column="drug_application_id"/>
+        <result property="drugNo" column="drug_no"/>
+        <result property="drugName" column="drug_name"/>
+        <result property="drugRequireDept" column="drug_require_dept"/>
+        <result property="drugRequireNumber" column="drug_require_number"/>
+        <result property="drugDetail" column="drug_detail"/>
+        <result property="drugPrice" column="drug_price"/>
+        <result property="drugSpecifications" column="drug_specifications"/>
+        <result property="drugUnit" column="drug_unit"/>
+        <result property="doseUnit" column="dose_unit"/>
+        <result property="drugType" column="drug_type"/>
+        <result property="status" column="status"/>
+        <result property="operator" column="operator"/>
+        <result property="applyDate" column="apply_date"/>
+        <result property="offerDate" column="offer_date"/>
+        <result property="offerOperator" column="offerOperator"/>
+    </resultMap>
+    <resultMap id="withInformation" type="DrugApplication" extends="base">
+        <association property="amission" column="admission_id" javaType="InpatientInformation">
+            <result property="id" column="ii_id"/>
+            <result property="admissionNumber" column="ii_ad_number"/>
+            <result property="sid" column="s_id"/>
+            <result property="age" column="age"/>
+            <result property="deptName" column="dept_name"/>
+            <result property="ptName" column="ptName"/>
+            <result property="diagnosis01" column="ii_diagnosis_01"/>
+            <result property="diagnosis02" column="ii_diagnosis_02"/>
+            <result property="admittedDoc" column="ii_admitted_doc"/>
+            <result property="attendingDoc" column="ii_attending_doc"/>
+            <result property="visitingDoc" column="ii_visiting_doc"/>
+            <result property="dateOfAdmission" column="ii_date_admission"/>
+            <result property="dateOfDischarge" column="ii_discharge_date"/>
+            <result property="status" column="ii_status"/>
+            <result property="day" column="ii_day"/>
+            <result property="medicalNumber" column="ii_medical_insurance_number"/>
+            <association property="ward" column="ward_id">
+                <result property="wid" column="wid"/>
+                <result property="wardId" column="iward_id"/>
+                <association property="wardType" column="iward_type" javaType="InpatientWardType">
+                    <result property="iwtId" column="iwt_id"/>
+                    <result property="iwtType" column="iwt_type"/>
+                    <result property="iwtPrice" column="iwt_price"/>
+                </association>
+            </association>
+            <association property="bed" column="bed_id">
+                <result property="id" column="id"/>
+                <result property="bid" column="b_id"/>
+            </association>
+            <association property="patient" column="p_id" javaType="Patient">
+                <result property="pid" column="p_id"/>
+                <result property="pname" column="p_name"/>
+                <result property="sex" column="p_sex"/>
+                <result property="birth" column="p_birth"/>
+            </association>
+        </association>
+    </resultMap>
+
+
+    <select id="selectAll3" resultType="com.hh.his.graduationproject.model.vo.DrugApplicationVO">
+        SELECT da.drug_application_id as drugApplicationId, ii.ii_id as admissionId, ii.ii_ad_number as admissionNumber,
+        iw.iward_id as wardId, b.b_id as bid, ii.dept_name as deptName, da.drug_no as drugNo,p.p_name as name,
+        da.drug_name as drugName, da.drug_require_number as drugRequireNumber, da.drug_price as drugPrice,
+        da.drug_specifications as drugSpecifications, da.drug_dose as drugDose, da.drug_unit as drugUnit,
+        da.status, da.operator, da.apply_date as applyDate, da.offer_date as offerDate, da.offer_operator as offerOperator,
+        da.drug_type as drugType,da.drug_require_dept as drugRequireDept
+        from drug_application da,inpatient_information ii,bed b,inpatient_ward iw,patient p
+        where da.admission_id = ii.ii_id and ii.ii_status = 0 and ii.bed_id = b.id
+        and ii.ward_id = iw.wid and ii.p_id = p.p_id and da.status = 2
+        <if test="condition.deptName !=null and condition.deptName !='' ">
+            and ii.dept_name = #{condition.deptName}
+        </if>
+        <if test="condition.admissionNumber !=null and condition.admissionNumber !=''">
+            <bind name="admissionNumber" value="'%'+condition.admissionNumber+'%'"/>
+            and ii.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="condition.name!=null and condition.name !=''">
+            <bind name="name" value="'%'+condition.name+'%'"/>
+            and p.p_name like #{name}
+        </if>
+        <if test="condition.drugNo !=null and condition.drugNo !=''">
+            <bind name="drugNo" value="'%'+condition.drugNo+'%'"/>
+            and da.drug_no like #{drugNo}
+        </if>
+        <if test="condition.drugName != null and condition.drugName !=''">
+            <bind name="drugName" value="'%'+condition.drugName+'%'"/>
+            and da.drug_name like #{drugName}
+        </if>
+    </select>
+
+    <select id="selectAll2" resultType="com.hh.his.graduationproject.model.vo.DrugApplicationVO">
+        SELECT da.drug_application_id as drugApplicationId, ii.ii_id as admissionId, ii.ii_ad_number as admissionNumber,
+        iw.iward_id as wardId, b.b_id as bid, ii.dept_name as deptName, da.drug_no as drugNo,p.p_name as name,
+        da.drug_name as drugName, da.drug_require_number as drugRequireNumber, da.drug_price as drugPrice,
+        da.drug_specifications as drugSpecifications, da.drug_dose as drugDose, da.drug_unit as drugUnit,
+        da.status, da.operator, da.apply_date as applyDate, da.offer_date as offerDate, da.offer_operator as offerOperator,
+        da.drug_type as drugType,da.drug_require_dept as drugRequireDept
+        from drug_application da,inpatient_information ii,bed b,inpatient_ward iw,patient p
+        where da.admission_id = ii.ii_id and ii.ii_status = 0 and ii.bed_id = b.id
+        and ii.ward_id = iw.wid and ii.p_id = p.p_id and da.status = 1
+        <if test="condition.deptName !=null and condition.deptName !='' ">
+            and ii.dept_name = #{condition.deptName}
+        </if>
+        <if test="condition.admissionNumber !=null and condition.admissionNumber !=''">
+            <bind name="admissionNumber" value="'%'+condition.admissionNumber+'%'"/>
+            and ii.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="condition.name!=null and condition.name !=''">
+            <bind name="name" value="'%'+condition.name+'%'"/>
+            and p.p_name like #{name}
+        </if>
+        <if test="condition.drugNo !=null and condition.drugNo !=''">
+            <bind name="drugNo" value="'%'+condition.drugNo+'%'"/>
+            and da.drug_no like #{drugNo}
+        </if>
+        <if test="condition.drugName != null and condition.drugName !=''">
+            <bind name="drugName" value="'%'+condition.drugName+'%'"/>
+            and da.drug_name like #{drugName}
+        </if>
+    </select>
+
+    <select id="selectAll" resultType="com.hh.his.graduationproject.model.vo.DrugApplicationVO">
+        SELECT da.drug_application_id as drugApplicationId, ii.ii_id as admissionId, ii.ii_ad_number as admissionNumber,
+        iw.iward_id as wardId, b.b_id as bid, ii.dept_name as deptName, da.drug_no as drugNo,p.p_name as name,
+        da.drug_name as drugName, da.drug_require_number as drugRequireNumber, da.drug_price as drugPrice,
+        da.drug_specifications as drugSpecifications, da.drug_dose as drugDose, da.drug_unit as drugUnit,
+        da.status, da.operator, da.apply_date as applyDate, da.offer_date as offerDate, da.offer_operator as offerOperator,
+        da.drug_type as drugType,da.drug_require_dept as drugRequireDept
+        from drug_application da,inpatient_information ii,bed b,inpatient_ward iw,patient p
+        where da.admission_id = ii.ii_id and ii.ii_status = 0 and ii.bed_id = b.id
+        and ii.ward_id = iw.wid and ii.p_id = p.p_id and da.status = 0
+        <if test="condition.deptName !=null and condition.deptName !='' ">
+            and ii.dept_name = #{condition.deptName}
+        </if>
+        <if test="condition.admissionNumber !=null and condition.admissionNumber !=''">
+            <bind name="admissionNumber" value="'%'+condition.admissionNumber+'%'"/>
+            and ii.ii_ad_number like #{admissionNumber}
+        </if>
+        <if test="condition.name!=null and condition.name !=''">
+            <bind name="name" value="'%'+condition.name+'%'"/>
+            and p.p_name like #{name}
+        </if>
+        <if test="condition.drugNo !=null and condition.drugNo !=''">
+            <bind name="drugNo" value="'%'+condition.drugNo+'%'"/>
+            and da.drug_no like #{drugNo}
+        </if>
+        <if test="condition.drugName != null and condition.drugName !=''">
+            <bind name="drugName" value="'%'+condition.drugName+'%'"/>
+            and da.drug_name like #{drugName}
+        </if>
+    </select>
+
+    <select id="DrugApplicationList">
+         select p.p_name as pname, drug_require_dept as drugRequireDept,drug_no as drugNo,
+         drug_name as drugName,count(*) as drugReuqireNumber
+         from drug_application,inpatient_information ii,patient p
+         where ii.ii_id = admission_id and p.p_id = ii.p_id and ii.ii_status = 0 and status = 2
+         group by drug_require_dept,p.p_name,drug_no;
+    </select>
+    
+    <insert id="insert">
+        insert into drug_application(admission_id,drug_no,drug_name,drug_require_number,
+                                      drug_price,drug_specifications,drug_dose,drug_unit,
+                                      status,operator,apply_date,offer_date,offer_operator,drug_type,
+                                      drug_require_dept)
+        values
+        <foreach collection="list" item="apply" separator=",">
+         (
+            #{apply.admissionId},#{apply.drugNo},#{apply.drugName},#{apply.drugRequireNumber},
+            #{apply.drugPrice},#{apply.drugSpecifications},#{apply.drugDose},#{apply.drugUnit},
+            #{apply.status},#{apply.operator},#{apply.applyDate},#{apply.offerDate},#{apply.offerOperator},
+            #{apply.drugType},#{apply.drugRequireDept}
+         )
+        </foreach>
+    </insert>
+
+    <update id="updateStatus">
+        update drug_application
+        set status = #{apply.status}
+        ,operator = #{apply.operator}
+        ,apply_date = #{apply.applyDate}
+        <if test="apply.offerDate !=null">
+            ,offer_date = #{apply.offerDate}
+        </if>
+        <if test="apply.offerOperator !=null and apply.offerOperator !='' ">
+            ,offer_operator = #{apply.offerOperator}
+        </if>
+        where drug_application_id = #{apply.drugApplicationId}
+    </update>
+
+    <update id="updateDept">
+        update drug_application
+        set drug_require_dept = #{dept1}
+        where drug_require_dept = #{dept}
+    </update>
+
+    <delete id="delete">
+        delete from drug_application where drug_application_id = #{id}
+    </delete>
+
+    <delete id="deleteByAdmissionId">
+        delete from drug_application where admission_id = #{id}
+    </delete>
+
+</mapper>

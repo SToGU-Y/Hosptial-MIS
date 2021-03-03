@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.SysLogMapper">
+    <resultMap id="base" type="SysLog">
+        <result column="log_id" property="logId"/>
+        <result column="username" property="username"/>
+        <result column="ip" property="ip"/>
+        <result column="uri" property="uri"/>
+        <result column="params" property="params"/>
+        <result column="create_date" property="createDate"/>
+        <result column="method" property="method"/>
+        <result column="method_describe" property="methodDescribe"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="base">
+        select * from log
+        <where>
+            <if test="logDateStart !=null and logDateStart !='' and logDateEnd !=null and logDateEnd !=''">
+                create_date between #{logDateStart} and #{logDateEnd}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert">
+        insert into log(username,uri,method,method_describe,ip,create_date,params)
+        value (#{log.username},#{log.uri},#{log.method},#{log.methodDescribe},#{log.ip},#{log.createDate},#{log.params})
+    </insert>
+
+</mapper>

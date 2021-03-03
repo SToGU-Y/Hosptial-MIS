@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.CostItemMapper">
+    <resultMap id="base" type="CostItem">
+        <result property="costItemNo" column="cost_item_no"/>
+        <result property="costItemName" column="cost_item_name"/>
+        <result property="costItemPrice" column="cost_item_price"/>
+        <result property="costItemType" column="cost_item_type"/>
+        <result property="costItemUnit" column="cost_item_unit"/>
+        <result property="costItemSpecifications" column="cost_item_specifications"/>
+        <result property="costItemDose" column="cost_item_dose"/>
+    </resultMap>
+
+    <select id="selectByCostItemNo" resultMap="base">
+        select * from cost_item where cost_item_no = #{costItemNo}
+    </select>
+
+    <select id="selectByConditions" resultMap="base">
+        select * from cost_item
+        <where>
+            <if test="costItem.costItemName !=null and costItem.costItemName !=''">
+                <bind name="costItemName" value="'%'+costItem.costItemName+'%'"/>
+                cost_item_name like #{costItemName}
+            </if>
+            <if test="costItem.costItemNo !=null and costItem.costItemNo !=''">
+                <bind name="costItemNo" value="'%'+costItem.costItemNo+'%'"/>
+               and cost_item_no like #{costItemNo}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAll" resultMap="base">
+        select * from cost_item
+        <where>
+            <if test="costItem.costItemType !=null and costItem.costItemType !=''">
+                cost_item_type = #{costItem.costItemType}
+            </if>
+            <if test="costItem.costItemNo !=null and costItem.costItemNo !=''">
+                <bind name="no" value="'%'+costItem.costItemNo+'%'"/>
+                and cost_item_no like #{no}
+            </if>
+            <if test="costItem.costItemName !=null and costItem.costItemName !=''">
+                <bind name="name" value="'%'+costItemName+'%'"/>
+                and cost_item_name like #{name}
+            </if>
+        </where>
+    </select>
+
+    <update id="update">
+        update cost_item
+        set
+        cost_item_name = #{costItemName},
+        cost_item_price = #{costItemPrice},
+        cost_item_type = #{costItemType},
+        cost_item_unit = #{costItemUnit}
+        where cost_item_no = #{costItemNo}
+    </update>
+
+    <delete id="delete">
+        delete from cost_item where cost_item_no = #{costItemNo}
+    </delete>
+
+    <insert id="insert">
+        insert into cost_item(cost_item_no,cost_item_name,cost_item_type,cost_item_price,cost_item_unit)
+        value (#{costItem.costItemNo},#{costItem.costItemName},#{costItem.costItemType},#{costItem.costItemPrice},#{costItem.costItemUnit})
+    </insert>
+
+</mapper>

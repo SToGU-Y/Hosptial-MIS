@@ -50,6 +50,9 @@ public class InpatientServiceImpl implements InpatientService {
     @Autowired
     private MedicalAdviceMapper medicalAdviceMapper;
 
+    @Autowired
+    private LeaveRecordMapper leaveRecordMapper;
+
 
     @Transactional
     @Override
@@ -268,6 +271,7 @@ public class InpatientServiceImpl implements InpatientService {
             costMapper.deleteByAdmissionId(lqv.getId());
             depositMapper.deleteByAdmissionId(lqv.getId());
             recordMapper.delete(lqv.getId());
+            leaveRecordMapper.deleteByAdmissionId(lqv.getId());
             drugApplicationMapper.deleteByAdmissionId(lqv.getId());
             medicalAdviceMapper.deleteByAdmissionId(lqv.getId());
             billMapper.deleteByAdmissionId(lqv.getId());

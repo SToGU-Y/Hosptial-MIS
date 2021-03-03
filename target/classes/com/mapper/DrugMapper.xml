@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.DrugMapper">
+    <resultMap id="base" type="Drug">
+        <result property="drugId" column="drug_id"/>
+        <result property="drugNo" column="drug_no"/>
+        <result property="drugName" column="drug_name"/>
+        <result property="drugNum" column="drug_num"/>
+        <result property="drugDetail" column="drug_detail"/>
+        <result property="drugPrice" column="drug_price"/>
+        <result property="drugSpecifications" column="drug_specifications"/>
+        <result property="drugUnit" column="drug_unit"/>
+        <result property="doseUnit" column="dose_unit"/>
+        <result property="drugType" column="drug_type"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="base">
+        select * from drug
+        <where>
+            <if test="condition.drugNo !=null and condition.drugNo !=''">
+                <bind name="drugNo" value="'%'+condition.drugNo+'%'"/>
+                drug_no like #{drugNo}
+            </if>
+            <if test="condition.drugName !=null and condition.drugName !=''">
+                <bind name="drugName" value="'%'+condition.drugName+'%'"/>
+                and drug_name like #{drugName}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectById" resultMap="base">
+        select * from drug where drug_id = #{drugId}
+    </select>
+
+    <select id="selectByNo" resultMap="base">
+        select * from drug where drug_no = #{drugNo}
+    </select>
+
+    <select id="selectByDrugNo" resultMap="base">
+        select * from drug where drug_no = #{drugNo}
+    </select>
+
+    <update id="updateDrugNum">
+        update drug
+        set drug_num = #{drug.drugNum}
+        where drug_id = #{drug.drugId}
+    </update>
+
+</mapper>

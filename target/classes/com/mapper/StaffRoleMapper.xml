@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hh.his.graduationproject.dao.StaffRoleMapper">
+    <resultMap id="BaseResultMap" type="StaffRole" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="username" property="username"/>
+        <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+    id, username, role_id
+    </sql>
+
+    <delete id="deleteByUsername">
+        delete from staff_role where username=#{username}
+    </delete>
+    <delete id="deleteByRoleId">
+        delete from staff_role where role_id =#{roleId}
+    </delete>
+    <insert id="addRole">
+        insert into staff_role (username,role_id) values
+        <foreach collection="rids" item="rid" separator=",">
+            (#{username},#{rid})
+        </foreach>
+    </insert>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from staff_role
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from staff_role
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="StaffRole" >
+    insert into staff_role (username, role_id
+      )
+    values (#{username}, #{roleId}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="StaffRole" >
+        insert into staff_role
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="username != null" >
+                username,
+            </if>
+            <if test="roleId != null" >
+                role_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="username != null" >
+                #{username},
+            </if>
+            <if test="roleId != null" >
+                #{roleId},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="StaffRole" >
+        update staff_role
+        <set >
+            <if test="username != null" >
+                username = #{username},
+            </if>
+            <if test="roleId != null" >
+                role_id = #{roleId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="StaffRole" >
+    update staff_role
+    set username = #{username},
+      role_id = #{roleId}
+    where id = #{id}
+  </update>
+
+</mapper>
