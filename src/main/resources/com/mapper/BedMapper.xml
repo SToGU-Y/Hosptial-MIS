@@ -84,13 +84,5 @@
         delete from bed where id = #{id}
     </delete>
 
-    <select id="AnalyzeBedSum">
-        select dept_name,count(*) from bed b ,inpatient_ward iw, dept d where iw.wid = b.ward_id and d.dept_id = iw.d_id group by dept_name;
-    </select>
-
-    <select id="AnalyzeBedNotNull">
-        select dept_name,count(*) from bed b ,inpatient_ward iw, dept d where b.b_status = 1 and iw.wid = b.ward_id and d.dept_id = iw.d_id group by dept_name
-    </select>
-
 
 </mapper>

@@ -69,6 +69,7 @@ public class BillController {
 
     }
 
+    @SystemLogController(description = "获取账单报表")
     @RequestMapping(value = "/getBillReport",method = RequestMethod.GET)
     public Result getBillReport(Integer admissionId){
         try {

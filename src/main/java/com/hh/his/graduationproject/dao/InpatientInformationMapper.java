@@ -184,7 +184,7 @@ public interface InpatientInformationMapper {
     LeaveVO selectByAdmissionNumber(@Param("admissionNumber") String admissionNumber);
 
     /**
-     * 查住院
+     * 查是否存在该住院号且在院
      * @param admissionNumber
      * @return
      */

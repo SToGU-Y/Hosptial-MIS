@@ -7,6 +7,7 @@ import com.hh.his.graduationproject.model.dto.BedUpdateDTO;
 import com.hh.his.graduationproject.model.dto.WardUpdateDTO;
 import com.hh.his.graduationproject.model.entity.Cost;
 import com.hh.his.graduationproject.model.entity.InpatientInformation;
+import com.hh.his.graduationproject.model.entity.MedicalAdvice;
 import com.hh.his.graduationproject.model.vo.*;
 import com.hh.his.graduationproject.model.vo.condition.AdviceConditionVO;
 import com.hh.his.graduationproject.model.vo.condition.AdviceExecuteConditionVO;
@@ -75,18 +76,28 @@ public class MedicalAdviceServiceImpl implements MedicalAdviceService {
 
     @Override
     public int saveAdvice(List<MedicalAdviceVO> medicalAdvice) throws Exception {
-
+        for (MedicalAdviceVO medicalAdviceVO: medicalAdvice){
+            if (StringUtils.isBlank(medicalAdviceVO.getMadvOperation())){
+                throw new Exception("数据不完整，无法添加!");
+            }
+        }
         int i = adviceMapper.insertBatch(0, medicalAdvice);
         return i;
     }
 
     @Override
     public int sentAdvice(List<MedicalAdviceVO> medicalAdvice) throws Exception {
-
-        Iterator<MedicalAdviceVO> iterator = medicalAdvice.iterator();
-        while (iterator.hasNext()){
-            iterator.next().setMadvSentTime(new Date());
+        for (MedicalAdviceVO medicalAdviceVO: medicalAdvice){
+            if (StringUtils.isBlank(medicalAdviceVO.getMadvOperation())){
+                throw new Exception("数据不完整，无法添加!");
+            }else {
+                medicalAdviceVO.setMadvSentTime(new Date());
+            }
         }
+//        Iterator<MedicalAdviceVO> iterator = medicalAdvice.iterator();
+//        while (iterator.hasNext()){
+//            iterator.next().setMadvSentTime(new Date());
+//        }
         int i = adviceMapper.insertBatch(1, medicalAdvice);
         return i;
     }

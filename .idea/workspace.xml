@@ -20,16 +20,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb64e8c9-c76c-488f-8dd9-117c4f4b00f9" name="Default Changelist" comment="第二次提交">
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hh/his/graduationproject/controller/AnalysisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hh/his/graduationproject/controller/AnalysisController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hh/his/graduationproject/controller/BillController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hh/his/graduationproject/controller/BillController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hh/his/graduationproject/dao/AnalysisMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hh/his/graduationproject/dao/AnalysisMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/hh/his/graduationproject/dao/InpatientInformationMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hh/his/graduationproject/dao/InpatientInformationMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hh/his/graduationproject/service/impl/InpatientServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hh/his/graduationproject/service/impl/InpatientServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hh/his/graduationproject/service/impl/AnalysisServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hh/his/graduationproject/service/impl/AnalysisServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hh/his/graduationproject/service/impl/MedicalAdviceServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hh/his/graduationproject/service/impl/MedicalAdviceServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/mapper/AnalysisMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/mapper/AnalysisMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/mapper/BedMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/mapper/BedMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/mapper/BillMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/mapper/BillMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/mapper/CostItemMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/mapper/CostItemMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/mapper/DepositMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/mapper/DepositMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/mapper/DrugApplicationMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/mapper/DrugApplicationMapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/mapper/InpatientInformationMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/mapper/InpatientInformationMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/mapper/MedicalAdviceMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/mapper/MedicalAdviceMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/mapper/MedicalRecordMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/mapper/MedicalRecordMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/mapper/SysLogMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/mapper/SysLogMapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/hh/his/graduationproject/HISApplicationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/hh/his/graduationproject/HISApplicationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hh/his/graduationproject/dao/InpatientInformationMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hh/his/graduationproject/dao/InpatientInformationMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/hh/his/graduationproject/service/impl/InpatientServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hh/his/graduationproject/service/impl/InpatientServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hh/his/graduationproject/controller/AnalysisController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hh/his/graduationproject/controller/AnalysisController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hh/his/graduationproject/dao/AnalysisMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hh/his/graduationproject/dao/AnalysisMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hh/his/graduationproject/service/impl/AnalysisServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hh/his/graduationproject/service/impl/AnalysisServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hh/his/graduationproject/service/impl/MedicalAdviceServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hh/his/graduationproject/service/impl/MedicalAdviceServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mapper/AnalysisMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mapper/AnalysisMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mapper/BedMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mapper/BedMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mapper/BillMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mapper/BillMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mapper/CostItemMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mapper/CostItemMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mapper/DepositMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mapper/DepositMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mapper/DrugApplicationMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mapper/DrugApplicationMapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/mapper/InpatientInformationMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mapper/InpatientInformationMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/hh/his/graduationproject/utils/bean/InpatientInformationConverterImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/hh/his/graduationproject/utils/bean/InpatientInformationConverterImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/hh/his/graduationproject/utils/bean/PatientConverterImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/hh/his/graduationproject/utils/bean/PatientConverterImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/hh/his/graduationproject/utils/bean/WardConverterImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/hh/his/graduationproject/utils/bean/WardConverterImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mapper/MedicalAdviceMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mapper/MedicalAdviceMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mapper/MedicalRecordMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mapper/MedicalRecordMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mapper/SysLogMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mapper/SysLogMapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/test-classes/com/hh/his/graduationproject/HISApplicationTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/com/hh/his/graduationproject/HISApplicationTest.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -76,11 +97,12 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -247,7 +269,12 @@
       <workItem from="1614609810434" duration="219000" />
       <workItem from="1614655645101" duration="24112000" />
       <workItem from="1614767222676" duration="313000" />
-      <workItem from="1614767851974" duration="2611000" />
+      <workItem from="1614767851974" duration="7115000" />
+      <workItem from="1614834017861" duration="3616000" />
+      <workItem from="1614852197205" duration="8249000" />
+      <workItem from="1614868847078" duration="685000" />
+      <workItem from="1614869549681" duration="1844000" />
+      <workItem from="1614919151646" duration="676000" />
     </task>
     <task id="LOCAL-00001" summary="第二次提交">
       <created>1609237606648</created>
@@ -358,50 +385,58 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="536" y="81" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1614520119007" />
+    <state x="979" y="265" key="FileChooserDialogImpl" timestamp="1614869522384">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="979" y="265" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1614869522384" />
+    <state width="293" height="209" key="Git.Branch.Popup" timestamp="1614784929136">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="293" height="209" key="Git.Branch.Popup/0.0.1920.1040@0.0.1920.1040" timestamp="1614784929136" />
     <state x="903" y="424" key="Github.CreateGistDialog" timestamp="1612601650094">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="903" y="424" key="Github.CreateGistDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1612601650094" />
-    <state width="1495" height="193" key="GridCell.Tab.0.bottom" timestamp="1614783004838">
+    <state width="1877" height="284" key="GridCell.Tab.0.bottom" timestamp="1614867050493">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1580" height="315" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1680.1010@0.0.1920.1040" timestamp="1614392074876" />
-    <state width="1495" height="193" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1614783004838" />
-    <state width="1495" height="193" key="GridCell.Tab.0.center" timestamp="1614783004838">
+    <state width="1877" height="284" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1614867050493" />
+    <state width="1877" height="284" key="GridCell.Tab.0.center" timestamp="1614867050493">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1580" height="315" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1680.1010@0.0.1920.1040" timestamp="1614392074876" />
-    <state width="1495" height="193" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1614783004838" />
-    <state width="1495" height="193" key="GridCell.Tab.0.left" timestamp="1614783004838">
+    <state width="1877" height="284" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1614867050493" />
+    <state width="1877" height="284" key="GridCell.Tab.0.left" timestamp="1614867050492">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1580" height="315" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1680.1010@0.0.1920.1040" timestamp="1614392074876" />
-    <state width="1495" height="193" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1614783004838" />
-    <state width="1495" height="193" key="GridCell.Tab.0.right" timestamp="1614783004838">
+    <state width="1877" height="284" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1614867050492" />
+    <state width="1877" height="284" key="GridCell.Tab.0.right" timestamp="1614867050493">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1580" height="315" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1680.1010@0.0.1920.1040" timestamp="1614392074876" />
-    <state width="1495" height="193" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1614783004838" />
-    <state width="1495" height="193" key="GridCell.Tab.1.bottom" timestamp="1614783004838">
+    <state width="1877" height="284" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1614867050493" />
+    <state width="1877" height="284" key="GridCell.Tab.1.bottom" timestamp="1614867050493">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1580" height="315" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.0.1680.1010@0.0.1920.1040" timestamp="1614392074876" />
-    <state width="1495" height="193" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1614783004838" />
-    <state width="1495" height="193" key="GridCell.Tab.1.center" timestamp="1614783004838">
+    <state width="1877" height="284" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1614867050493" />
+    <state width="1877" height="284" key="GridCell.Tab.1.center" timestamp="1614867050493">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1580" height="315" key="GridCell.Tab.1.center/0.0.1920.1040/1920.0.1680.1010@0.0.1920.1040" timestamp="1614392074876" />
-    <state width="1495" height="193" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1614783004838" />
-    <state width="1495" height="193" key="GridCell.Tab.1.left" timestamp="1614783004838">
+    <state width="1877" height="284" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1614867050493" />
+    <state width="1877" height="284" key="GridCell.Tab.1.left" timestamp="1614867050493">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1580" height="315" key="GridCell.Tab.1.left/0.0.1920.1040/1920.0.1680.1010@0.0.1920.1040" timestamp="1614392074876" />
-    <state width="1495" height="193" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1614783004838" />
-    <state width="1495" height="193" key="GridCell.Tab.1.right" timestamp="1614783004838">
+    <state width="1877" height="284" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1614867050493" />
+    <state width="1877" height="284" key="GridCell.Tab.1.right" timestamp="1614867050493">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1580" height="315" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1680.1010@0.0.1920.1040" timestamp="1614392074876" />
-    <state width="1495" height="193" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1614783004838" />
+    <state width="1877" height="284" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1614867050493" />
     <state width="1495" height="273" key="GridCell.Tab.2.bottom" timestamp="1614701343578">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -422,14 +457,14 @@
     </state>
     <state width="1522" height="294" key="GridCell.Tab.2.right/0.0.1920.1040/1920.0.1680.1010@0.0.1920.1040" timestamp="1613580780112" />
     <state width="1495" height="273" key="GridCell.Tab.2.right/0.0.1920.1040@0.0.1920.1040" timestamp="1614701343577" />
-    <state x="700" y="169" key="SettingsEditor" timestamp="1614783053471">
+    <state x="494" y="169" key="SettingsEditor" timestamp="1614869532349">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="700" y="169" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1614783053471" />
-    <state x="690" y="253" key="Vcs.Push.Dialog.v2" timestamp="1614782903705">
+    <state x="494" y="169" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1614869532349" />
+    <state x="690" y="253" key="Vcs.Push.Dialog.v2" timestamp="1614783070171">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="690" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1614782903705" />
+    <state x="690" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1614783070171" />
     <state x="369" y="164" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1614101326723">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -446,6 +481,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="502" y="279" key="refactoring.ChangeSignatureDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1611668508630" />
+    <state x="742" y="247" key="run.anything.popup" timestamp="1614862510468">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="742" y="247" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1614862510468" />
     <state x="849" y="185" width="672" height="676" key="search.everywhere.popup" timestamp="1614597810066">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

@@ -5,7 +5,7 @@
     <resultMap id="baseResult" type="InpatientInformation">
         <result property="id" column="ii_id"/>
         <result property="admissionNumber" column="ii_ad_number"/>
-        <result property="sid" column="s_id"/>
+        <result property="sid" column="operator"/>
         <result property="age" column="age"/>
         <result property="deptName" column="dept_name"/>
         <result property="ptName" column="pt_name"/>
@@ -165,7 +165,7 @@
             and b.ii_ad_number like #{admissionNumber}
         </if>
         <if test="conditionVO.admissionOfDateStart !='' and conditionVO.admissionOfDateStart != null and conditionVO.admissionOfDateEnd !='' and conditionVO.admissionOfDateEnd !=null ">
-            and b.ii_date_admission between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
+            and DATE_FORMAT(b.ii_date_admission,'%Y-%m-%d') between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
         </if>
     </select>
 
@@ -190,7 +190,7 @@
             and b.ii_ad_number like #{admissionNumber}
         </if>
         <if test="conditionVO.admissionOfDateStart !='' and conditionVO.admissionOfDateStart != null and conditionVO.admissionOfDateEnd !='' and conditionVO.admissionOfDateEnd !=null ">
-            and b.ii_date_admission between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
+            and DATE_FORMAT(b.ii_date_admission,'%Y-%m-%d') between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
         </if>
     </select>
 
@@ -215,7 +215,7 @@
             and b.ii_ad_number like #{admissionNumber}
         </if>
         <if test="conditionVO.admissionOfDateStart !='' and conditionVO.admissionOfDateStart != null and conditionVO.admissionOfDateEnd !='' and conditionVO.admissionOfDateEnd !=null ">
-            and b.ii_date_admission between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
+            and DATE_FORMAT(b.ii_date_admission,'%Y-%m-%d') between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
         </if>
     </select>
 
@@ -240,16 +240,24 @@
             and b.ii_ad_number like #{admissionNumber}
         </if>
         <if test="conditionVO.admissionOfDateStart !='' and conditionVO.admissionOfDateStart != null and conditionVO.admissionOfDateEnd !='' and conditionVO.admissionOfDateEnd !=null ">
-            and b.ii_date_admission between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
+            and DATE_FORMAT(b.ii_date_admission,'%Y-%m-%d') between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
         </if>
     </select>
 
     <select id="selectByAdmissionNumber" resultType="com.hh.his.graduationproject.model.vo.LeaveVO">
-        select ii_ad_number as admissionNumber, ii_id as admissionId, patient.p_name as name, pt_name as ptName from inpatient_information,patient where patient.p_id = inpatient_information.p_id and ii_status = 1 and ii_ad_number=#{admissionNumber};
+        select ii_ad_number as admissionNumber, ii_id as admissionId,
+        patient.p_name as name, pt_name as ptName
+        from inpatient_information,patient
+        where patient.p_id = inpatient_information.p_id and ii_status = 1
+        and ii_ad_number=#{admissionNumber};
     </select>
 
     <select id="selectByAdmissionNumber2" resultType="com.hh.his.graduationproject.model.vo.LeaveVO">
-        select ii_ad_number as admissionNumber, ii_id as admissionId, patient.p_name as name, pt_name as ptName from inpatient_information,patient where patient.p_id = inpatient_information.p_id and ii_status = 0 and ii_ad_number=#{admissionNumber};
+        select ii_ad_number as admissionNumber, ii_id as admissionId,
+        patient.p_name as name, pt_name as ptName
+        from inpatient_information,patient
+        where patient.p_id = inpatient_information.p_id and ii_status = 0
+        and ii_ad_number=#{admissionNumber};
     </select>
 
     <select id="selectCanLeave" resultMap="InpatientInformationResultMap">
@@ -273,7 +281,7 @@
             and b.ii_ad_number like #{admissionNumber}
         </if>
         <if test="conditionVO.admissionOfDateStart !='' and conditionVO.admissionOfDateStart != null and conditionVO.admissionOfDateEnd !='' and conditionVO.admissionOfDateEnd !=null ">
-            and b.ii_date_admission between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
+            and DATE_FORMAT(b.ii_date_admission,'%Y-%m-%d') between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
         </if>
     </select>
 
@@ -281,14 +289,14 @@
         SELECT deposit.des_id as desId,b.ii_medical_insurance_number as medicalNumber,
         b.ii_ad_number as admissionNumber,b.ii_id as admissionId,
         c.p_name as pname,b.p_id as pid,
-        deposit.des_deposit as deposit,deposit.s_id as operator,
+        deposit.des_deposit as deposit,deposit.operator as operator,
         deposit.des_status as depositStatus,deposit.payment_type as paymentType,
         c.p_sex as sex,b.pt_name as ptName,b.dept_name as deptName,
         iw.iward_id as iwardId,bed.b_id as bid,
         b.ii_date_admission as dateOfAdmission,deposit.date_pay as datePay, b.age as age
         FROM inpatient_information b left join bed on bed.id = b.bed_id
         left join inpatient_ward iw on iw.wid = b.ward_id,patient c,deposit
-        WHERE c.p_id = b.p_id and deposit.ii_id = b.ii_id
+        WHERE c.p_id = b.p_id and deposit.admission_id = b.ii_id
         <if test="conditionVO.deptName !=null and conditionVO.deptName != ''">
             and b.dept_name = #{conditionVO.deptName}
         </if>
@@ -305,14 +313,14 @@
             and b.ii_ad_number like #{admissionNumber}
         </if>
         <if test="conditionVO.payDateStart !='' and conditionVO.payDateStart != null and conditionVO.payDateEnd !='' and conditionVO.payDateEnd !=null ">
-            and deposit.date_pay between #{conditionVO.payDateStart} and  #{conditionVO.payDateEnd}
+            and DATE_FORMAT(deposit.date_pay,'%Y-%m-%d') between #{conditionVO.payDateStart} and #{conditionVO.payDateEnd}
         </if>
     </select>
 
     <select id="selectWithDeposit2" resultType="com.hh.his.graduationproject.model.vo.DepositQueryVO">
         SELECT deposit.des_id as desId,b.ii_medical_insurance_number as medicalNumber,
         b.ii_ad_number as admissionNumber,b.ii_id as admissionId,
-        c.p_name as pname,b.p_id as pid,deposit.s_id as operator,
+        c.p_name as pname,b.p_id as pid,deposit.operator as operator,
         deposit.des_deposit as deposit,
         deposit.des_status as depositStatus,
         c.p_sex as sex,b.pt_name as ptName,b.dept_name as deptName,
@@ -320,7 +328,7 @@
         b.ii_date_admission as dateOfAdmission,deposit.date_pay as datePay, b.age as age
         FROM inpatient_information b left join bed on bed.id = b.bed_id
         left join inpatient_ward iw on iw.wid = b.ward_id,patient c,deposit
-        WHERE c.p_id = b.p_id and b.ii_status = 0 and deposit.ii_id = b.ii_id
+        WHERE c.p_id = b.p_id and b.ii_status = 0 and deposit.admission_id = b.ii_id
         and deposit.des_status = 1 and deposit.des_is_refund = 0
         <if test="conditionVO.deptName !=null and conditionVO.deptName != ''">
             and b.dept_name = #{conditionVO.deptName}
@@ -338,14 +346,14 @@
             and b.ii_ad_number like #{admissionNumber}
         </if>
         <if test="conditionVO.payDateStart !='' and conditionVO.payDateStart != null and conditionVO.payDateEnd !='' and conditionVO.payDateEnd !=null ">
-            and deposit.date_pay between #{conditionVO.payDateStart} and  #{conditionVO.payDateEnd}
+            and DATE_FORMAT(deposit.date_pay,'%Y-%m-%d') between #{conditionVO.payDateStart} and #{conditionVO.payDateEnd}
         </if>
     </select>
 
     <select id="selectWithDeposit3" resultType="com.hh.his.graduationproject.model.vo.DepositQueryVO">
         SELECT deposit.des_id as desId,b.ii_medical_insurance_number as medicalNumber,
         b.ii_ad_number as admissionNumber,b.ii_id as admissionId,
-        c.p_name as pname,b.p_id as pid,deposit.s_id as operator,
+        c.p_name as pname,b.p_id as pid,deposit.operator as operator,
         deposit.des_deposit as deposit,
         deposit.des_status as depositStatus,
         c.p_sex as sex,b.pt_name as ptName,b.dept_name as deptName,
@@ -353,7 +361,7 @@
         b.ii_date_admission as dateOfAdmission,deposit.date_pay as datePay, b.age as age
         FROM inpatient_information b left join bed on bed.id = b.bed_id
         left join inpatient_ward iw on iw.wid = b.ward_id,patient c,deposit
-        WHERE c.p_id = b.p_id and b.ii_status = 0 and deposit.ii_id = b.ii_id
+        WHERE c.p_id = b.p_id and b.ii_status = 0 and deposit.admission_id = b.ii_id
         and deposit.des_status = 0 and deposit.des_is_refund = 0
         <if test="conditionVO.deptName !=null and conditionVO.deptName != ''">
             and b.dept_name = #{conditionVO.deptName}
@@ -371,7 +379,7 @@
             and b.ii_ad_number like #{admissionNumber}
         </if>
         <if test="conditionVO.admissionOfDateStart !='' and conditionVO.admissionOfDateStart != null and conditionVO.admissionOfDateEnd !='' and conditionVO.admissionOfDateEnd !=null ">
-            and b.ii_date_admission between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
+            and  DATE_FORMAT(b.ii_date_admission,'%Y-%m-%d')  between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
         </if>
     </select>
 
@@ -436,7 +444,7 @@
 
     <insert id="insertInpatient">
         insert into inpatient_information(
-        s_id,ii_ad_number,p_id,pt_name,ii_diagnosis_01,age,
+        operator,ii_ad_number,p_id,pt_name,ii_diagnosis_01,age,
         ii_diagnosis_02,dept_name,ii_admitted_doc,ii_attending_doc,
         ii_visiting_doc,ii_date_admission,
         ii_medical_insurance_number,ii_status)
@@ -486,7 +494,7 @@
 
     <update id="leaveSuccess">
         update inpatient_information
-        set s_id = #{operator},
+        set operator = #{operator},
         ii_status =2
         where ii_id = #{admissionId}
     </update>
@@ -516,7 +524,7 @@
             and b.ii_ad_number like #{admissionNumber}
         </if>
         <if test="conditionVO.admissionOfDateStart !='' and conditionVO.admissionOfDateStart != null and conditionVO.admissionOfDateEnd !='' and conditionVO.admissionOfDateEnd !=null ">
-            and b.ii_discharge_admission between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
+            and DATE_FORMAT(b.ii_discharge_date,'%Y-%m-%d')  between #{conditionVO.admissionOfDateStart} and  #{conditionVO.admissionOfDateEnd}
         </if>
     </select>
 
@@ -561,7 +569,7 @@
         from inpatient_information
         where ii_status =0
         <if test="DateStart != null and DateStart !='' and DateEnd !=null and DateEnd !='' ">
-            and ii_date_admission between #{DateStart} and #{DateEnd}
+            and DATE_FORMAT(ii_date_admission,'%Y-%m-%d')  between #{DateStart} and #{DateEnd}
         </if>
         group by dept_name
     </select>
@@ -571,7 +579,7 @@
         from inpatient_information
         where ii_status =2
         <if test="leaveDateStart != null and leaveDateStart !='' and leaveDateEnd !=null and leaveDateEnd !=''">
-            and ii_discharge_date between #{leaveDateStart} and #{leaveDateEnd}
+            and DATE_FORMAT(ii_discharge_date,'%Y-%m-%d') between #{leaveDateStart} and #{leaveDateEnd}
         </if>
         group by dept_name
     </select>

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -50,9 +51,10 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Override
     public PeopleJSON getPeopleMessage() {
 
+        SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd");
         PeopleJSON peopleJSON = new PeopleJSON();
-        int todayInpatient = analysisMapper.findTodayInpatient(new Date());
-        int todayLeave = analysisMapper.findTodayLeave(new Date());
+        int todayInpatient = analysisMapper.findTodayInpatient(df.format(new Date()));
+        int todayLeave = analysisMapper.findTodayLeave(df.format(new Date()));
         int totalInpatient = analysisMapper.findTotalInpatient();
         int totalLeave = analysisMapper.findTotalLeave();
         peopleJSON.setTodayInpatient(todayInpatient);
@@ -64,7 +66,8 @@ public class AnalysisServiceImpl implements AnalysisService {
 
     @Override
     public MoneyJSON getMoneyMessage() {
-        BigDecimal todayDeposit = analysisMapper.findTodayDeposit(new Date());
+        SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd");
+        BigDecimal todayDeposit = analysisMapper.findTodayDeposit(df.format(new Date()));
         if (todayDeposit == null){
             todayDeposit = new BigDecimal(0);
         }
@@ -72,7 +75,7 @@ public class AnalysisServiceImpl implements AnalysisService {
         if (totalDeposit == null){
             totalDeposit = new BigDecimal(0);
         }
-        BigDecimal todayBill = analysisMapper.findTodayBill(new Date());
+        BigDecimal todayBill = analysisMapper.findTodayBill(df.format(new Date()));
         if (todayBill == null){
             todayBill = new BigDecimal(0);
         }

@@ -40,7 +40,7 @@
                 and cost_item_no like #{no}
             </if>
             <if test="costItem.costItemName !=null and costItem.costItemName !=''">
-                <bind name="name" value="'%'+costItemName+'%'"/>
+                <bind name="name" value="'%'+costItem.costItemName+'%'"/>
                 and cost_item_name like #{name}
             </if>
         </where>

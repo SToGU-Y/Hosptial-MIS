@@ -16,7 +16,7 @@
         select * from log
         <where>
             <if test="logDateStart !=null and logDateStart !='' and logDateEnd !=null and logDateEnd !=''">
-                create_date between #{logDateStart} and #{logDateEnd}
+                DATE_FORMAT(create_date,'%Y-%m-%d') between #{logDateStart} and #{logDateEnd}
             </if>
         </where>
     </select>

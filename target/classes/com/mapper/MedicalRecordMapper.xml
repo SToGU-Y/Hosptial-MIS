@@ -15,7 +15,7 @@
         <association property="admissionId" column="ii_id" javaType="InpatientInformation">
             <result property="id" column="ii_id"/>
             <result property="admissionNumber" column="ii_ad_number"/>
-            <result property="sid" column="s_id"/>
+            <result property="sid" column="operator"/>
             <result property="age" column="age"/>
             <result property="diagnosis01" column="ii_diagnosis_01"/>
             <result property="diagnosis02" column="ii_diagnosis_02"/>

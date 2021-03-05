@@ -17,19 +17,19 @@ public interface AnalysisMapper {
 
     List<SexJSON> selectLeaveSex(@Param("date")String date,@Param("date1")String date1);
 
-    int findTodayInpatient(@Param("today") Date today);
+    int findTodayInpatient(@Param("today") String today);
 
     int findTotalInpatient();
 
-    int findTodayLeave(@Param("today")Date today);
+    int findTodayLeave(@Param("today") String today);
 
     int findTotalLeave();
 
-    BigDecimal findTodayDeposit(@Param("today") Date today);
+    BigDecimal findTodayDeposit(@Param("today") String today);
 
     BigDecimal findTotalDeposit();
 
-    BigDecimal findTodayBill(@Param("today")Date today);
+    BigDecimal findTodayBill(@Param("today")String today);
 
     BigDecimal findTotalBill();
 

@@ -5,15 +5,16 @@
     <select id="findTodayDeposit" resultType="java.math.BigDecimal">
         select sum(des_deposit)
         from deposit
-        where des_is_refund = 0 and des_status = 1 and date_pay = #{today}
+        where des_is_refund = 0 and des_status = 1 and DATE_FORMAT(date_pay,'%Y-%m-%d') in (#{today})
     </select>
 
     <select id="findTodayBill" resultType="java.math.BigDecimal">
-        select sum(pay) from bill where `date` = #{today}
+        select sum(pay) from bill where DATE_FORMAT(`date`,'%Y-%m-%d') in (#{today})
     </select>
 
     <select id="findTotalDeposit" resultType="java.math.BigDecimal">
-        select sum(des_deposit) from deposit where des_is_refund = 0 and des_status = 1
+        select sum(des_deposit)
+        from deposit where des_is_refund = 0 and des_status = 1
     </select>
 
     <select id="findTotalBill" resultType="java.math.BigDecimal">
@@ -23,9 +24,9 @@
     <select id="analysisDeposit" resultType="com.hh.his.graduationproject.model.vo.MoneyAnalysis">
         select sum(des_deposit) as money , dept_name as dept
         from deposit,inpatient_information ii
-        where  des_is_refund = 0 and des_status = 1 and deposit.ii_id = ii.ii_id
+        where  des_is_refund = 0 and des_status = 1 and deposit.admission_id = ii.ii_id
         <if test="date !=null and date !='' and date1 !=null and date1 !=''">
-            and date_pay between #{date} and #{date1}
+            and DATE_FORMAT(date_pay,'%Y-%m-%d') between #{date} and #{date1}
         </if>
         group by dept_name
     </select>
@@ -35,14 +36,14 @@
         from bill,inpatient_information ii
         where bill.admission_id = ii.ii_id
         <if test="date !=null and date !='' and date1 !=null and date1 !=''">
-            and  `date` between #{date} and #{date1}
+            and  DATE_FORMAT(`date`,'%Y-%m-%d') between #{date} and #{date1}
         </if>
         group by dept_name
     </select>
 
     <select id="findTodayInpatient" resultType="java.lang.Integer">
         select count(ii_id) from inpatient_information
-        where ii_date_admission = #{today} and ii_status = 0
+        where  DATE_FORMAT(ii_date_admission,'%Y-%m-%d') in (#{today})
     </select>
 
     <select id="findTotalInpatient" resultType="java.lang.Integer">
@@ -51,7 +52,7 @@
 
     <select id="findTodayLeave" resultType="java.lang.Integer">
         select count(ii_id) from inpatient_information
-        where ii_discharge_date = #{today} and ii_status = 2
+        where DATE_FORMAT(ii_discharge_date,'%Y-%m-%d') in (#{today}) and ii_status = 2
     </select>
 
     <select id="findTotalLeave" resultType="java.lang.Integer">
@@ -64,7 +65,7 @@
         from inpatient_information,patient p
         where p.p_id = inpatient_information.p_id and ii_status = 0
         <if test="date !=null and date !='' and date1 !=null and date1 !=''">
-           and ii_date_admission between #{date} and #{date1}
+           and  DATE_FORMAT(ii_date_admission,'%Y-%m-%d')  between #{date} and #{date1}
         </if>
         group by p.p_sex
     </select>
@@ -74,7 +75,7 @@
         from inpatient_information,patient p
         where p.p_id = inpatient_information.p_id and ii_status = 2
         <if test="date !=null and date !='' and date1 !=null and date1 !=''">
-            and ii_discharge_date between #{date} and #{date1}
+            and  DATE_FORMAT(ii_discharge_date,'%Y-%m-%d') between #{date} and #{date1}
         </if>
         group by p.p_sex
     </select>
@@ -116,8 +117,8 @@
     </select>
 
     <select id="MonthlyDischarged" resultType="java.util.HashMap">
-        select MONTH(ii_discharge_date) as '月份',count(ii_id) as '出院人数'
-        from inpatient_information
+            select MONTH(ii_discharge_date) as '月份',count(ii_id) as '出院人数'
+            from inpatient_information
         <where>
             ii_status = 2
             <if test="date!=null and date!=''">

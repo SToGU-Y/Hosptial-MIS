@@ -4,6 +4,7 @@ import com.hh.his.graduationproject.model.vo.*;
 import com.hh.his.graduationproject.service.AnalysisService;
 import com.hh.his.graduationproject.utils.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
